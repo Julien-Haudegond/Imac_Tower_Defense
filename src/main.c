@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
 	Monster *ptrMyMonster3 = &myMonster3;
 	ptrMyMonster3 = createMonster(ptrMyMonster3, 42.0, ELECTRIC, 42.0, 42);
 	//adding monsters to the wave
+	//Monster are now considered as wave elements
 	Wave* wave;
 	wave = addMonster(wave, myMonster);
 	wave = addMonster(wave, myMonster2);
@@ -27,7 +28,7 @@ int main(int argc, char *argv[]){
 	Monster* ptrWaveElem = &(wave->monster);
 	ptrWaveElem = setHealth(ptrWaveElem, 0);
 	printMonster(wave->monster);
-	deleteMonster(wave);
+	wave = deleteFirstMonster(wave);
 	printf("First Monster removed !\n");
 	printWave(wave);
 }

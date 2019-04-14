@@ -33,6 +33,7 @@ Wave* deleteMonster(Wave* wave){
 	}
 	//removing first element of the list if necessary
 	if(wave->monster.health <=0){
+		printf("Monster health <=0 \n");
 		wave = deleteFirstMonster(wave);
 	}
 	while(wave->nextMonster != NULL){
@@ -49,6 +50,7 @@ Wave* deleteMonster(Wave* wave){
 }
 
 Wave* deleteFirstMonster(Wave* wave){
+	printf("Deleting first monster \n");
 	Wave *tmp;
 	tmp = wave->nextMonster;
 	free(wave);
