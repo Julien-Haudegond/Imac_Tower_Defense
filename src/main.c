@@ -4,13 +4,31 @@
 #include "../include/wave.h"
 
 int main(int argc, char *argv[]){
+	//creating first monster
 	Monster myMonster;
 	Monster *ptrMyMonster = &myMonster;
-	ptrMyMonster = createMonster(ptrMyMonster, 10.0, ELECTRIC, 3.0, 5);
+	ptrMyMonster = createMonster(ptrMyMonster, 10.0, ELECTRIC, 3.0, 18);
+	//creating 2nd monster
+	Monster myMonster2;
+	Monster *ptrMyMonster2 = &myMonster2;
+	ptrMyMonster2 = createMonster(ptrMyMonster2, 2.0, ELECTRIC, 4.0, 22);
+	//creating 3rd monster
+	Monster myMonster3;
+	Monster *ptrMyMonster3 = &myMonster3;
+	ptrMyMonster3 = createMonster(ptrMyMonster3, 42.0, ELECTRIC, 42.0, 42);
+	//adding monsters to the wave
 	Wave* wave;
 	wave = addMonster(wave, myMonster);
-	printf("Health : %f \n", wave->monster.health);
-	printf("Speed : %f \n", wave->monster.speed);
-	printf("Reward : %d \n", wave->monster.playerReward);
+	wave = addMonster(wave, myMonster2);
+	wave = addMonster(wave, myMonster3);
+	printWave(wave);
+	//1st monster gets killed 
+	printf("Changing monster health \n");
+	Monster* ptrWaveElem = &(wave->monster);
+	ptrWaveElem = setHealth(ptrWaveElem, 0);
+	printMonster(wave->monster);
+	deleteMonster(wave);
+	printf("First Monster removed !\n");
+	printWave(wave);
 }
 

@@ -16,7 +16,14 @@ Monster* setPosition(Monster* m, int x, int y){
 	return m;
 }
 
+Monster* setHealth(Monster *m, int newHealth){
+	m->health = newHealth;
+	return m;
+}
+
 void printMonster(Monster m){
-	printf("%f",m.health);
+	printf("Health : %f \n", m.health);
+	printf("Speed : %f \n", m.speed);
+	printf("Reward : %d \n", m.playerReward);
 }
 

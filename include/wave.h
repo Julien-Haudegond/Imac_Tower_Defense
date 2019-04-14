@@ -4,14 +4,15 @@
 #define WAVESIZE 10;
 #include "monster.h"
 
-typedef struct Wave Wave;
-struct Wave{
+typedef struct Wave{
 	Monster monster;
-	Wave * nextMonster;
-};
+	struct Wave * nextMonster;
+}Wave;
 
 Wave* addMonster(Wave* wave, Monster myNewMonster);
-Wave* deleteMonster(Monster* monster, Wave* wave);
+Wave* deleteMonster(Wave* wave);
+Wave* deleteFirstMonster(Wave* wave);
+void printWave(Wave* wave);
 //void printList(Wave wave);
 
 #endif
