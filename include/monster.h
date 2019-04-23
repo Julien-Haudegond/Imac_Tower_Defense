@@ -8,7 +8,7 @@ typedef enum{
 }MonsterType;
 
 typedef enum{
-	LASER, ROCKET, ELECTRIC, WATER
+	LASER_R, ROCKET_R, ELECTRIC_R, WATER_R
 }MonsterResist;
 
 typedef struct Monster{

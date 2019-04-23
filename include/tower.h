@@ -7,12 +7,14 @@ typedef enum{
 }TowerType;
 
 typedef struct Tower{
-	float dmg;
+	int dmg;
 	float firespeed;
-	float range;
+	int range;
 }Tower;
 
-void fire(Tower t);
-
+//void fire(Tower t);
+Tower* createTower(Tower* tower, TowerType type);
+Tower* setTowerStats(Tower* tower, int dmg, float firespeed, int range);
+void printTower();
 
 #endif

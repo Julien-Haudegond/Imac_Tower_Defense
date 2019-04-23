@@ -2,8 +2,18 @@
 #include <stdlib.h>
 #include "../include/monster.h"
 #include "../include/wave.h"
+#include "../include/tower.h"
+#include "tests.c" //fonctions test
 
 int main(int argc, char *argv[]){
+	
+	return 0;
+}
+
+void testTowers(){
+}
+
+void TestMonsters(){
 	//creating first monster
 	Monster myMonster;
 	Monster *ptrMyMonster = &myMonster;
@@ -32,4 +42,3 @@ int main(int argc, char *argv[]){
 	printf("First Monster removed !\n");
 	printWave(wave);
 }
-
