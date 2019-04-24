@@ -26,40 +26,31 @@ Wave* addMonster(Wave* wave, Monster myNewMonster){
 	}
 	return wave;
 }
-//Removes monster having health <= 0 from the list
-Wave* deleteMonster(Wave* wave){
-	if(wave == NULL){
-		exit(EXIT_FAILURE);
-	}
-	//removing first element of the list if necessary
-	if(wave->monster.health <=0){
-		printf("Monster health <=0 \n");
-		wave = deleteFirstMonster(wave);
-	}
-	while(wave->nextMonster != NULL){
-		if(wave->nextMonster->monster.health <= 0){
-			//tmp is the new pointer value for the previous element
-			Wave* tmp = wave->nextMonster->nextMonster;
-			wave->nextMonster->nextMonster = NULL;
-			free(wave->nextMonster);
-			wave->nextMonster = tmp;
-		}
-		wave = wave->nextMonster;
-	}
-	return wave;
-}
 
-Wave* deleteFirstMonster(Wave* wave){
-	printf("Deleting first monster \n");
-	Wave *tmp;
-	tmp = wave->nextMonster;
-	free(wave);
-	return tmp;
+//deletes one element
+//a optimiser ou à appeler en boucle tant que tous les monstres dead ne sont pas éliminés
+Wave* deleteMonster(Wave* head){
+	Wave* tmp = head;
+	Wave* prev;
+	//If the first Monster of the list is dead, delete and replace it by the next one 
+	if(tmp != NULL && tmp->monster.health <= 0){
+		head = tmp->nextMonster;
+		free(tmp);
+		return head;
+	}
+
+	while(tmp != NULL && tmp->monster.health > 0){
+		prev = tmp;
+		tmp = tmp->nextMonster;
+	}
+
+	if(tmp == NULL) return head;
+
+
+	prev->nextMonster = tmp -> nextMonster;
+	free(tmp);
+	return head;
 }
-/*
-Wave* deleteLastMonster(Wave* wave){
-	return wave;
-}*/
 
 void printWave(Wave* wave){
 	int counter = 1;

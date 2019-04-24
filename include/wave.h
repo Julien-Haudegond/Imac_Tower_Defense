@@ -11,7 +11,7 @@ typedef struct Wave{
 
 Wave* addMonster(Wave* wave, Monster myNewMonster);
 Wave* deleteMonster(Wave* wave);
-Wave* deleteFirstMonster(Wave* wave);
+//Wave* deleteFirstMonster(Wave* wave);
 void printWave(Wave* wave);
 //void printList(Wave wave);
 

@@ -6,7 +6,16 @@ typedef enum{
 	LASER, ROCKET, ELECTRIC, WATER
 }TowerType;
 
+/******************
+* Types of towers
+*		0 : Laser
+*		1 : Rocket,
+*		2 : Electric
+*		3 : Water
+* Will later be compared to monsters resist
+*/
 typedef struct Tower{
+	int type;
 	int dmg;
 	float firespeed;
 	int range;
