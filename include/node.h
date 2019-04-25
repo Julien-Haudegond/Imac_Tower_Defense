@@ -21,5 +21,6 @@ typedef struct Node {
 Node createNode(int value, int type, int x, int y);
 void linkNode(Node* root, Node* child);
 void printNodeInfo(Node node);
+int doInAndOutExist(Node nodesArray[], int* nbOfNodes);
 
 #endif

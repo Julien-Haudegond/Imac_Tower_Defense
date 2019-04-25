@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #include "../include/itd.h"
 #include "../include/node.h"
@@ -108,6 +109,11 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 			exit(EXIT_FAILURE);
 		}
 
+		if(strcmp(instruction, "chemin") != 0 && strcmp(instruction, "noeud") != 0 && strcmp(instruction, "construct") != 0 && strcmp(instruction, "in") != 0 && strcmp(instruction, "out") != 0) {
+			fprintf(stderr, "Error : ITD instructions don't have the right names\n");
+			exit(EXIT_FAILURE);
+		}
+
 		for(int j = 0; j < 10; j++) {
 			itdInstructions[i].name[j] = instruction[j]; 
 		}
@@ -145,14 +151,14 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 		}
 		k++;
 	}
-		/*
-		for(int i = 0; i < k; i++) {
-			for(int z = 0; z < nbIntegers[i]; z++) {
-				printf("%d ", values[i][z]);
-			}	
-			printf("\n");
-		}
-		*/
+			/*
+			for(int i = 0; i < k; i++) {
+				for(int z = 0; z < nbIntegers[i]; z++) {
+					printf("%d ", values[i][z]);
+				}	
+				printf("\n");
+			}
+			*/
 
 	//Compare if number of nodes = number of lines
 	if(*nbOfNodes != k) {
@@ -177,6 +183,14 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 			linkNode(&nodesArray[i], &nodesArray[values[i][j]]);
 		}
 	}
+
+	//Check if there is a path between every neighboor nodes
+	for(int i = 0; i < *nbOfNodes; i++) {
+		printf("Node n° %d : \n", i);
+		checkAllPathsAroundANode(nodesArray[i], imgPPM, itdInstructions);
+		printf("\n");
+	}
+
 
 	return EXIT_SUCCESS;
 }
@@ -251,23 +265,126 @@ int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, Itd
 }
 
 
-int doInAndOutExist(Node nodesArray[], int* nbOfNodes) {
-	int in = 0, out = 0; //false at the beginning
+//Path are only vertical or horizontal. They are never diagonal. VERSION 1
+int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
 
-	for(int i = 0; i < *nbOfNodes; i++) {
-		if(nodesArray[i].type == 1) {
-			in = 1; //become true
-		}
-		if(nodesArray[i].type == 2) {
-			out = 1; //become true
+	/***** VARIABLES *****/
+
+	int path_redComponent = -1, path_greenComponent = -1, path_blueComponent = -1; //color values of the path (-1 at the beginning to be sure it's gonna work after)
+
+	int current_pos; //current pixel during the traveling 
+	int red_value, green_value, blue_value; //values of the current pixel during the traveling
+
+
+	/***** CODE *****/
+
+	//Attribute the colors to the path variables from the ITD instructions
+	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
+		if(strcmp(itdInstructions[i].name, "chemin") == 0) {
+			path_redComponent = itdInstructions[i].r;
+			path_greenComponent = itdInstructions[i].g;
+			path_blueComponent = itdInstructions[i].b;
 		}
 	}
 
-	if(in == 1 && out == 1) {
-		return EXIT_SUCCESS; //only if both are true
+			/*
+			printf("path values : %d %d %d\n", path_redComponent, path_greenComponent, path_blueComponent);
+			*/
+
+
+	//Check if the nodes have the same spot
+	if(node1.x == node2.x && node1.y == node2.y) {
+		fprintf(stderr, "Error: both nodes have the same coords\n");
+		exit(EXIT_FAILURE);
+	}
+
+	//If path is vertical
+	if(node1.x == node2.x) {
+		Node min_node;
+		int offset = abs(node1.y - node2.y);
+
+		min_node = node1; //min_node is firstly equal to node1
+		//If the 'y' value of node2 is inferior to the 'y' value of min_node
+		if(node2.y < min_node.y) {
+			min_node = node2;
+		}
+
+		//Between 1 and offset because we don't want to check the color of the start node and end node (not a path color)
+		for(int i = 1; i < offset; i++) {
+			current_pos = (min_node.y * imgPPM->w + min_node.x) + i*imgPPM->w;
+			red_value = imgPPM->pixel[current_pos].r;
+			green_value = imgPPM->pixel[current_pos].g;
+			blue_value = imgPPM->pixel[current_pos].b;
+
+			if(red_value != path_redComponent || green_value != path_greenComponent || blue_value != path_blueComponent) {
+				fprintf(stderr, "Error: there's no vertical path between those 2 nodes\n");
+				exit(EXIT_FAILURE);
+			}
+			else {
+				printf("There is a vertical path between those 2 nodes.\n");
+				break;
+			}
+		}
+	}
+
+	//If path is horizontal
+	if(node1.y == node2.y) {
+		Node min_node;
+		int offset = abs(node1.x - node2.x);
+
+		min_node = node1; //min_node is firstly equal to node1
+		//If the 'x' value of node2 is inferior to the 'x' value of min_node
+		if(node2.x < min_node.x) {
+			min_node = node2;
+		}
+
+		for(int i = 1; i < offset; i++) {
+			current_pos = (min_node.y * imgPPM->w + min_node.x) + i;
+			red_value = imgPPM->pixel[current_pos].r;
+			green_value = imgPPM->pixel[current_pos].g;
+			blue_value = imgPPM->pixel[current_pos].b;
+
+			if(red_value != path_redComponent || green_value != path_greenComponent || blue_value != path_blueComponent) {
+				fprintf(stderr, "Error: there's no horizontal path between those 2 nodes\n");
+				exit(EXIT_FAILURE);
+			}
+			else {
+				printf("There is a horizontal path between those 2 nodes.\n");
+				break;
+			}
+		}
+	}
+
+	//If the nodes don't have one same coord
+	if(node1.x != node2.x && node1.y != node2.y) {
+		fprintf(stderr, "The nodes are not on the same horizontal/vertical line\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+
+int checkAllPathsAroundANode(Node root, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
+	Node* current_child;
+	Link* tmp_link = NULL;
+
+	if(root.link->node) {
+		current_child = root.link->node;
+		tmp_link = root.link;
+		checkPathBetween2Nodes(root, *current_child, imgPPM, itdInstructions);
+
+		while(tmp_link->next) {
+			current_child = tmp_link->next->node;
+			checkPathBetween2Nodes(root, *current_child, imgPPM, itdInstructions);
+
+			tmp_link = tmp_link->next;
+		}
+
+		return EXIT_SUCCESS;
 	}
 	else {
-		fprintf(stderr, "Error : there's no IN and OUT node...\n");
+		fprintf(stderr, "Error : no path around the node\n");
 		exit(EXIT_FAILURE);
 	}
 }

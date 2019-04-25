@@ -39,3 +39,25 @@ void printNodeInfo(Node node) {
 	}
 	printf("\n");
 }
+
+
+int doInAndOutExist(Node nodesArray[], int* nbOfNodes) {
+	int in = 0, out = 0; //false at the beginning
+
+	for(int i = 0; i < *nbOfNodes; i++) {
+		if(nodesArray[i].type == 1) {
+			in = 1; //become true
+		}
+		if(nodesArray[i].type == 2) {
+			out = 1; //become true
+		}
+	}
+
+	if(in == 1 && out == 1) {
+		return EXIT_SUCCESS; //only if both are true
+	}
+	else {
+		fprintf(stderr, "Error : there's no IN and OUT node...\n");
+		exit(EXIT_FAILURE);
+	}
+}

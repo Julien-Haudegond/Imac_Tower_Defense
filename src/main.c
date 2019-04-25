@@ -20,6 +20,8 @@ int main(int argc, char** argv)
 
     readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
+    /*
+
     //Printf the five instructions' values
 	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
 		printf("%s : %d %d %d\n", itdInstructions[i].name, itdInstructions[i].r, itdInstructions[i].g, itdInstructions[i].b);
@@ -30,6 +32,8 @@ int main(int argc, char** argv)
     for(int i = 0; i < nbOfNodes; i++) {
     	printNodeInfo(nodesArray[i]);
     }
+
+    */
 
     //Faut free les linkkkksss et l'image
     for(int i = 0; i < nbOfNodes; i++) {

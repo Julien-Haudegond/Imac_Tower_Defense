@@ -25,6 +25,7 @@ void freeAllLinks(Link* link) {
 	}
 }
 
+
 void printNodeLinks(Link* link) {
 	if(!link) {
 		return;
