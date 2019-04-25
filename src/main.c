@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	Node nodesArray[MAX_NODES] = {0};
 	int nbOfNodes;
 
-    readITD("images/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
+    readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
     //Printf the five instructions' values
 	for(int i = 0; i < NUMBER_INSTRUCT; i++) {

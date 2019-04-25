@@ -165,10 +165,109 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 		nodesArray[i] = createNode(values[i][0], values[i][1], values[i][2], values[i][3]);
 	}
 
+	//Check if the nodes descriptions are valid
+	checkNodesDescriptions(nodesArray, nbOfNodes, imgPPM, itdInstructions);
+
+	//Check if there is at least one IN and one OUT node
+	doInAndOutExist(nodesArray, nbOfNodes);
+
 	//Link nodes
 	for(int i = 0; i < *nbOfNodes; i++) {
 		for(int j = 4; j < nbIntegers[i]; j++) {
 			linkNode(&nodesArray[i], &nodesArray[values[i][j]]);
 		}
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
+
+	/***** VARIABLES *****/
+
+	//For the coordinates check
+	int max_x = imgPPM->w;
+	int max_y = imgPPM->h;
+
+	//For the type check
+	int itd_x, itd_y, itd_type;
+	int redSubpix, greenSubpix, blueSubpix;
+	int itd_redComponent, itd_greenComponent, itd_blueComponent;
+
+
+	/***** CODE *****/
+	
+	//Check if the types are possible (1, 2, 3 or 4)
+	for(int i = 0; i < *nbOfNodes; i++) {
+		if(nodesArray[i].type != 1 && nodesArray[i].type != 2 && nodesArray[i].type != 3 && nodesArray[i].type != 4) {
+			fprintf(stderr, "Error : incorrect nodes' types\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	//Check if the coords are valid
+	for(int i = 0; i < *nbOfNodes; i++) {
+		if(nodesArray[i].x < 0 || nodesArray[i].x > max_x || nodesArray[i].y < 0 || nodesArray[i].y > max_y) {
+			fprintf(stderr, "Error : incorrect nodes' coordinates\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	//Check the nodes' types in function of the color pixel in the PPM
+	//Type 1 should be a "in"
+	//Type 2 should be a "out"
+	//Type 3 and 4 should be a "noeud"
+	for(int i = 0; i < *nbOfNodes; i++) {
+		//Get the coords and the the type of the current node
+		itd_x = nodesArray[i].x;
+		itd_y = nodesArray[i].y;
+		itd_type = nodesArray[i].type;
+
+		//Get the colors of the subpixels (in the PPM) which correspond to the nodes coords
+		redSubpix = (int) imgPPM->pixel[itd_y*(imgPPM->w) + itd_x].r;
+		greenSubpix = (int) imgPPM->pixel[itd_y*(imgPPM->w) + itd_x].g;
+		blueSubpix = (int) imgPPM->pixel[itd_y*(imgPPM->w) + itd_x].b;
+
+		//Get the color of each ITD instructions and compare it to the subpixels colors to get the name of the current instruction
+		for(int j = 0; j < NUMBER_INSTRUCT; j++) {
+			itd_redComponent = itdInstructions[j].r;
+			itd_greenComponent = itdInstructions[j].g;
+			itd_blueComponent = itdInstructions[j].b;
+
+			if(redSubpix == itd_redComponent && greenSubpix == itd_greenComponent && blueSubpix == itd_blueComponent) {
+				if(strcmp(itdInstructions[j].name, "in") == 0 && itd_type == 1) break;
+				else if(strcmp(itdInstructions[j].name, "out") == 0 && itd_type == 2) break;
+				else if(strcmp(itdInstructions[j].name, "noeud") == 0 && itd_type == 3) break;
+				else if(strcmp(itdInstructions[j].name, "noeud") == 0 && itd_type == 4) break;
+				else {
+					fprintf(stderr, "Error : ITD infos don't correspond to PPM pixels\n");
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+	}
+
+	return EXIT_SUCCESS;
+}
+
+
+int doInAndOutExist(Node nodesArray[], int* nbOfNodes) {
+	int in = 0, out = 0; //false at the beginning
+
+	for(int i = 0; i < *nbOfNodes; i++) {
+		if(nodesArray[i].type == 1) {
+			in = 1; //become true
+		}
+		if(nodesArray[i].type == 2) {
+			out = 1; //become true
+		}
+	}
+
+	if(in == 1 && out == 1) {
+		return EXIT_SUCCESS; //only if both are true
+	}
+	else {
+		fprintf(stderr, "Error : there's no IN and OUT node...\n");
+		exit(EXIT_FAILURE);
 	}
 }

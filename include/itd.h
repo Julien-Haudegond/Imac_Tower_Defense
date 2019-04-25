@@ -12,5 +12,7 @@ typedef struct ItdColorInstruction {
 } ItdColorInstruction;
 
 int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructions[], Node nodesArray[], int* nbOfNodes);
+int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, ItdColorInstruction itdInstructions[]);
+int doInAndOutExist(Node nodesArray[], int* nbOfNodes);
 
 #endif

@@ -69,7 +69,5 @@ $(TOWER_O) : src/tower.c include/tower.h include/wave.h
 	@echo "towers : done !"
 
 clean :
-	rm -rf *~
-	rm -rf $(SRCDIR)*/*~
-	rm -rf $(OBJDIR)
+	rm -rf $(OBJDIR)*.o
 	rm -rf $(BINDIR)*
