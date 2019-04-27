@@ -19,13 +19,14 @@ int main(int argc, char** argv)
 	int nbOfNodes;
 
     readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
-
-    /*
+    
+    
 
     //Printf the five instructions' values
 	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
 		printf("%s : %d %d %d\n", itdInstructions[i].name, itdInstructions[i].r, itdInstructions[i].g, itdInstructions[i].b);
 	}
+    
 
     printf("Nombre de noeuds : %d\n", nbOfNodes);
 
@@ -33,7 +34,7 @@ int main(int argc, char** argv)
     	printNodeInfo(nodesArray[i]);
     }
 
-    */
+    
 
     //checkPathBetween2Nodes(nodesArray[1], nodesArray[2], &imgPPM, itdInstructions);
 

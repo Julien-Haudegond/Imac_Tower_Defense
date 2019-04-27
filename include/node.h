@@ -14,6 +14,7 @@ typedef struct Node {
 	int type;
 	int x;
 	int y;
+	int marqued;
 	struct Link* link;
 } Node;
 
@@ -22,5 +23,8 @@ Node createNode(int value, int type, int x, int y);
 void linkNode(Node* root, Node* child);
 void printNodeInfo(Node node);
 int doInAndOutExist(Node nodesArray[], int* nbOfNodes);
+int isTherePathFromINtoOUT(Node nodesArray[], int* nbOfNodes);
+int depthFirstSearchFromRoot(Node nodesArray[], int* nbOfNodes, Node* root);
+int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 
 #endif

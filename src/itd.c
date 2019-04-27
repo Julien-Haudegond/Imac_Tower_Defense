@@ -8,8 +8,7 @@
 
 
 int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructions[], Node nodesArray[], int* nbOfNodes) {
-
-	/***** VARIABLES *****/
+	///// VARIABLES
 
 	//ITD Code (first line)
 	int version; //Version of ITD Code
@@ -39,7 +38,7 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 
 
 
-	/***** CODE *****/
+	///// CODE
 
 	//Open a file
 	FILE* F = fopen(fichier,"r");
@@ -174,7 +173,7 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 	//Check if the nodes descriptions are valid
 	checkNodesDescriptions(nodesArray, nbOfNodes, imgPPM, itdInstructions);
 
-	//Check if there is at least one IN and one OUT node
+	//Check if there is at least one IN and only one OUT node
 	doInAndOutExist(nodesArray, nbOfNodes);
 
 	//Link nodes
@@ -184,7 +183,6 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 		}
 	}
 
-
 	//Check if there is a path between every neighboor nodes
 	for(int i = 0; i < *nbOfNodes; i++) {
 		printf("Node n° %d : \n", i);
@@ -192,13 +190,18 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 		printf("\n");
 	}
 
+	//Check if there is a path from the INs to the OUT
+	isTherePathFromINtoOUT(nodesArray, nbOfNodes);
+
+	//Remove all the marks
+	deleteAllMarksOnNodes(nodesArray, nbOfNodes);
+
 
 	return EXIT_SUCCESS;
 }
 
 int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
-
-	/***** VARIABLES *****/
+	///// VARIABLES
 
 	//For the coordinates check
 	int max_x = imgPPM->w;
@@ -210,7 +213,7 @@ int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, Itd
 	int itd_redComponent, itd_greenComponent, itd_blueComponent;
 
 
-	/***** CODE *****/
+	///// CODE 
 	
 	//Check if the types are possible (1, 2, 3 or 4)
 	for(int i = 0; i < *nbOfNodes; i++) {
@@ -268,8 +271,7 @@ int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, Itd
 
 //Path are only vertical or horizontal. They are never diagonal. VERSION 1
 int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
-
-	// VARIABLES
+	///// VARIABLES
 
 	int path_redComponent = -1, path_greenComponent = -1, path_blueComponent = -1; //color values of the path (-1 at the beginning to be sure it's gonna work after)
 
@@ -280,7 +282,7 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 	int offset;
 
 
-	// CODE
+	///// CODE
 
 	//Attribute the colors to the path variables from the ITD instructions
 	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
@@ -367,11 +369,14 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 }
 
 
-
-
 int checkAllPathsAroundANode(Node root, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
+	///// VARIABLES 
+
 	Node* current_child;
 	Link* tmp_link = NULL;
+
+
+	///// CODE
 
 	if(root.link->node) {
 		current_child = root.link->node;
