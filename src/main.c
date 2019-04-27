@@ -35,6 +35,8 @@ int main(int argc, char** argv)
 
     */
 
+    //checkPathBetween2Nodes(nodesArray[1], nodesArray[2], &imgPPM, itdInstructions);
+
     //Faut free les linkkkksss et l'image
     for(int i = 0; i < nbOfNodes; i++) {
     	freeAllLinks(nodesArray[i].link);

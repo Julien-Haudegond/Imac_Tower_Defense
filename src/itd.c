@@ -184,6 +184,7 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 		}
 	}
 
+
 	//Check if there is a path between every neighboor nodes
 	for(int i = 0; i < *nbOfNodes; i++) {
 		printf("Node n° %d : \n", i);
@@ -268,15 +269,18 @@ int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, Itd
 //Path are only vertical or horizontal. They are never diagonal. VERSION 1
 int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
 
-	/***** VARIABLES *****/
+	// VARIABLES
 
 	int path_redComponent = -1, path_greenComponent = -1, path_blueComponent = -1; //color values of the path (-1 at the beginning to be sure it's gonna work after)
 
 	int current_pos; //current pixel during the traveling 
 	int red_value, green_value, blue_value; //values of the current pixel during the traveling
 
+	Node min_node;
+	int offset;
 
-	/***** CODE *****/
+
+	// CODE
 
 	//Attribute the colors to the path variables from the ITD instructions
 	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
@@ -300,8 +304,7 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 
 	//If path is vertical
 	if(node1.x == node2.x) {
-		Node min_node;
-		int offset = abs(node1.y - node2.y);
+		offset = abs(node1.y - node2.y);
 
 		min_node = node1; //min_node is firstly equal to node1
 		//If the 'y' value of node2 is inferior to the 'y' value of min_node
@@ -329,8 +332,7 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 
 	//If path is horizontal
 	if(node1.y == node2.y) {
-		Node min_node;
-		int offset = abs(node1.x - node2.x);
+		offset = abs(node1.x - node2.x);
 
 		min_node = node1; //min_node is firstly equal to node1
 		//If the 'x' value of node2 is inferior to the 'x' value of min_node
@@ -363,6 +365,8 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 
 	return EXIT_SUCCESS;
 }
+
+
 
 
 int checkAllPathsAroundANode(Node root, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
