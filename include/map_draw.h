@@ -3,12 +3,16 @@
 
 #include "../include/image.h"
 #include "../include/itd.h"
+#include "../include/node.h"
+#include "../include/const.h"
 
-void drawSquare(int filled);
+void drawGridSquare(int filled);
+void drawWindowSquare(int filled);
 
 
 //DEBUG DRAW
 GLuint debugDrawIDList(Image* imgPPM);
+GLuint debugDrawNodesIDList(Node nodesArray[], int* nbOfNodes);
 void debug_constructibleArea();
 void debug_pathArea();
 void debug_nodeArea();

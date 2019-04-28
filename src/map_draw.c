@@ -5,11 +5,9 @@
 #include <GL/glu.h>
 
 #include "../include/map_draw.h"
-#include "../include/image.h"
-#include "../include/itd.h"
 
-
-void drawSquare(int filled) 
+//INUTILE SI LA FONCTION RESIZE EST EN MODE WINDOW (ET NON GRID)
+void drawGridSquare(int filled) 
 {
     if(filled) 
     {
@@ -30,6 +28,27 @@ void drawSquare(int filled)
     glEnd();
 }
 
+void drawWindowSquare(int filled) {
+
+    if(filled) 
+    {
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(0.0, 0.0);
+    }
+    else 
+    {
+        glBegin(GL_LINE_STRIP);
+    }
+
+    glVertex2f( GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
+    glVertex2f( GL_SPRITE_SIZE / 2. , GL_SPRITE_SIZE / 2.);
+    glVertex2f( - GL_SPRITE_SIZE / 2. , GL_SPRITE_SIZE / 2.);
+    glVertex2f( - GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
+    glVertex2f( GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
+
+    glEnd();
+}
+
 
 ///// DEBUG DRAW FUNCTIONS
 
@@ -37,6 +56,7 @@ GLuint debugDrawIDList(Image* imgPPM){
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
+    float offset = GL_SPRITE_SIZE / 2.;
     
 
     ///// CODE
@@ -46,7 +66,7 @@ GLuint debugDrawIDList(Image* imgPPM){
         for (int i = 0; i < I.h; i++) {
             for (int j = 0; j < I.w; j++) {
                 glPushMatrix();
-                    glTranslatef(0.5 + j, 0.5 + i, 0.);
+                    glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
                         if (I.pixel[j+i*I.w].r == 255 && I.pixel[j+i*I.w].g == 200 && I.pixel[j+i*I.w].b == 80) debug_constructibleArea();
                         else if (I.pixel[j+i*I.w].r == 255 && I.pixel[j+i*I.w].g == 255 && I.pixel[j+i*I.w].b == 255) debug_pathArea();
                         else if (I.pixel[j+i*I.w].r == 0 && I.pixel[j+i*I.w].g == 0 && I.pixel[j+i*I.w].b == 0) debug_nodeArea();
@@ -61,29 +81,47 @@ GLuint debugDrawIDList(Image* imgPPM){
     return id;
 }
 
+GLuint debugDrawNodesIDList(Node nodesArray[], int* nbOfNodes) {
+    GLuint id = glGenLists(1);
+
+    glNewList(id, GL_COMPILE);
+
+    for(int i = 0; i < *nbOfNodes; i++) {
+        glPushMatrix();
+            glTranslatef(nodesArray[i].win_x, nodesArray[i].win_y, 0.);
+            drawWindowSquare(1);
+        glPopMatrix();
+    }
+            
+    glEndList();
+
+    return id;
+}
+
+
 void debug_constructibleArea() {
 	glColor3ub(255, 200, 80);
-	drawSquare(1);
+	drawWindowSquare(1);
 }
 
 void debug_pathArea() {
 	glColor3ub(255, 255, 255);
-	drawSquare(1);
+	drawWindowSquare(1);
 }
 
 void debug_nodeArea() {
 	glColor3ub(0, 0, 0);
-	drawSquare(1);
+	drawWindowSquare(1);
 }
 
 void debug_startArea() {
 	glColor3ub(0, 200, 0);
-	drawSquare(1);
+	drawWindowSquare(1);
 }
 
 void debug_endArea() {
 	glColor3ub(200, 0, 0);
-	drawSquare(1);
+	drawWindowSquare(1);
 }
 
 
@@ -93,17 +131,19 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
+    float offset = GL_SPRITE_SIZE / 2.;
 
     ItdColorInstruction construct, path, node, in, out;
+  
 
+    ///// CODE
+
+    //Initialize the ITD colors (avoid future errors)
     construct.r = construct.g = construct.b = -1;
     path.r = path.g = path.b = -1;
     node.r = node.g = node.b = -1;
     in.r = in.g = in.b = -1;
     out.r = out.g = out.b = -1;
-    
-
-    ///// CODE
 
     //Get the color of each ITD instructions
     for(int j = 0; j < NUMBER_INSTRUCT; j++) {
@@ -140,7 +180,7 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[]) {
         for (int i = 0; i < I.h; i++) {
             for (int j = 0; j < I.w; j++) {
                 glPushMatrix();
-                    glTranslatef(0.5 + j, 0.5 + i, 0.);
+                    glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
                         if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) constructibleArea(); //Construct
                         else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) pathArea(); //Path
                         else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) pathArea(); //Node
@@ -159,15 +199,15 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[]) {
 
 void constructibleArea() {
     glColor3ub(255, 200, 80);
-    drawSquare(1);
+    drawWindowSquare(1);
 }
 
 void pathArea() {
     glColor3ub(255, 255, 255);
-    drawSquare(1);
+    drawWindowSquare(1);
 }
 
 void nonConstructibleArea() {
     glColor3ub(0, 200, 220);
-    drawSquare(1);
+    drawWindowSquare(1);
 }

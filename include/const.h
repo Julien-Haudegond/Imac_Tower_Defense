@@ -7,7 +7,7 @@ static const float GL_VIEW_WIDTH = 30.;
 static const float GL_VIEW_HEIGHT = 20.;
 
 /* Taille d'un bloc */
-static const float GL_SPRITE = 41.;
+static const float GL_SPRITE_SIZE = 41.;
 
 
 /* Dimensions initiales et titre de la fenetre */

@@ -12,8 +12,8 @@ typedef enum {
 typedef struct Node {
 	int value;
 	int type;
-	int x;
-	int y;
+	int x, y; //Grid coords
+	int win_x, win_y; //Window coords
 	int marqued;
 	struct Link* link;
 } Node;

@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <SDL/SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 #include "../include/node.h"
+#include "../include/window.h"
 
 Node createNode(int value, int type, int x, int y) {
 	Node node;
@@ -10,6 +14,9 @@ Node createNode(int value, int type, int x, int y) {
 	node.type = type;
 	node.x = x;
 	node.y = y;
+
+	node.win_x = gridCoordToWindowCoord(node.x);
+	node.win_y = gridCoordToWindowCoord(node.y);
 
 	node.marqued = 0; // 0=false / 1=true
 
@@ -34,7 +41,7 @@ void linkNode(Node* root, Node* child) {
 
 //Show all the informations about a node
 void printNodeInfo(Node node) {
-	printf("Noeud %d, type %d, position(%d,%d). ", node.value, node.type, node.x, node.y);
+	printf("Noeud %d, type %d, position grille(%d,%d)/position fenetre(%d, %d). ", node.value, node.type, node.x, node.y, node.win_x, node.win_y);
 	if(node.marqued == 1) {
 		printf("Le noeud est marqué. ");
 	}

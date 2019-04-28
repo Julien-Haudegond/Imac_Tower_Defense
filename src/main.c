@@ -31,6 +31,10 @@ int main(int argc, char** argv)
 
     readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
+    for(int i = 0; i < nbOfNodes; i++) {
+        printNodeInfo(nodesArray[i]);
+    }
+
 
     /* Initialisation de la SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
@@ -51,8 +55,9 @@ int main(int argc, char** argv)
     /* Variables globales */
 
     /* Variables globales de listes d'affichage */
-        //GLuint debug_draw = debugDrawIDList(&imgPPM);
-    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions);
+    GLuint debug_draw = debugDrawIDList(&imgPPM);
+        // GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions);
+        //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
     int loop = 1;
