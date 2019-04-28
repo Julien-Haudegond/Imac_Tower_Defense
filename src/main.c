@@ -50,11 +50,9 @@ int main(int argc, char** argv)
   
     /* Variables globales */
 
-    /* Variables globales de listes d'affichage
-    Les infos sont stockées dès le début sur le GPU : ça évite de tout recalculer à chaque tour de boucle.
-    On fait seulement un appel à la liste de points.
-    Inconvénient : la forme est fixe, on ne peut pas la modifier au cours du temps */
-    GLuint idMap = createMapIDList(&imgPPM);
+    /* Variables globales de listes d'affichage */
+        //GLuint debug_draw = debugDrawIDList(&imgPPM);
+    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions);
 
     /* Boucle principale */
     int loop = 1;
@@ -69,8 +67,7 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        //drawSquare(1);
-        glCallList(idMap);
+        glCallList(debug_draw);
 
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
