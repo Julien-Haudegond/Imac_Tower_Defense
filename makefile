@@ -21,17 +21,20 @@ MONSTER_O = obj/monster.o
 WAVE_O = obj/wave.o
 TOWER_O = obj/tower.o
 
-OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O)
+MAP_DRAW_O = obj/map_draw.o
+WINDOW_O = obj/window.o
+
+OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O)
 
 PROG = bin/program.out
 
 # Regles compilation
 
 all : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(PROG)
+	$(CC) $(CFLAGS) $(OBJ) -o $(PROG) $(LDFLAGS)
 	@echo "*** to execute, type : ./bin/program.out***"
 
-$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h
+$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h 
 	@echo "compile program"
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "done!"
@@ -67,6 +70,14 @@ $(WAVE_O) : src/wave.c include/monster.h
 $(TOWER_O) : src/tower.c include/tower.h include/wave.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "towers : done !"
+
+$(MAP_DRAW_O) : src/map_draw.c include/map_draw.h include/image.h
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "map_draw : done !"
+
+$(WINDOW_O) : src/window.c include/window.h include/const.h
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "window : done !"
 
 clean :
 	rm -rf $(OBJDIR)*.o
