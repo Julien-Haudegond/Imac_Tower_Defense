@@ -5,6 +5,7 @@
 #include <GL/glu.h>
 
 #include "../include/map_draw.h"
+#include "../include/const.h"
 
 //INUTILE SI LA FONCTION RESIZE EST EN MODE WINDOW (ET NON GRID)
 void drawGridSquare(int filled) 
@@ -97,7 +98,6 @@ GLuint debugDrawNodesIDList(Node nodesArray[], int* nbOfNodes) {
 
     return id;
 }
-
 
 void debug_constructibleArea() {
 	glColor3ub(255, 200, 80);

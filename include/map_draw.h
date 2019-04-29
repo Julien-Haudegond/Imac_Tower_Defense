@@ -4,7 +4,7 @@
 #include "../include/image.h"
 #include "../include/itd.h"
 #include "../include/node.h"
-#include "../include/const.h"
+
 
 void drawGridSquare(int filled);
 void drawWindowSquare(int filled);

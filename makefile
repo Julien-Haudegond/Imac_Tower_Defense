@@ -49,7 +49,7 @@ $(ITD_O) : src/itd.c include/itd.h include/node.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "done!"
 
-$(NODE_O) : src/node.c include/node.h include/window.h
+$(NODE_O) : src/node.c include/node.h include/const.h include/window.h
 	@echo "compile node"
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "done!"
@@ -71,7 +71,7 @@ $(TOWER_O) : src/tower.c include/tower.h include/wave.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "towers : done !"
 
-$(MAP_DRAW_O) : src/map_draw.c include/map_draw.h
+$(MAP_DRAW_O) : src/map_draw.c include/map_draw.h include/const.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "map_draw : done !"
 
