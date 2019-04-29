@@ -58,14 +58,14 @@ void printWave(Wave* wave){
 		// a optimiser
 		while(wave->nextMonster != NULL){
 			printf("Monster %d \n", counter);
-			printMonster(wave->monster);
+			printMonster(&(wave->monster));
 			wave = wave->nextMonster;
 			counter++;
 		}
 		//printing last monster
 		if(wave->nextMonster == NULL){
 			printf("Monster %d \n", counter);
-			printMonster(wave->monster);
+			printMonster(&(wave->monster));
 			wave = wave->nextMonster;
 		}
 	}

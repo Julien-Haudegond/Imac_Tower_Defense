@@ -22,6 +22,6 @@ typedef struct Monster{
 
 Monster* createMonster(Monster* m, float health, int resist, float speed, int playerReward);
 Monster* setPosition(Monster* monster, int x, int y);
-void printMonster(Monster m);
+void printMonster(Monster *m);
 
 #endif

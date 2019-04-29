@@ -247,17 +247,12 @@ int main(int argc, char** argv)
 #ifdef READTHIS3
 
 void TestMonsters2(){
-    Monster myMonster;
-    Monster *ptrMyMonster = &myMonster;
-    ptrMyMonster = createMonster(ptrMyMonster, 10.0, 0, 3.0, 18);
-
-    Monster myMonster2;
-    Monster *ptrMyMonster2 = &myMonster2;
-    ptrMyMonster2 = createMonster(ptrMyMonster2, 2.0, 0, 4.0, 22);
-
-    Wave* wave = addMonster(wave, myMonster);
-    wave = addMonster(wave, myMonster2);
-
+    Monster *m = createMonster(m, 10.0, 0, 3.0, 18);
+    Monster *m2 = createMonster(m2, 2.0, 0, 4.0, 22);
+    
+    Wave* wave = addMonster(wave, *m);
+    wave = addMonster(wave, *m2);
+    
     wave->nextMonster->monster.health = 0;
 
     printWave(wave);
@@ -268,14 +263,13 @@ void TestMonsters2(){
 }
 
 void TestTower(){
-
     Tower* t = createTower(t, WATER);
-    printTower(t);
+    //printTower(t);
     Tower* t1 = createTower(t, ROCKET);
-    printTower(t1);
+    //printTower(t1);
     TowerList* tl = addTower(tl, *t);
     tl = addTower(tl, *t1);
-    //printTowerList(tl);
+    printTowerList(tl);
     free(tl);
 }
 //Main pour tests
