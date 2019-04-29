@@ -15,19 +15,19 @@ Tower* createTower(Tower* tower, TowerType type){
 	switch(type){
 		//Lasers : lots of dmg, fires slowly, average range
 		case LASER :
-			tower = setTowerStats(tower, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_RANGE);
+			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_RANGE);
 			break;
 		//Rockets : average dmg, fires fast, low range
 		case ROCKET : 
-			tower = setTowerStats(tower, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_RANGE*0.5));
+			tower = setTowerStats(tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_RANGE*0.5));
 			break;
 		//Electric: low dmg, fires slowly, low range
 		case ELECTRIC : 
-			tower = setTowerStats(tower, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_RANGE*0.7));
+			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_RANGE*0.7));
 			break;
 		//Water : low dmg, fires fast, high range
 		case WATER : 
-			tower = setTowerStats(tower, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_RANGE*2));
+			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_RANGE*2));
 			break;
 		default : 
 			printf("The type of tower you specified does not exist");
@@ -40,7 +40,8 @@ Tower* createTower(Tower* tower, TowerType type){
 	return tower;
 };
 
-Tower* setTowerStats(Tower* tower, int dmg, float firespeed, int range){
+Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range){
+	tower -> type = type;
 	tower -> dmg = dmg;
 	tower -> firespeed = firespeed;
 	tower -> range = range;

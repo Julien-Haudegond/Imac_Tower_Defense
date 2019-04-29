@@ -10,6 +10,7 @@
 #include "../include/monster.h"
 #include "../include/wave.h"
 #include "../include/tower.h"
+#include "../include/tower_list.h"
 
 #include "../include/itd.h"
 #include "../include/node.h"
@@ -18,10 +19,9 @@
 #include "../include/map_draw.h"
 #include "../include/window.h"
 
-//#define DONTREADTHISCODE 0
+#define READTHIS3
 
-
-
+#ifdef READTHIS1 
 int main(int argc, char** argv) 
 {
     Image imgPPM;
@@ -88,14 +88,6 @@ int main(int argc, char** argv)
                 loop = 0;
                 break;
             }
-
-            /* L'utilisateur ferme la fenetre : */
-            if(e.type == SDL_QUIT) 
-            {
-                loop = 0;
-                break;
-            }
-        
             if( e.type == SDL_KEYDOWN 
                 && (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE))
             {
@@ -142,9 +134,11 @@ int main(int argc, char** argv)
     return EXIT_SUCCESS;
 }
 
+#endif
 
 
-#ifdef DONTREADTHISCODE
+
+#ifdef READTHIS2
 
 int main(int argc, char** argv) 
 {
@@ -169,8 +163,6 @@ int main(int argc, char** argv)
     	printNodeInfo(nodesArray[i]);
     }
 
-    
-
     //checkPathBetween2Nodes(nodesArray[1], nodesArray[2], &imgPPM, itdInstructions);
 
     //Faut free les linkkkksss et l'image
@@ -179,13 +171,80 @@ int main(int argc, char** argv)
     }
     freeImage(&imgPPM);
 
-   return EXIT_SUCCESS;
+    /***************
+    *   INITIALISATION SDL
+    ***************/
+
+    if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
+    {
+        fprintf(
+            stderr, 
+            "Impossible d'initialiser la SDL. Fin du programme.\n");
+        return EXIT_FAILURE;
+    }
+  
+    /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
+    SDL_Surface* surface;
+    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
+  
+    /* Initialisation du titre de la fenetre */
+    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
+    /* Boucle principale */
+    int loop = 1;
+
+    while(loop){
+        glClear(GL_COLOR_BUFFER_BIT);
+        /*Refreshing*/
+        SDL_GL_SwapBuffers();
+        SDL_Event e;
+        /* Recuperation du temps au debut de la boucle */
+        Uint32 startTime = SDL_GetTicks();
+        /* Boucle traitant les evenements */
+        while(SDL_PollEvent(&e)) 
+        {
+            /* L'utilisateur ferme la fenetre : */
+            if(e.type == SDL_QUIT) 
+            {
+                loop = 0;
+                break;
+            }
+        
+            if( e.type == SDL_KEYDOWN 
+                && (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE))
+            {
+                loop = 0; 
+                break;
+            }
+        
+            /* Quelques exemples de traitement d'evenements : */
+            switch(e.type) 
+            {
+                /* Redimensionnement fenetre */
+                case SDL_VIDEORESIZE:
+                    reshape(&surface, e.resize.w, e.resize.h);
+                    break; 
+            
+                /* Clic souris */
+                case SDL_MOUSEBUTTONUP:
+                    printf("clic en (%d, %d)\n", e.button.x, e.button.y);
+                    break;
+                
+                /* Touche clavier */
+                case SDL_KEYDOWN:
+                    printf("touche pressee (code = %d)\n", e.key.keysym.sym);        
+                    break;                
+                default:
+                    break;
+            }
+        }
+    }
+    return EXIT_SUCCESS;
 }
 
 
 #endif
 
-#ifdef DONTREADTHISCODE
+#ifdef READTHIS3
 
 void TestMonsters2(){
     Monster myMonster;
@@ -209,12 +268,19 @@ void TestMonsters2(){
 }
 
 void TestTower(){
+
     Tower* t = createTower(t, WATER);
     printTower(t);
+    Tower* t1 = createTower(t, ROCKET);
+    printTower(t1);
+    TowerList* tl = addTower(tl, *t);
+    tl = addTower(tl, *t1);
+    //printTowerList(tl);
+    free(tl);
 }
 //Main pour tests
 int main(){
-    TestMonsters2();
+    TestTower();
     return 0;
 }
 

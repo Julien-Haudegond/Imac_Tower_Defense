@@ -15,15 +15,17 @@ typedef enum{
 * Will later be compared to monsters resist
 */
 typedef struct Tower{
+	int x,y;
 	int type;
 	int dmg;
 	float firespeed;
 	int range;
 }Tower;
 
+
 //void fire(Tower t);
 Tower* createTower(Tower* tower, TowerType type);
-Tower* setTowerStats(Tower* tower, int dmg, float firespeed, int range);
+Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range);
 void printTower();
 
 #endif
