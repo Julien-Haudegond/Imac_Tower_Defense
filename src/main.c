@@ -18,10 +18,12 @@
 
 #include "../include/map_draw.h"
 #include "../include/window.h"
+#include "../include/sprite.h"
 
-#define READTHIS3
+#define READTHIS1
 
-#ifdef READTHIS1 
+#ifdef READTHIS1
+
 int main(int argc, char** argv) 
 {
     Image imgPPM;
@@ -51,12 +53,19 @@ int main(int argc, char** argv)
 
     /* Initialisation du titre de la fenetre */
     SDL_WM_SetCaption(WINDOW_TITLE, NULL);
+
+    /* Chargement des images et initialisations des textures */
+    SDL_Surface* construct_image = NULL;
+    GLuint construct_texture;
+
+    loadSpriteArea(&construct_image, "construct_area.png");
+    initSpriteTexture(&construct_image, &construct_texture);
   
     /* Variables globales */
 
     /* Variables globales de listes d'affichage */
-    GLuint debug_draw = debugDrawIDList(&imgPPM);
-        // GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions);
+        //GLuint debug_draw = debugDrawIDList(&imgPPM);
+    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, &construct_texture);
         //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
@@ -121,6 +130,12 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+
+    /* Free les images */
+    SDL_FreeSurface(construct_image);
+
+    /* Free l'espace de la texture */
+    glDeleteTextures(1, &construct_texture);
 
     /* Liberation des ressources associees a la SDL */ 
     SDL_Quit();
