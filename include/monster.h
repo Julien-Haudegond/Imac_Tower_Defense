@@ -4,7 +4,7 @@
 //giants : health and resist ++ but slow
 //swarmlings : fast but low health / resist
 typedef enum{
-	GIANTS, SWARMLINGS
+	GIANT, SWARMLING
 }MonsterType;
 
 /*****
@@ -13,14 +13,17 @@ typedef enum{
 *****/
 
 typedef struct Monster{
+	int type;
 	float x,y;
 	float health;
 	int resist;
 	float speed;
-	int playerReward;
+	int reward;
 }Monster;
 
-Monster* createMonster(Monster* m, float health, int resist, float speed, int playerReward);
+
+Monster* createMonster(Monster* m, MonsterType type, int resist);
+Monster* setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward);
 Monster* setPosition(Monster* monster, int x, int y);
 void printMonster(Monster *m);
 

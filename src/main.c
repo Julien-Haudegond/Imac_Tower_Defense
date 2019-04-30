@@ -19,6 +19,12 @@
 #include "../include/map_draw.h"
 #include "../include/window.h"
 
+/***************
+*   define : 
+*   READTHIS 1 for PPM check & map debug
+*   READTHIS 2 for tests on monsters path
+*   READTHIS 3 for tests on monsters / towers / and lists
+****************/
 #define READTHIS3
 
 #ifdef READTHIS1 
@@ -247,8 +253,8 @@ int main(int argc, char** argv)
 #ifdef READTHIS3
 
 void TestMonsters2(){
-    Monster *m = createMonster(m, 10.0, 0, 3.0, 18);
-    Monster *m2 = createMonster(m2, 2.0, 0, 4.0, 22);
+    Monster *m = createMonster(m, GIANT, 1);
+    Monster *m2 = createMonster(m2, SWARMLING, 2);
     
     Wave* wave = addMonster(wave, *m);
     wave = addMonster(wave, *m2);
@@ -274,7 +280,7 @@ void TestTower(){
 }
 //Main pour tests
 int main(){
-    TestTower();
+    TestMonsters2();
     return 0;
 }
 
