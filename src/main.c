@@ -53,6 +53,15 @@ int main(int argc, char** argv)
             "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
+
+    Node NodeA = nodesArray[1];
+    Node* NodeB = malloc(sizeof(Node*));
+    NodeB = getFirstNextNode(NodeA);
+    printf("Next node : %d \n",NodeB->value);
+
+    Node* NodeC = malloc(sizeof(Node*));
+    NodeC = getNextNode(NodeA);
+    printf("Next node : %d \n", NodeC->value);
   
     /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
     SDL_Surface* surface;

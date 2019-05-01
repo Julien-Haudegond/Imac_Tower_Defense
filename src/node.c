@@ -261,6 +261,10 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 	return EXIT_SUCCESS;
 }
 
+Node* getFirstNextNode(Node node){
+	return node.link->node;
+}
+
 Node* getNextNode(Node node){
 	return node.link->next->node;
 }
