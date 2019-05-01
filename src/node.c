@@ -260,3 +260,12 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 
 	return EXIT_SUCCESS;
 }
+
+Node* getNextNode(Node node){
+	return node.link->next->node;
+}
+
+//Assuming the first node is the one where monsters start
+shortestPath(Node nodesArray[], Node finalNode){
+
+}

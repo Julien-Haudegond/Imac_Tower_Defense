@@ -50,6 +50,31 @@ void drawWindowSquare(int filled) {
     glEnd();
 }
 
+void drawSprite(GLuint* texture) {
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, *texture);
+
+    glBegin(GL_QUADS);
+
+        glTexCoord2f(0,0);
+        glVertex2f(- GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(1,0);
+        glVertex2f(GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(1,1);
+        glVertex2f(GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(0,1);
+        glVertex2f(- GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+}
+
 
 ///// DEBUG DRAW FUNCTIONS
 
@@ -127,7 +152,7 @@ void debug_endArea() {
 
 ///// DRAW MAP
 
-GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[]) {
+GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint* construct_text) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
@@ -181,7 +206,8 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[]) {
             for (int j = 0; j < I.w; j++) {
                 glPushMatrix();
                     glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
-                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) constructibleArea(); //Construct
+                        //if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) constructibleArea(); //Construct
+                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(construct_text); //Construct
                         else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) pathArea(); //Path
                         else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) pathArea(); //Node
                         else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) pathArea(); //In

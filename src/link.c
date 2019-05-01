@@ -35,3 +35,17 @@ void printNodeLinks(Link* link) {
 		printNodeLinks(link->next);
 	}
 }
+
+Link* getNextLink(Link* link){
+	if(!link || !link->next){
+		exit(EXIT_FAILURE);
+	}
+	return link->next;
+}
+
+int getNodeValue(Link* link){
+	return link->node->value;
+}
+
+
+

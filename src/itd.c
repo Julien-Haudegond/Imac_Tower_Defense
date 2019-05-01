@@ -36,8 +36,6 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 	int values[MAX_NODES][MAX_NODES+4] = {0}; //Temporary integers' array used to stock the read values : [1st] is the line number (node number) / [2nd] is the integer number inside the line 
 	int nbIntegers[MAX_NODES+4] = {0}; //Number of integers in the line [x]
 
-
-
 	///// CODE
 
 	//Open a file
