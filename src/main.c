@@ -97,7 +97,6 @@ int main(int argc, char** argv)
   
     /* Variables globales */
     int mouse_x = 0, mouse_y = 0;
-    int center_mouse_x = 0, center_mouse_y = 0;
 
 
     /* Variables globales de listes d'affichage */
@@ -121,7 +120,7 @@ int main(int argc, char** argv)
         glCallList(debug_draw);
 
         //available area test
-        nonAvailableArea(center_mouse_x, center_mouse_y, sprite_text);
+        constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_text);
 
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
@@ -160,8 +159,6 @@ int main(int argc, char** argv)
                 case SDL_MOUSEMOTION:
                     mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
                     mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
-                    center_mouse_x =  windowCoordToBlocCenter(mouse_x);
-                    center_mouse_y =  windowCoordToBlocCenter(mouse_y);
 
                     printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
                     break;

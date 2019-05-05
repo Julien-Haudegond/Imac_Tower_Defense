@@ -24,8 +24,11 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
 void nonConstructibleArea();
 
 
-void availableArea(int center_x, int center_y, GLuint sprite_text[]);
-void nonAvailableArea(int center_x, int center_y, GLuint sprite_text[]);
+//CHECK MAP EVOLUTION
+void availableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
+void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
 
+int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[]);
+void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
 
 #endif

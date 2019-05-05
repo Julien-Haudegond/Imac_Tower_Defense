@@ -7,6 +7,9 @@
 #include "../include/map_draw.h"
 #include "../include/const.h"
 #include "../include/sprite.h"
+#include "../include/window.h"
+#include "../include/image.h"
+//#include "../include/tower_list.h"
 
 
 void drawGridSquare(int filled) 
@@ -203,16 +206,79 @@ void nonConstructibleArea() {
     drawWindowSquare(1);
 }
 
-void availableArea(int center_x, int center_y, GLuint sprite_text[]) {
+
+
+///// CHECK MAP EVOLUTION
+
+void availableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
+    int center_x = windowCoordToBlocCenter(mouse_x);
+    int center_y = windowCoordToBlocCenter(mouse_y);
+
     glPushMatrix();
         glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
         drawSprite(&sprite_text[2]);
     glPopMatrix();
 }
 
-void nonAvailableArea(int center_x, int center_y, GLuint sprite_text[]) {
+void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
+    int center_x = windowCoordToBlocCenter(mouse_x);
+    int center_y = windowCoordToBlocCenter(mouse_y);
+
     glPushMatrix();
         glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
         drawSprite(&sprite_text[3]);
     glPopMatrix();
+}
+
+
+//Return 1 if true and 0 if false
+int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[]) {
+    ///// VARIABLES
+    int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+    ItdColorInstruction construct;
+
+    Pixel current_pixel = ppm->pixel[(grid_y*ppm->w) + grid_x];
+
+
+    ///// CODE
+
+    //Initialize the ITD colors (avoid future errors)
+    construct.r = construct.g = construct.b = -1;
+
+    //Get constructible color components
+    for(int i = 0; i < NUMBER_INSTRUCT; i++) {
+        if(strcmp(itdInstructions[i].name, "construct") == 0) {
+            construct.r = itdInstructions[i].r;
+            construct.g = itdInstructions[i].g;
+            construct.b = itdInstructions[i].b;
+            break;
+        }     
+    }
+
+    //If the bloc is on a constructible area (at the beginning)
+    if(current_pixel.r == construct.r && current_pixel.g == construct.g && current_pixel.b == construct.b) {
+        //CHECK THE TOWERS AND THE BUILDINGS
+
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]) {
+    int value = isItAvailableArea(x, y, ppm, itdInstructions);
+
+    if(value == 1) {
+        availableArea(x, y, sprite_text);
+    }
+    else if(value == 0) {
+        nonAvailableArea(x, y, sprite_text);
+    }
+    else {
+        fprintf(stderr, "Error: we wan't know if the area is available or not\n");
+        exit(EXIT_FAILURE);
+    }
 }
