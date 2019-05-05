@@ -8,7 +8,6 @@
 
 void drawGridSquare(int filled);
 void drawWindowSquare(int filled);
-void drawSprite(GLuint* texture);
 
 
 //DEBUG DRAW
@@ -22,8 +21,6 @@ void debug_endArea();
 
 //DRAW MAP
 GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
-void constructibleArea();
-void pathArea();
 void nonConstructibleArea();
 
 

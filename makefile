@@ -73,7 +73,7 @@ $(TOWER_O) : src/tower.c include/tower.h include/wave.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "towers : done !"
 
-$(MAP_DRAW_O) : src/map_draw.c include/map_draw.h include/const.h
+$(MAP_DRAW_O) : src/map_draw.c include/map_draw.h include/const.h include/sprite.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "map_draw : done !"
 
@@ -85,7 +85,7 @@ $(TOWER_LIST_O) : src/tower_list.c include/tower_list.h include/tower.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Tower Lists : done !"
 
-$(SPRITE_O) : src/sprite.c include/sprite.h
+$(SPRITE_O) : src/sprite.c include/sprite.h include/const.h
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Sprite : done !"
 

@@ -5,6 +5,7 @@
 
 int loadSpriteArea(SDL_Surface** image, const char* fichier);
 int initSpriteTexture(SDL_Surface** image, GLuint* texture);
+void drawSprite(GLuint* texture);
 
 
 #endif

@@ -6,6 +6,7 @@
 #include <GL/glu.h>
 
 #include "../include/sprite.h"
+#include "../include/const.h"
 
 
 int loadSpriteArea(SDL_Surface** image, const char* fichier) {
@@ -37,3 +38,27 @@ int initSpriteTexture(SDL_Surface** image, GLuint* texture) {
     return EXIT_SUCCESS;
 }
 
+void drawSprite(GLuint* texture) {
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, *texture);
+
+    glBegin(GL_QUADS);
+
+        glTexCoord2f(0,0);
+        glVertex2f(- GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(1,0);
+        glVertex2f(GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(1,1);
+        glVertex2f(GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+
+        glTexCoord2f(0,1);
+        glVertex2f(- GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+}

@@ -6,6 +6,7 @@
 
 #include "../include/map_draw.h"
 #include "../include/const.h"
+#include "../include/sprite.h"
 
 //INUTILE SI LA FONCTION RESIZE EST EN MODE WINDOW (ET NON GRID)
 void drawGridSquare(int filled) 
@@ -48,31 +49,6 @@ void drawWindowSquare(int filled) {
     glVertex2f( GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
 
     glEnd();
-}
-
-void drawSprite(GLuint* texture) {
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, *texture);
-
-    glBegin(GL_QUADS);
-
-        glTexCoord2f(0,0);
-        glVertex2f(- GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
-
-        glTexCoord2f(1,0);
-        glVertex2f(GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
-
-        glTexCoord2f(1,1);
-        glVertex2f(GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
-
-        glTexCoord2f(0,1);
-        glVertex2f(- GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
-
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -207,10 +183,10 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
                 glPushMatrix();
                     glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
                         if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(&sprite_text[0]); //Construct
-                        else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) pathArea(); //Path
-                        else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) pathArea(); //Node
-                        else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) pathArea(); //In
-                        else if (I.pixel[j+i*I.w].r == out.r && I.pixel[j+i*I.w].g == out.g && I.pixel[j+i*I.w].b == out.b) pathArea(); //Out
+                        else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) drawSprite(&sprite_text[1]); //Path
+                        else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) drawSprite(&sprite_text[1]); //Node
+                        else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) drawSprite(&sprite_text[1]); //In
+                        else if (I.pixel[j+i*I.w].r == out.r && I.pixel[j+i*I.w].g == out.g && I.pixel[j+i*I.w].b == out.b) drawSprite(&sprite_text[1]); //Out
                         else nonConstructibleArea();
                 glPopMatrix();
             }
@@ -219,17 +195,6 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
     glEndList();
 
     return id;
-}
-
-
-void constructibleArea() {
-    glColor3ub(255, 200, 80);
-    drawWindowSquare(1);
-}
-
-void pathArea() {
-    glColor3ub(255, 255, 255);
-    drawWindowSquare(1);
 }
 
 void nonConstructibleArea() {

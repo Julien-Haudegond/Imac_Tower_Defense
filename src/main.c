@@ -81,13 +81,17 @@ int main(int argc, char** argv)
         //Texture 0 : Constructible area
         loadSpriteArea(&sprite_img[0], "construct_area.png");
         initSpriteTexture(&sprite_img[0], &sprite_text[0]);
+
+        //Texture 1 : Path area
+        loadSpriteArea(&sprite_img[1], "path_area.png");
+        initSpriteTexture(&sprite_img[1], &sprite_text[1]);
   
   
     /* Variables globales */
 
     /* Variables globales de listes d'affichage */
         //GLuint debug_draw = debugDrawIDList(&imgPPM);
-    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, &sprite_text[0]);
+    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_text);
     //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
