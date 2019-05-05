@@ -21,7 +21,7 @@ void debug_startArea();
 void debug_endArea();
 
 //DRAW MAP
-GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint* construct_text);
+GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
 void constructibleArea();
 void pathArea();
 void nonConstructibleArea();

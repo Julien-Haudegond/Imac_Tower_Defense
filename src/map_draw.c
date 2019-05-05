@@ -152,7 +152,7 @@ void debug_endArea() {
 
 ///// DRAW MAP
 
-GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint* construct_text) {
+GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint sprite_text[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
@@ -206,8 +206,7 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
             for (int j = 0; j < I.w; j++) {
                 glPushMatrix();
                     glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
-                        //if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) constructibleArea(); //Construct
-                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(construct_text); //Construct
+                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(&sprite_text[0]); //Construct
                         else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) pathArea(); //Path
                         else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) pathArea(); //Node
                         else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) pathArea(); //In

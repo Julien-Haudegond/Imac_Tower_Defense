@@ -71,17 +71,23 @@ int main(int argc, char** argv)
     SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
     /* Chargement des images et initialisations des textures */
-    SDL_Surface* construct_image = NULL;
-    GLuint construct_texture;
+    SDL_Surface* sprite_img[MAX_SPRITES];
+    GLuint sprite_text[MAX_SPRITES];
 
-    loadSpriteArea(&construct_image, "construct_area.png");
-    initSpriteTexture(&construct_image, &construct_texture);
+    for(int i =  0; i < MAX_SPRITES; i++) {
+        sprite_img[i] = NULL;
+    }
+
+        //Texture 0 : Constructible area
+        loadSpriteArea(&sprite_img[0], "construct_area.png");
+        initSpriteTexture(&sprite_img[0], &sprite_text[0]);
+  
   
     /* Variables globales */
 
     /* Variables globales de listes d'affichage */
         //GLuint debug_draw = debugDrawIDList(&imgPPM);
-    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, &construct_texture);
+    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, &sprite_text[0]);
     //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
@@ -148,10 +154,14 @@ int main(int argc, char** argv)
     }
 
     /* Free les images */
-    SDL_FreeSurface(construct_image);
-
-    /* Free l'espace de la texture */
-    glDeleteTextures(1, &construct_texture);
+    for(int i = 0; i < MAX_SPRITES; i++) {
+        SDL_FreeSurface(sprite_img[i]);
+    }
+    
+    /* Free l'espace des textures */
+    for(int i = 0; i < MAX_SPRITES; i++) {
+        glDeleteTextures(1, &sprite_text[i]);
+    }
 
     /* Liberation des ressources associees a la SDL */ 
     SDL_Quit();
