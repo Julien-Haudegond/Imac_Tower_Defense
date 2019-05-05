@@ -27,9 +27,19 @@ void reshape(SDL_Surface** surface, unsigned int width, unsigned int height)
     gluOrtho2D(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0); //Window
 }
 
-
+//Window coord will be in the center of the bloc
 int gridCoordToWindowCoord(int grid_coord) {
-    int offset = (int) GL_SPRITE_SIZE / 2 + 1;
+    int offset = (int) GL_SPRITE_SIZE / 2;
 
     return (grid_coord * GL_SPRITE_SIZE + offset);
+}
+
+int windowCoordToGridCoord(int win_coord) {
+    return (win_coord / GL_SPRITE_SIZE);
+}
+
+int windowCoordToBlocCenter(int win_coord) {
+    int grid_coord = windowCoordToGridCoord(win_coord);
+
+    return gridCoordToWindowCoord(grid_coord);
 }

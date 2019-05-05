@@ -8,7 +8,7 @@
 #include "../include/const.h"
 #include "../include/sprite.h"
 
-//INUTILE SI LA FONCTION RESIZE EST EN MODE WINDOW (ET NON GRID)
+
 void drawGridSquare(int filled) 
 {
     if(filled) 
@@ -31,6 +31,7 @@ void drawGridSquare(int filled)
 }
 
 void drawWindowSquare(int filled) {
+    float offset = (float) GL_SPRITE_SIZE / 2;
 
     if(filled) 
     {
@@ -42,11 +43,11 @@ void drawWindowSquare(int filled) {
         glBegin(GL_LINE_STRIP);
     }
 
-    glVertex2f( GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
-    glVertex2f( GL_SPRITE_SIZE / 2. , GL_SPRITE_SIZE / 2.);
-    glVertex2f( - GL_SPRITE_SIZE / 2. , GL_SPRITE_SIZE / 2.);
-    glVertex2f( - GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
-    glVertex2f( GL_SPRITE_SIZE / 2. , - GL_SPRITE_SIZE / 2.);
+    glVertex2f( offset , - offset);
+    glVertex2f( offset , offset);
+    glVertex2f( - offset , offset);
+    glVertex2f( - offset , - offset);
+    glVertex2f( offset , - offset);
 
     glEnd();
 }
@@ -132,7 +133,7 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
-    float offset = GL_SPRITE_SIZE / 2.;
+    float offset = GL_SPRITE_SIZE / 2;
 
     ItdColorInstruction construct, path, node, in, out;
   
@@ -200,4 +201,18 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
 void nonConstructibleArea() {
     glColor3ub(0, 200, 220);
     drawWindowSquare(1);
+}
+
+void availableArea(int center_x, int center_y, GLuint sprite_text[]) {
+    glPushMatrix();
+        glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+        drawSprite(&sprite_text[2]);
+    glPopMatrix();
+}
+
+void nonAvailableArea(int center_x, int center_y, GLuint sprite_text[]) {
+    glPushMatrix();
+        glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+        drawSprite(&sprite_text[3]);
+    glPopMatrix();
 }

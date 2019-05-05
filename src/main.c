@@ -79,20 +79,31 @@ int main(int argc, char** argv)
     }
 
         //Texture 0 : Constructible area
-        loadSpriteArea(&sprite_img[0], "construct_area.png");
+        loadSpriteArea(&sprite_img[0], "construct_area_RGBA_TEST.png");
         initSpriteTexture(&sprite_img[0], &sprite_text[0]);
 
         //Texture 1 : Path area
-        loadSpriteArea(&sprite_img[1], "path_area.png");
+        loadSpriteArea(&sprite_img[1], "path_area_RGBA_TEST.png");
         initSpriteTexture(&sprite_img[1], &sprite_text[1]);
+
+        //Texture 2 : Available area
+        loadSpriteArea(&sprite_img[2], "available_area_RGBA.png");
+        initSpriteTexture(&sprite_img[2], &sprite_text[2]);
+
+        //Texture 3 : Non available area
+        loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
+        initSpriteTexture(&sprite_img[3], &sprite_text[3]);
   
   
     /* Variables globales */
+    int mouse_x = 0, mouse_y = 0;
+    int center_mouse_x = 0, center_mouse_y = 0;
+
 
     /* Variables globales de listes d'affichage */
         //GLuint debug_draw = debugDrawIDList(&imgPPM);
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_text);
-    //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
+        //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
     int loop = 1;
@@ -108,6 +119,9 @@ int main(int argc, char** argv)
         glLoadIdentity();
 
         glCallList(debug_draw);
+
+        //available area test
+        nonAvailableArea(center_mouse_x, center_mouse_y, sprite_text);
 
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
@@ -141,6 +155,15 @@ int main(int argc, char** argv)
                 /* Touche clavier */
                 case SDL_KEYDOWN:
                     printf("touche pressee (code = %d)\n", e.key.keysym.sym);
+                    break;
+
+                case SDL_MOUSEMOTION:
+                    mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
+                    mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
+                    center_mouse_x =  windowCoordToBlocCenter(mouse_x);
+                    center_mouse_y =  windowCoordToBlocCenter(mouse_y);
+
+                    printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
                     break;
                     
                 default:

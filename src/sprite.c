@@ -32,33 +32,37 @@ int initSpriteTexture(SDL_Surface** image, GLuint* texture) {
 
     glBindTexture(GL_TEXTURE_2D, *texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (*image)->w, (*image)->h, 0, GL_RGB, GL_UNSIGNED_BYTE, (*image)->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (*image)->w, (*image)->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (*image)->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return EXIT_SUCCESS;
 }
 
 void drawSprite(GLuint* texture) {
+	float offset = GL_SPRITE_SIZE / 2;
 
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindTexture(GL_TEXTURE_2D, *texture);
 
     glBegin(GL_QUADS);
 
         glTexCoord2f(0,0);
-        glVertex2f(- GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+        glVertex2f(- offset, offset);
 
         glTexCoord2f(1,0);
-        glVertex2f(GL_SPRITE_SIZE / 2., GL_SPRITE_SIZE / 2.);
+        glVertex2f(offset, offset);
 
         glTexCoord2f(1,1);
-        glVertex2f(GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+        glVertex2f(offset, - offset);
 
         glTexCoord2f(0,1);
-        glVertex2f(- GL_SPRITE_SIZE / 2., - GL_SPRITE_SIZE / 2.);
+        glVertex2f(- offset, - offset);
 
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
 }

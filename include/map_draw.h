@@ -24,4 +24,8 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
 void nonConstructibleArea();
 
 
+void availableArea(int center_x, int center_y, GLuint sprite_text[]);
+void nonAvailableArea(int center_x, int center_y, GLuint sprite_text[]);
+
+
 #endif
