@@ -3,15 +3,15 @@
 
 
 /* Espace fenetre virtuelle */
-static const float GL_VIEW_WIDTH = 30.;
-static const float GL_VIEW_HEIGHT = 20.;
+static const float GL_VIEW_WIDTH = 20.;
+static const float GL_VIEW_HEIGHT = 13.;
 
 /* Taille d'un bloc */
-static const float GL_SPRITE_SIZE = 41.;
+static const float GL_SPRITE_SIZE = 61.;
 
 /* Dimensions initiales et titre de la fenetre */
-static const unsigned int WINDOW_WIDTH = 1230; //GL_VIEW_WIDTH * GL_SPRITE
-static const unsigned int WINDOW_HEIGHT = 820; //GL_VIEW_HEIGHT * GL_SPRITE
+static const unsigned int WINDOW_WIDTH = 1220; //GL_VIEW_WIDTH * GL_SPRITE
+static const unsigned int WINDOW_HEIGHT = 793; //GL_VIEW_HEIGHT * GL_SPRITE
 static const char WINDOW_TITLE[] = "Test_Draw";
 
 /* Nombre de bits par pixel de la fenetre */

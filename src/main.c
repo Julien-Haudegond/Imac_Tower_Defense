@@ -93,11 +93,11 @@ int main(int argc, char** argv)
     }
 
         //Texture 0 : Constructible area
-        loadSpriteArea(&sprite_img[0], "construct_area_RGBA_TEST.png");
+        loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
         initSpriteTexture(&sprite_img[0], &sprite_text[0]);
 
         //Texture 1 : Path area
-        loadSpriteArea(&sprite_img[1], "path_area_RGBA_TEST.png");
+        loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
         initSpriteTexture(&sprite_img[1], &sprite_text[1]);
 
         //Texture 2 : Available area
