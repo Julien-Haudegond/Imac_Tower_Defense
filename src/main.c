@@ -149,8 +149,7 @@ int main(int argc, char** argv)
                 loop = 0;
                 break;
             }
-            if( e.type == SDL_KEYDOWN 
-                && (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE))
+            if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
             {
                 loop = 0; 
                 break;
