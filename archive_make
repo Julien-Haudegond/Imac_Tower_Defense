@@ -35,12 +35,10 @@ PROG = bin/program.out
 # Regles compilation
 
 all : $(OBJ)
-	mkdir -p bin
 	$(CC) $(CFLAGS) $(OBJ) -o $(PROG) $(LDFLAGS)
 	@echo "*** to execute, type : ./bin/program.out***"
 
 $(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h
-	mkdir -p obj
 	@echo "compile program"
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "done!"
