@@ -20,6 +20,8 @@
 #include "../include/window.h"
 #include "../include/sprite.h"
 
+#include "../include/args.h"
+
 /***************
 *   define : 
 *   READTHIS 1 for PPM check & map debug + sprites
@@ -32,14 +34,26 @@
 
 int main(int argc, char** argv) 
 {
+
+    //Checking arguments
+    char itdPath[70]="data/";
+    //printf("Nb arg %d \n",argc);
+    if(argc >= 2 && strcmp(checkITDFile(argv[1]), "itd") == 0){        
+        strcat(itdPath,argv[1]);
+    }else{
+        fprintf(stderr, "Second argument must be an itd file. ");
+        exit(EXIT_FAILURE);
+    }
+
+    //Loading ITD File
     Image imgPPM;
     ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
     Node nodesArray[MAX_NODES] = {0};
     int nbOfNodes;
-    //here
     //Node shortestPathArray[MAX_NODES] = shortestPath(nodesArray);
 
-    readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
+    //readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
+    readITD(itdPath, &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
     for(int i = 0; i < nbOfNodes; i++) {
         printNodeInfo(nodesArray[i]);
@@ -121,7 +135,6 @@ int main(int argc, char** argv)
 
         //available area test
         constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_text);
-
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapBuffers();

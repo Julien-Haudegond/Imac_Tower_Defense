@@ -43,7 +43,7 @@ Link* getNextLink(Link* link){
 	return link->next;
 }
 
-int getNodeValue(Link* link){
+int getNodeValueFromLink(Link* link){
 	return link->node->value;
 }
 

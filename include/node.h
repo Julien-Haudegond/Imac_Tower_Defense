@@ -29,5 +29,6 @@ int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 int travelPathFromNodeToNode(Node node1, Node node2);
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
+//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
 
 #endif

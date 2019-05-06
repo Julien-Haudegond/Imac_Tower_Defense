@@ -6,7 +6,7 @@
 typedef struct Link
 {
 	struct Node* node;
-	int distance;
+	int valarc;
 	struct Link* next;
 } Link;
 
@@ -15,6 +15,6 @@ void addLink(Link* link, struct Node* child);
 void freeAllLinks(Link* link);
 void printNodeLinks(Link* link);
 Link* getNextLink(Link* link);
-int getNodeValue(Link* link);
+int getNodeValueFromLink(Link* link);
 
 #endif

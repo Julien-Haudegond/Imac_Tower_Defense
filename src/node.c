@@ -261,6 +261,7 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 	return EXIT_SUCCESS;
 }
 
+
 Node* getFirstNextNode(Node node){
 	return node.link->node;
 }
@@ -269,7 +270,70 @@ Node* getNextNode(Node node){
 	return node.link->next->node;
 }
 
+//Premier test Dijkstra
 //Assuming the first node is the one where monsters start
-shortestPath(Node nodesArray[], Node finalNode){
 
+void setValarc(Node nodesArray[], int nbNodes){
+	for(int i = 0; i < nbNodes; i++){
+		nodesArray[i].link->valarc = 0;
+	}
+	nodesArray[2].link->valarc = 3;
 }
+
+//Assuming the first node is the one where monsters start
+//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
+	/********
+	*	INITIALIZATION : nodes are : 
+	*	Not visited yet (marqued = 0)
+	*	for all nodes valarc is infinite (-1)
+	*	
+	*********/
+	/*
+	Node shortest[MAX_NODES];
+	shortest[0] = nodesArray[0];
+    for(int i = 0; i < nbNodes ; i++)
+    {
+    	nodesArray[i].marqued = 0; 
+        nodesArray[i].minValarc = -1;
+    }
+    nodesArray[0].minValarc = 0;
+   	Node currentNode = nodesArray[0];
+   	Node nextNode;
+   	Node nextNextNode;
+   	Node tmpNode;
+   	int nbNextNodes;
+   	int nbVisited = 0;
+   	int minValue;
+   	while(currentNode.value != finalNode.value){
+   		if (currentNode.type !=3){ // Node is not the end of the path
+   			//Taking each next node and updating attribute minValarc
+   			if(currentNode.type == 2){
+   				nextNode = getNextNode(currentNode);
+   				while(nextNode != NULL){
+   					nextNode.minValarc = currentNode.minValarc + currentNode.link->valarc;
+   					nextNode = getNextNode(nextNode);
+   				}
+   				nextNode = getFirstNextNode(currentNode);
+   			}else if(currentNode.type == 1){
+   				nextNode = getFirstNextNode(currentNode);
+   				while(nextNode != NULL){
+   					nextNode.minValarc = currentNode.minValarc + currentNode.link->valarc;
+   					nextNode = getNextNode(nextNode);
+   				}
+   				nextNode = getFirstNextNode(currentNode);
+   			}
+   			//Selecting the nextNode with the minimum minValarc value
+   			nbNextNodes = getAmountofNodes(currentNode->link);
+   			minValue = nextNode.minValarc;
+   			for(int j = 1; j < nbNextNodes; j++){
+   				nextNode = getNextNode(nextNode);
+   				if(nextNode.minValarc <= minValue){
+   					minValue = nextNode.minValarc;
+   					tmpNode = nextNode;
+   				}
+   			}
+   			currentNode = tmpNode; //Next node that has minimum value minValarc		
+   		}
+   		
+   	}
+}*/
