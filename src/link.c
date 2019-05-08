@@ -36,6 +36,16 @@ void printNodeLinks(Link* link) {
 	}
 }
 
+void printValarc(Link* link) {
+	if(!link) {
+		return;
+	}
+	else {
+		printf("%d ", link->valarc);
+		printValarc(link->next);
+	}
+}
+
 Link* getNextLink(Link* link){
 	if(!link || !link->next){
 		exit(EXIT_FAILURE);

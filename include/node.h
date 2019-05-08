@@ -10,6 +10,7 @@ typedef enum {
 } NodeType;
 
 typedef struct Node {
+	int minValarc;
 	int value;
 	int type;
 	int x, y; //Grid coords
@@ -29,6 +30,8 @@ int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 int travelPathFromNodeToNode(Node node1, Node node2);
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
+void initializeDijkstra(Node nodesArray[], int nbNodes);
+void setValarc(Node nodesArray[], int nbNodes);
 //Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
 
 #endif

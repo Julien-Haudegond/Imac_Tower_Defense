@@ -37,11 +37,10 @@ int main(int argc, char** argv)
 
     //Checking arguments
     char itdPath[70]="data/";
-    //printf("Nb arg %d \n",argc);
     if(argc >= 2 && strcmp(checkITDFile(argv[1]), "itd") == 0){        
         strcat(itdPath,argv[1]);
     }else{
-        fprintf(stderr, "Second argument must be an itd file. ");
+        fprintf(stderr, "Second argument must be an itd file.");
         exit(EXIT_FAILURE);
     }
 
@@ -50,10 +49,12 @@ int main(int argc, char** argv)
     ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
     Node nodesArray[MAX_NODES] = {0};
     int nbOfNodes;
-    //Node shortestPathArray[MAX_NODES] = shortestPath(nodesArray);
 
-    //readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
     readITD(itdPath, &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
+
+    //test valarc et init Dijkstra
+    setValarc(nodesArray, 4);
+    //initializeDijkstra(nodesArray, 4);
 
     for(int i = 0; i < nbOfNodes; i++) {
         printNodeInfo(nodesArray[i]);
@@ -67,16 +68,7 @@ int main(int argc, char** argv)
             "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
-
-    Node NodeA = nodesArray[1];
-    Node* NodeB = malloc(sizeof(Node*));
-    NodeB = getFirstNextNode(NodeA);
-    printf("Next node : %d \n",NodeB->value);
-
-    Node* NodeC = malloc(sizeof(Node*));
-    NodeC = getNextNode(NodeA);
-    printf("Next node : %d \n", NodeC->value);
-  
+   
     /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
     SDL_Surface* surface;
     reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);

@@ -14,7 +14,8 @@ typedef enum{
 
 typedef struct Monster{
 	int type;
-	float x,y;
+	int x,y;
+	int win_x, win_y;
 	float health;
 	int resist;
 	float speed;

@@ -49,11 +49,15 @@ void printNodeInfo(Node node) {
 	else if(node.marqued == 0) {
 		printf("Le noeud n'est pas marqué. ");
 	}
-
+	printf("Minvalarc actuel : %d ", node.minValarc);
 	if(node.link != NULL) {
 		printf("Il est relié à : ");
 		printNodeLinks(node.link);
+
+		printf("Valarcs correspondants : ");
+		printValarc(node.link);
 	}
+
 	printf("\n");
 }
 
@@ -252,8 +256,7 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 			for(int j = 0; j < offset; j++) { //Each pixel of the lines
 				current_x = start_x + j;
 				current_y = start_y + i;
-				
-				// DO SOMETHING BUT IT WORKS
+				printf("Hey c un test");
 			}
 		}
 	}
@@ -270,25 +273,46 @@ Node* getNextNode(Node node){
 	return node.link->next->node;
 }
 
-//Premier test Dijkstra
-//Assuming the first node is the one where monsters start
-
+//Set arbitraire des valarcs dans les links
 void setValarc(Node nodesArray[], int nbNodes){
-	for(int i = 0; i < nbNodes; i++){
-		nodesArray[i].link->valarc = 0;
-	}
-	nodesArray[2].link->valarc = 3;
+	nodesArray[0].link->valarc = 0; // de 0 a 1
+	nodesArray[1].link->valarc = 0; // de 1 a 0
+	nodesArray[1].link->next->valarc = 5; // de 1 a 2
+	nodesArray[2].link->valarc = 5; // de 2 a 1 
+	nodesArray[2].link->next->valarc = 2; // de 2 a 3
+	nodesArray[3].link->valarc = 2; // de 3 a 2
+	return;
 }
+/*
+void initializeDijkstra(Node nodesArray[], int nbNodes){
 
-//Assuming the first node is the one where monsters start
-//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
-	/********
+	//all minValarc are infinite 
+	//None of the nodes are marqued
+	for(int i = 0; i < nbNodes ; i++){
+    	nodesArray[i]->marqued = 0; 
+        nodesArray[i]->minValarc = -1;
+    }
+}
+*/
+/********
 	*	INITIALIZATION : nodes are : 
 	*	Not visited yet (marqued = 0)
 	*	for all nodes valarc is infinite (-1)
 	*	
 	*********/
 	/*
+	Node shortest[MAX_NODES];
+	shortest[0] = nodesArray[0];
+    for(int i = 0; i < nbNodes ; i++)
+    {
+    	nodesArray[i].marqued = 0; 
+        nodesArray[i].minValarc = -1;
+    }
+
+//Assuming the first node is the one where monsters start
+//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
+	
+	
 	Node shortest[MAX_NODES];
 	shortest[0] = nodesArray[0];
     for(int i = 0; i < nbNodes ; i++)

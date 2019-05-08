@@ -16,6 +16,7 @@ typedef enum{
 */
 typedef struct Tower{
 	int x,y;
+	int win_x, win_y;
 	int type;
 	int dmg;
 	float firespeed;
