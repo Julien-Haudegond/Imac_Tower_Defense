@@ -298,15 +298,23 @@ void setInitialValuesDijkstra(Link* link) {
 
 void initializeDijkstra(Node* firstNode){
 	firstNode->marqued = 0;
-	firstNode->minValarc = -1;
+	if(firstNode->type == 1){
+		firstNode->minValarc = 0;
+	}else{
+		firstNode->minValarc = -1;
+	}
 	//sets the next nodes values thanks to the links
 	setInitialValuesDijkstra(firstNode->link);
 }
 
+//Assuming the first node of the array is the first of the path
 /*
 Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
-	
-    nodesArray[0].minValarc = 0;
+
+}
+
+
+Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
    	Node currentNode = nodesArray[0];
    	Node nextNode;
    	Node nextNextNode;
