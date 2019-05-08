@@ -172,7 +172,7 @@ int main(int argc, char** argv)
                     mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
                     mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
 
-                    printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
+                    //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
                     break;
                     
                 default:
