@@ -85,11 +85,11 @@ int main(int argc, char** argv)
     }
 
         //Texture 0 : Constructible area
-        loadSpriteArea(&sprite_img[0], "construct_area_RGBA_TEST.png");
+        loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
         initSpriteTexture(&sprite_img[0], &sprite_text[0]);
 
         //Texture 1 : Path area
-        loadSpriteArea(&sprite_img[1], "path_area_RGBA_TEST.png");
+        loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
         initSpriteTexture(&sprite_img[1], &sprite_text[1]);
 
         //Texture 2 : Available area
@@ -141,8 +141,7 @@ int main(int argc, char** argv)
                 loop = 0;
                 break;
             }
-            if( e.type == SDL_KEYDOWN 
-                && (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE))
+            if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
             {
                 loop = 0; 
                 break;
@@ -165,7 +164,7 @@ int main(int argc, char** argv)
                     mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
                     mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
 
-                    printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
+                    //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
                     break;
                     
                 default:

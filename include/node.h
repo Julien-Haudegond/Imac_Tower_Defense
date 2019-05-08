@@ -6,7 +6,7 @@
 #define MAX_NODES 20 //Max number of nodes will be 20-1 = 19
 
 typedef enum {
-	IN, OUT, INTERSECT, BEND
+	IN = 1, OUT = 2, BEND = 3, INTERSECT = 4
 } NodeType;
 
 typedef struct Node {
