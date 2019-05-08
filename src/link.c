@@ -45,13 +45,13 @@ void printValarc(Link* link) {
 		printValarc(link->next);
 	}
 }
-
+/*
 Link* getNextLink(Link* link){
 	if(!link || !link->next){
-		exit(EXIT_FAILURE);
+		return;
 	}
 	return link->next;
-}
+}*/
 
 int getNodeValueFromLink(Link* link){
 	return link->node->value;

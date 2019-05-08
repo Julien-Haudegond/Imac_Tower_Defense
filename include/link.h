@@ -15,7 +15,7 @@ void addLink(Link* link, struct Node* child);
 void freeAllLinks(Link* link);
 void printNodeLinks(Link* link);
 void printValarc(Link* link);
-Link* getNextLink(Link* link);
+//Link* getNextLink(Link* link);
 int getNodeValueFromLink(Link* link);
 
 #endif

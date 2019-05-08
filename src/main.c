@@ -54,10 +54,11 @@ int main(int argc, char** argv)
 
     //test valarc et init Dijkstra
     setValarc(nodesArray, 4);
-    //initializeDijkstra(nodesArray, 4);
 
     for(int i = 0; i < nbOfNodes; i++) {
+        initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
+        printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
     }
 
     /* Initialisation de la SDL */

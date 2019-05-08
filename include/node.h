@@ -30,7 +30,7 @@ int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 int travelPathFromNodeToNode(Node node1, Node node2);
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
-void initializeDijkstra(Node nodesArray[], int nbNodes);
+void initializeDijkstra(Node* firstNode);
 void setValarc(Node nodesArray[], int nbNodes);
 //Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
 

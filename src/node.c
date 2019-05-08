@@ -283,43 +283,29 @@ void setValarc(Node nodesArray[], int nbNodes){
 	nodesArray[3].link->valarc = 2; // de 3 a 2
 	return;
 }
-/*
-void initializeDijkstra(Node nodesArray[], int nbNodes){
 
-	//all minValarc are infinite 
-	//None of the nodes are marqued
-	for(int i = 0; i < nbNodes ; i++){
-    	nodesArray[i]->marqued = 0; 
-        nodesArray[i]->minValarc = -1;
-    }
+void setInitialValuesDijkstra(Link* link) {
+	if(!link) {
+		return;
+	}
+	else {
+		link->node->marqued = 0;
+		link->node->minValarc = -1;
+		setInitialValuesDijkstra(link->next);
+	}
 }
-*/
-/********
-	*	INITIALIZATION : nodes are : 
-	*	Not visited yet (marqued = 0)
-	*	for all nodes valarc is infinite (-1)
-	*	
-	*********/
-	/*
-	Node shortest[MAX_NODES];
-	shortest[0] = nodesArray[0];
-    for(int i = 0; i < nbNodes ; i++)
-    {
-    	nodesArray[i].marqued = 0; 
-        nodesArray[i].minValarc = -1;
-    }
 
-//Assuming the first node is the one where monsters start
-//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
+
+void initializeDijkstra(Node* firstNode){
+	firstNode->marqued = 0;
+	firstNode->minValarc = -1;
+	//sets the next nodes values thanks to the links
+	setInitialValuesDijkstra(firstNode->link);
+}
+
+/*
+Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
 	
-	
-	Node shortest[MAX_NODES];
-	shortest[0] = nodesArray[0];
-    for(int i = 0; i < nbNodes ; i++)
-    {
-    	nodesArray[i].marqued = 0; 
-        nodesArray[i].minValarc = -1;
-    }
     nodesArray[0].minValarc = 0;
    	Node currentNode = nodesArray[0];
    	Node nextNode;
