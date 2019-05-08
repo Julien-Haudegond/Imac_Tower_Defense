@@ -59,6 +59,7 @@ int main(int argc, char** argv)
         initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
         printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
+        printf("\n");
     }
 
     /* Initialisation de la SDL */
