@@ -8,6 +8,32 @@
 #include "../include/sprite.h"
 #include "../include/const.h"
 
+/***** SPRITES ARRAY *****/
+
+//HERE TO CHANGE THE SPRITES
+void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
+
+    //Texture 0 : Constructible area
+    loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
+    initSpriteTexture(&sprite_img[0], &sprite_texture[0]);
+
+    //Texture 1 : Path area
+    loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
+    initSpriteTexture(&sprite_img[1], &sprite_texture[1]);
+
+    //Texture 2 : Available area
+    loadSpriteArea(&sprite_img[2], "available_area_RGBA.png");
+    initSpriteTexture(&sprite_img[2], &sprite_texture[2]);
+
+    //Texture 3 : Non available area
+    loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
+    initSpriteTexture(&sprite_img[3], &sprite_texture[3]);
+}
+
+
+
+
+/***** ONE SPRITE *****/
 
 int loadSpriteArea(SDL_Surface** image, const char* fichier) {
 	char imagePath[70] = "images/sprites/";
