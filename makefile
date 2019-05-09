@@ -26,9 +26,11 @@ MAP_DRAW_O = obj/map_draw.o
 WINDOW_O = obj/window.o
 SPRITE_O = obj/sprite.o
 
+TEXT_O = obj/text.o
+
 ARGS_O = obj/args.o
 
-OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(SPRITE_O) $(ARGS_O)
+OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O)
 
 PROG = bin/program.out
 
@@ -39,7 +41,7 @@ all : $(OBJ)
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) -o $(PROG) $(LDFLAGS)
 	@echo "*** to execute, type : ./bin/program.out***"
 
-$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h
+$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h
 	mkdir -p obj
 	@echo "compile program"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
@@ -96,6 +98,10 @@ $(SPRITE_O) : src/sprite.c include/sprite.h include/const.h
 $(ARGS_O) : src/args.c include/args.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Arguments : done !"
+
+$(TEXT_O) : src/text.c include/text.h
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "Texts : done !"
 
 
 

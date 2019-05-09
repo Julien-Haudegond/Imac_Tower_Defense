@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -19,6 +20,8 @@
 #include "../include/map_draw.h"
 #include "../include/window.h"
 #include "../include/sprite.h"
+
+#include "../include/text.h"
 
 #include "../include/args.h"
 
@@ -87,6 +90,13 @@ int main(int argc, char** argv)
             "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
+
+    /*Init TTF */
+    if(TTF_Init() == -1)
+    {
+        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+        exit(EXIT_FAILURE);
+    }
    
     /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
     SDL_Surface* surface;
@@ -97,7 +107,7 @@ int main(int argc, char** argv)
 
     /* Chargement des images et initialisations des textures */
     SDL_Surface* sprite_img[MAX_SPRITES];
-    GLuint sprite_text[MAX_SPRITES];
+    GLuint sprite_texture[MAX_SPRITES];
 
     for(int i =  0; i < MAX_SPRITES; i++) {
         sprite_img[i] = NULL;
@@ -105,20 +115,33 @@ int main(int argc, char** argv)
 
         //Texture 0 : Constructible area
         loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
-        initSpriteTexture(&sprite_img[0], &sprite_text[0]);
+        initSpriteTexture(&sprite_img[0], &sprite_texture[0]);
 
         //Texture 1 : Path area
         loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
-        initSpriteTexture(&sprite_img[1], &sprite_text[1]);
+        initSpriteTexture(&sprite_img[1], &sprite_texture[1]);
 
         //Texture 2 : Available area
         loadSpriteArea(&sprite_img[2], "available_area_RGBA.png");
-        initSpriteTexture(&sprite_img[2], &sprite_text[2]);
+        initSpriteTexture(&sprite_img[2], &sprite_texture[2]);
 
         //Texture 3 : Non available area
         loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
-        initSpriteTexture(&sprite_img[3], &sprite_text[3]);
-  
+        initSpriteTexture(&sprite_img[3], &sprite_texture[3]);
+
+
+  	/* Chargement des textes */
+    SDL_Surface* text_area[MAX_TEXTS];
+    GLuint text_texture[MAX_TEXTS];
+
+    for(int i =  0; i < MAX_TEXTS; i++) {
+        text_area[i] = NULL;
+    }
+	    //Colors
+	    SDL_Color redColor = {255, 0, 0, 0};
+
+	    	//Text 0 : HEELLOOO !
+	    	loadText("Potatoes gonna potate", "Hack-Bold", redColor, 22, &text_area[0], &text_texture[0]);
   
     /* Variables globales */
     int mouse_x = 0, mouse_y = 0;
@@ -126,7 +149,7 @@ int main(int argc, char** argv)
 
     /* Variables globales de listes d'affichage */
         //GLuint debug_draw = debugDrawIDList(&imgPPM);
-    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_text);
+    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
         //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
 
     /* Boucle principale */
@@ -137,15 +160,18 @@ int main(int argc, char** argv)
         Uint32 startTime = SDL_GetTicks();
         
         /* Placer ici le code de dessin */
-        glClear(GL_COLOR_BUFFER_BIT);
+	        glClear(GL_COLOR_BUFFER_BIT);
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+	        glMatrixMode(GL_MODELVIEW);
+	        glLoadIdentity();
 
-        glCallList(debug_draw);
+	        glCallList(debug_draw);
 
-        //available area test
-        constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_text);
+	        //text
+	        renderText(&text_area[0], &text_texture[0], 600 , 398);
+
+	        //available area test
+	        constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapBuffers();
@@ -207,7 +233,7 @@ int main(int argc, char** argv)
     
     /* Free l'espace des textures */
     for(int i = 0; i < MAX_SPRITES; i++) {
-        glDeleteTextures(1, &sprite_text[i]);
+        glDeleteTextures(1, &sprite_texture[i]);
     }
 
     /* Liberation des ressources associees a la SDL */ 
