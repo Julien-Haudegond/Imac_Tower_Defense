@@ -57,12 +57,12 @@ int main(int argc, char** argv)
 
     //test valarc et init Dijkstra
     setValarc(nodesArray, 4);
-
+   
     for(int i = 0; i < nbOfNodes; i++) {
-        initializeDijkstra(&nodesArray[i]);
+        //initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
-        printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
-        printf("\n");
+        //printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
+        //printf("\n");
     }
 
     /***********
@@ -70,15 +70,13 @@ int main(int argc, char** argv)
     ***********/
     printf("\n TESTS DIJKSTRA \n");
     //marking the Node 2 - FONCTIONNEL
-    markNode(&nodesArray[2]);
-    printNodeInfo(nodesArray[2]);
+    //markNode(&nodesArray[2]);
+    //printNodeInfo(nodesArray[2]);
 
     //returns the nextNode of 0 having min minValarc (result must be the address of Node 1)
-    Node* ptrNode = getNextNodesMinValarc(nodesArray[0].link);
-    int minval = (*ptrNode).value;
-    printf("Next node : %d \n", minval);
-    
-
+    markNode(&nodesArray[0]);
+    //printf("Valeur de la marque en 0 : %d \n", nodesArray[0].marqued);
+    Link* ptrLink = getNextLinkMinValarc(nodesArray[1].link);
     //free(ptrNode);
 
 

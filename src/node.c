@@ -53,9 +53,10 @@ void printNodeInfo(Node node) {
 	if(node.link != NULL) {
 		printf("Il est relié à : ");
 		printNodeLinks(node.link);
-
-		printf("Valarcs correspondants : ");
-		printValarc(node.link);
+		if(node.link->valarc != NULL){
+			printf("Valarcs correspondants : ");
+			printValarc(node.link);
+		}
 	}
 
 	printf("\n");
@@ -314,6 +315,12 @@ void initializeDijkstra(Node* firstNode){
 void markNode(Node* node){
 	node->marqued = 1;
 }
+
+//Updates minValarc values according to the origin Node
+void updateNodesMinValarc(Node* node){
+	return;
+}
+
 
 //Algo dégueu qui segfault (découpage ci dessus)
 /*
