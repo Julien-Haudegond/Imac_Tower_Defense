@@ -87,7 +87,7 @@ int main(int argc, char** argv)
     //free(ptrNode);
 
 
-    /* Initialisation de la SDL */
+    /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
     {
         fprintf(
