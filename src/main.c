@@ -70,7 +70,24 @@ int main(int argc, char** argv)
         printf("\n");
     }
 
-    /* Initializing SDL */
+    /***********
+    * TESTS ON DIJKSTRA FUNCTIONS
+    ***********/
+    printf("\n TESTS DIJKSTRA \n");
+    //marking the Node 2 - FONCTIONNEL
+    markNode(&nodesArray[2]);
+    printNodeInfo(nodesArray[2]);
+
+    //returns the nextNode of 0 having min minValarc (result must be the address of Node 1)
+    Node* ptrNode = getNextNodesMinValarc(nodesArray[0].link);
+    int minval = (*ptrNode).value;
+    printf("Next node : %d \n", minval);
+    
+
+    //free(ptrNode);
+
+
+    /* Initialisation de la SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
     {
         fprintf(
