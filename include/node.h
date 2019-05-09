@@ -32,6 +32,7 @@ Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
 void initializeDijkstra(Node* firstNode);
 void setValarc(Node nodesArray[], int nbNodes);
+void markNode(Node* node);
 //Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
 
 #endif

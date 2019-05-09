@@ -57,5 +57,22 @@ int getNodeValueFromLink(Link* link){
 	return link->node->value;
 }
 
+//Maybe check the type of node before ? 
+Node* getNextNodesMinValarc(Link* link){
+	if(link->node != NULL){
+		int min = 15000;
+		Node* minNode = link->node;
+		printf("Adresse de link %d \n",link);
+		while(link != NULL && link->next != NULL){
+			if(link->node->marqued != 1 && link->node->value < min){
+				min = link->next->node->value;
+				minNode = link->node;
+			}
+			link = link->next;
+		}
+		return minNode;
+	}
+}
+
 
 

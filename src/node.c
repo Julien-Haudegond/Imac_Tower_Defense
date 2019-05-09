@@ -295,6 +295,9 @@ void setInitialValuesDijkstra(Link* link) {
 	}
 }
 
+/**************
+* FUNCTIONS FOR DIJKSTRA ALGORITHM
+**************/
 
 void initializeDijkstra(Node* firstNode){
 	firstNode->marqued = 0;
@@ -307,13 +310,13 @@ void initializeDijkstra(Node* firstNode){
 	setInitialValuesDijkstra(firstNode->link);
 }
 
-//Assuming the first node of the array is the first of the path
-/*
-Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
-
+//sets the mark of the Node to 1 when it's been visited
+void markNode(Node* node){
+	node->marqued = 1;
 }
 
-
+//Algo dégueu qui segfault (découpage ci dessus)
+/*
 Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
    	Node currentNode = nodesArray[0];
    	Node nextNode;
