@@ -27,10 +27,13 @@ WINDOW_O = obj/window.o
 SPRITE_O = obj/sprite.o
 
 TEXT_O = obj/text.o
+GRAPHIC_O = obj/graphic.o
 
 ARGS_O = obj/args.o
 
-OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O)
+SDL_ARRAY_O = obj/sdl_array.o
+
+OBJ = $(MAIN_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O) $(SDL_ARRAY_O)
 
 PROG = bin/program.out
 
@@ -39,9 +42,13 @@ PROG = bin/program.out
 all : $(OBJ)
 	mkdir -p bin
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) -o $(PROG) $(LDFLAGS)
-	@echo "*** to execute, type : ./bin/program.out***"
+	@echo ""
+	@echo "**********************************************************"
+	@echo "*** to execute, type : export LD_LIBRARY_PATH=lib/lib  ***"
+	@echo "*** then, type       : ./bin/program.out Map_xx.itd    ***"
+	@echo "**********************************************************"
 
-$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h
+$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
 	mkdir -p obj
 	@echo "compile program"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
@@ -103,7 +110,13 @@ $(TEXT_O) : src/text.c include/text.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Texts : done !"
 
+$(GRAPHIC_O) : src/graphic.c include/graphic.h
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "Graphic : done !"
 
+$(SDL_ARRAY_O) : src/sdl_array.c include/sdl_array.h
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "SDL Arrays : done !"
 
 clean :
 	rm -rf $(OBJDIR)*.o

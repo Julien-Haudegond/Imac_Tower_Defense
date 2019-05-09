@@ -22,8 +22,11 @@
 #include "../include/sprite.h"
 
 #include "../include/text.h"
+#include "../include/graphic.h"
 
 #include "../include/args.h"
+
+#include "../include/sdl_array.h"
 
 /***************
 *   define : 
@@ -34,6 +37,8 @@
 #define READTHIS1
 
 #ifdef READTHIS1
+
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help);
 
 int main(int argc, char** argv) 
 {
@@ -65,7 +70,7 @@ int main(int argc, char** argv)
         printf("\n");
     }
 
-    /* Initialisation de la SDL */
+    /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
     {
         fprintf(
@@ -74,162 +79,165 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    /*Init TTF */
+    /*Initializing TTF */
     if(TTF_Init() == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
     }
    
-    /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
+    /* Open a window and create the OpenGL context */
     SDL_Surface* surface;
     reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    /* Initialisation du titre de la fenetre */
+    /* Title of the window */
     SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
-    /* Chargement des images et initialisations des textures */
+    /* SPRITES: Loading surfaces and initializing textures */
     SDL_Surface* sprite_img[MAX_SPRITES];
     GLuint sprite_texture[MAX_SPRITES];
 
-    for(int i =  0; i < MAX_SPRITES; i++) {
-        sprite_img[i] = NULL;
-    }
+    initSurfacesArrayToNull(sprite_img, MAX_SPRITES);
+    fillSprites(sprite_img, sprite_texture); // GO TO SPRITE.C TO MODIFY
 
-        //Texture 0 : Constructible area
-        loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
-        initSpriteTexture(&sprite_img[0], &sprite_texture[0]);
+  	/* TEXTS */
+  		//Loading FONTS
+    	TTF_Font* fonts[MAX_FONTS];
+    	initFontsArrayToNull(fonts, MAX_FONTS);
+    	initFontsArray(fonts); // GO TO TEXT.C TO MODIFY
 
-        //Texture 1 : Path area
-        loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
-        initSpriteTexture(&sprite_img[1], &sprite_texture[1]);
+    	//COLORS
+    	SDL_Color colors[MAX_COLORS];
+    	initColorsArray(colors); // GO TO TEXT.C TO MODIFY
 
-        //Texture 2 : Available area
-        loadSpriteArea(&sprite_img[2], "available_area_RGBA.png");
-        initSpriteTexture(&sprite_img[2], &sprite_texture[2]);
+    	//Loading SURFACES
+		SDL_Surface* text_area[MAX_TEXTS];
+    	initSurfacesArrayToNull(text_area, MAX_TEXTS);
 
-        //Texture 3 : Non available area
-        loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
-        initSpriteTexture(&sprite_img[3], &sprite_texture[3]);
+    	//Initializing TEXTURES
+	    GLuint text_texture[MAX_TEXTS];
+	    GLuint help_window_texture[MAX_TEXTS];
 
-
-  	/* Chargement des textes */
-    SDL_Surface* text_area[MAX_TEXTS];
-    GLuint text_texture[MAX_TEXTS];
-
-    for(int i =  0; i < MAX_TEXTS; i++) {
-        text_area[i] = NULL;
-    }
-	    //Colors
-	    SDL_Color redColor = {255, 0, 0, 0};
-
-	    	//Text 0 : HEELLOOO !
-	    	loadText("Potatoes gonna potate", "Hack-Bold", redColor, 22, &text_area[0], &text_texture[0]);
+	    //WRITING texts
+	    fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
   
-    /* Variables globales */
+    /* Global variables */
     int mouse_x = 0, mouse_y = 0;
+    int help = 0;
 
-
-    /* Variables globales de listes d'affichage */
-        //GLuint debug_draw = debugDrawIDList(&imgPPM);
+    /* Global variables for GL Lists */
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
-        //GLuint debug_draw = debugDrawNodesIDList(nodesArray, &nbOfNodes);
+    GLuint help_window = createHelpList(help_window_texture);
 
-    /* Boucle principale */
+    /* MAIN LOOP */
     int loop = 1;
     while(loop) 
     {
-        /* Recuperation du temps au debut de la boucle */
+        /* Time at the beginning of the loop */
         Uint32 startTime = SDL_GetTicks();
         
-        /* Placer ici le code de dessin */
+        /* Drawing code */
 	        glClear(GL_COLOR_BUFFER_BIT);
 
 	        glMatrixMode(GL_MODELVIEW);
 	        glLoadIdentity();
 
 	        glCallList(debug_draw);
+	        renderCenterText(&text_area[0], &text_texture[0], 610, 700);
 
-	        //text
-	        renderText(&text_area[0], &text_texture[0], 600 , 398);
+	        if(help == 1) {
+	        	glCallList(help_window);
+	        }
 
 	        //available area test
-	        constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
+	        //constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
 
-        /* Echange du front et du back buffer : mise a jour de la fenetre */
+        /* Update window */
         SDL_GL_SwapBuffers();
         
-        /* Boucle traitant les evenements */
+        /* Event loop */
         SDL_Event e;
-        while(SDL_PollEvent(&e)) 
-        {
-            /* L'utilisateur ferme la fenetre : */
-            if(e.type == SDL_QUIT) 
-            {
+        while(SDL_PollEvent(&e)) {
+
+            if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
                 loop = 0;
                 break;
             }
-            if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-            {
-                loop = 0; 
-                break;
-            }
-            
-            /* Quelques exemples de traitement d'evenements : */
-            switch(e.type) 
-            {
-                /* Redimensionnement fenetre */
-                case SDL_VIDEORESIZE:
-                    reshape(&surface, e.resize.w, e.resize.h);
-                    break;
-                
-                /* Touche clavier */
-                case SDL_KEYDOWN:
-                    printf("touche pressee (code = %d)\n", e.key.keysym.sym);
-                    break;
 
-                case SDL_MOUSEMOTION:
-                    mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
-                    mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
-
-                    //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
-                    break;
-                    
-                default:
-                    break;
-            }
+            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help);
         }
 
-        /* Calcul du temps ecoule */
+        /* Passed time */
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
-        /* Si trop peu de temps s'est ecoule, on met en pause le programme */
-        if(elapsedTime < FRAMERATE_MILLISECONDS) 
-        {
+        /* If too few time, the program is paused */
+        if(elapsedTime < FRAMERATE_MILLISECONDS) {
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
 
-    /* Free les images */
-    for(int i = 0; i < MAX_SPRITES; i++) {
-        SDL_FreeSurface(sprite_img[i]);
-    }
-    
-    /* Free l'espace des textures */
-    for(int i = 0; i < MAX_SPRITES; i++) {
-        glDeleteTextures(1, &sprite_texture[i]);
-    }
+    /* Close fonts */
+    closeAllFonts(fonts, MAX_FONTS);
 
-    /* Liberation des ressources associees a la SDL */ 
-    SDL_Quit();
+    /* Free sprites */
+    freeSurfacesArray(sprite_img, MAX_SPRITES);
+    freeTexturesArray(sprite_texture, MAX_SPRITES);
 
-    //Faut free les linkkkksss et l'image
+    /* Free texts */
+    freeSurfacesArray(text_area, MAX_TEXTS);
+    freeTexturesArray(text_texture, MAX_TEXTS);
+    freeTexturesArray(help_window_texture, MAX_TEXTS);
+
+    /* Free links of all nodes and the PPM */
     for(int i = 0; i < nbOfNodes; i++) {
         freeAllLinks(nodesArray[i].link);
     }
     freeImage(&imgPPM);
+
+    /* Free TTF */
+    TTF_Quit();
+
+    /* Free SDL */ 
+    SDL_Quit();
     
     return EXIT_SUCCESS;
 }
+
+
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help) {
+    switch(e.type) 
+    {
+        /* Redimensionnement fenetre */
+        case SDL_VIDEORESIZE:
+            reshape(surface, e.resize.w, e.resize.h);
+            break;
+        
+        /* Touche clavier */
+        case SDL_KEYDOWN:
+
+			if(e.key.keysym.sym == SDLK_h) {
+				*help = 1;
+			} 
+            break;
+
+        case SDL_KEYUP:
+
+			if(e.key.keysym.sym == SDLK_h) {
+				*help = 0;
+			}
+			break;
+
+        case SDL_MOUSEMOTION:
+            *mouse_x = e.button.x * WINDOW_WIDTH / (*surface)->w;
+            *mouse_y = e.button.y * WINDOW_HEIGHT / (*surface)->h;
+            //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
+            break;               
+            
+        default:
+            break;
+    }
+}
+
+
 
 #endif
 

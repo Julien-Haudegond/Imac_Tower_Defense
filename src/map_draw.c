@@ -12,8 +12,7 @@
 //#include "../include/tower_list.h"
 
 
-void drawGridSquare(int filled) 
-{
+void drawGridSquare(int filled) {
     if(filled) 
     {
         glBegin(GL_TRIANGLE_FAN);
@@ -53,6 +52,31 @@ void drawWindowSquare(int filled) {
     glVertex2f( offset , - offset);
 
     glEnd();
+}
+
+void drawFullScreen(uint r, uint g, uint b, uint a) {
+    glPushMatrix();
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glBegin(GL_TRIANGLE_FAN);
+
+            glColor4ub(r, g, b, a);
+            
+            glVertex2f(0.0, 0.0);
+            glVertex2f( WINDOW_WIDTH , - WINDOW_HEIGHT);
+            glVertex2f( WINDOW_WIDTH , WINDOW_HEIGHT);
+            glVertex2f( - WINDOW_WIDTH , WINDOW_HEIGHT);
+            glVertex2f( - WINDOW_WIDTH , - WINDOW_HEIGHT);
+            glVertex2f( WINDOW_WIDTH, - WINDOW_HEIGHT);
+
+
+        glEnd();
+
+        glDisable(GL_BLEND);
+    glPopAttrib();
+    glPopMatrix();
 }
 
 
