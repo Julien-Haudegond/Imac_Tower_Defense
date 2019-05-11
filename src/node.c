@@ -53,10 +53,8 @@ void printNodeInfo(Node node) {
 	if(node.link != NULL) {
 		printf("Il est relié à : ");
 		printNodeLinks(node.link);
-		if(node.link->valarc != NULL){
-			printf("Valarcs correspondants : ");
-			printValarc(node.link);
-		}
+		printf("Valarcs correspondants : ");
+		printValarc(node.link);
 	}
 
 	printf("\n");
@@ -274,16 +272,12 @@ Node* getNextNode(Node node){
 	return node.link->next->node;
 }
 
-//Set arbitraire des valarcs dans les links
-void setValarc(Node nodesArray[], int nbNodes){
-	nodesArray[0].link->valarc = 0; // de 0 a 1
-	nodesArray[1].link->valarc = 0; // de 1 a 0
-	nodesArray[1].link->next->valarc = 5; // de 1 a 2
-	nodesArray[2].link->valarc = 5; // de 2 a 1 
-	nodesArray[2].link->next->valarc = 2; // de 2 a 3
-	nodesArray[3].link->valarc = 2; // de 3 a 2
-	return;
-}
+
+
+
+/**************
+* FUNCTIONS FOR DIJKSTRA ALGORITHM
+**************/
 
 void setInitialValuesDijkstra(Link* link) {
 	if(!link) {
@@ -296,11 +290,19 @@ void setInitialValuesDijkstra(Link* link) {
 	}
 }
 
-/**************
-* FUNCTIONS FOR DIJKSTRA ALGORITHM
-**************/
+//Set arbitraire des valarcs dans les links
+void setValarc(Node nodesArray[], int nbNodes){
+	nodesArray[0].link->valarc = 0; // de 0 a 1
+	nodesArray[1].link->valarc = 0; // de 1 a 0
+	nodesArray[1].link->next->valarc = 5; // de 1 a 2
+	nodesArray[2].link->valarc = 5; // de 2 a 1 
+	nodesArray[2].link->next->valarc = 2; // de 2 a 3
+	nodesArray[3].link->valarc = 2; // de 3 a 2
+	return;
+}
 
 void initializeDijkstra(Node* firstNode){
+	//Setting the first node value
 	firstNode->marqued = 0;
 	if(firstNode->type == 1){
 		firstNode->minValarc = 0;
@@ -320,7 +322,6 @@ void markNode(Node* node){
 void updateNodesMinValarc(Node* node){
 	return;
 }
-
 
 //Algo dégueu qui segfault (découpage ci dessus)
 /*

@@ -31,9 +31,11 @@ int travelPathFromNodeToNode(Node node1, Node node2);
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
 void initializeDijkstra(Node* firstNode);
+
 void setValarc(Node nodesArray[], int nbNodes);
 void markNode(Node* node);
 void updateNodesMinValarc(Node* node);
+void setInitialValuesDijkstra(struct Link* link);
 //Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
 
 #endif

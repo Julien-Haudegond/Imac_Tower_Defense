@@ -31,7 +31,7 @@ Wave* addMonster(Wave* wave, Monster myNewMonster){
 //a optimiser ou à appeler en boucle tant que tous les monstres dead ne sont pas éliminés
 Wave* deleteMonster(Wave* head){
 	Wave* tmp = head;
-	Wave* prev;
+	Wave* prev = malloc(sizeof(Wave));
 	//If the first Monster of the list is dead, delete and replace it by the next one 
 	if(tmp != NULL && tmp->monster.health <= 0){
 		head = tmp->nextMonster;
@@ -45,10 +45,11 @@ Wave* deleteMonster(Wave* head){
 	}
 
 	if(tmp == NULL) return head;
+	if (prev!=NULL){		
+		prev->nextMonster = tmp -> nextMonster;
+		free(tmp);
+	}
 
-
-	prev->nextMonster = tmp -> nextMonster;
-	free(tmp);
 	return head;
 }
 

@@ -59,7 +59,7 @@ int getNodeValueFromLink(Link* link){
 
 
 //Maybe check the type of node before ? 
-Link* getNextLinkMinValarc(Link* link){
+void setNextLinkMinValarc(Link* link){
 	printf("Valeur de la marque en %d - getNextNode : %d \n",link->node->value, link->node->marqued);
 	printf("Valeur de la marque en %d - getNextNode : %d \n",link->next->node->value, link->next->node->marqued);
 	if(link->node != NULL && link->next !=NULL){
@@ -76,9 +76,8 @@ Link* getNextLinkMinValarc(Link* link){
 			link = link->next;
 			
 		}
-		printf("Ca passeeee ? \n");
 		printf("Noeud suivant le + petit valarc : %d \n",link->node->value);
-		return minLink;
+		link = minLink;
 	}
 }
 

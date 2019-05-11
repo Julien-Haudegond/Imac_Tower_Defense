@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../include/monster.h"
 
-Monster* createMonster(Monster* m, MonsterType type, int resist){
+void createMonster(Monster* m, MonsterType type, int resist){
 	m = (Monster*)malloc(sizeof(Monster));
 	switch(type){
 		case GIANT:
@@ -18,7 +18,7 @@ Monster* createMonster(Monster* m, MonsterType type, int resist){
 	if(m == NULL){
 		exit(EXIT_FAILURE);
 	}
-	return m;
+	return;
 }
 
 Monster* setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward){

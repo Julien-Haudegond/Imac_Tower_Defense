@@ -33,7 +33,7 @@ TowerList* addTower(TowerList* tl, Tower myNewTower){
 *****************/
 TowerList* deleteTower(TowerList* head, int x, int y){
 	TowerList* tmp = head;
-	TowerList* prev;
+	TowerList* prev = malloc(sizeof(TowerList));
 	if(tmp != NULL && tmp->tower.x == x && tmp->tower.y == y){
 		head = tmp->nextTower;
 		free(tmp);
@@ -48,6 +48,7 @@ TowerList* deleteTower(TowerList* head, int x, int y){
 	if(tmp == NULL) return head;
 
 	prev->nextTower = tmp -> nextTower;
+
 	free(tmp);
 	return head;
 }

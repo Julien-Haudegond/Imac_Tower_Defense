@@ -81,7 +81,7 @@ int main(int argc, char** argv)
     //returns the nextNode of 0 having min minValarc (result must be the address of Node 1)
     markNode(&nodesArray[0]);
     //printf("Valeur de la marque en 0 : %d \n", nodesArray[0].marqued);
-    Link* ptrLink = getNextLinkMinValarc(nodesArray[1].link);
+    setNextLinkMinValarc(nodesArray[1].link);
     //free(ptrNode);
 
 
@@ -367,8 +367,10 @@ int main(int argc, char** argv)
 #ifdef READTHIS3
 
 void TestMonsters2(){
-    Monster *m = createMonster(m, GIANT, 1);
-    Monster *m2 = createMonster(m2, SWARMLING, 2);
+    Monster *m;
+    createMonster(m, GIANT, 1);
+    Monster *m2;
+    createMonster(m2, SWARMLING, 2);
     
     Wave* wave = addMonster(wave, *m);
     wave = addMonster(wave, *m2);
@@ -397,7 +399,5 @@ int main(){
     TestMonsters2();
     return 0;
 }
-
-
 
 #endif
