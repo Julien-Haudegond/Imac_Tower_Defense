@@ -19,19 +19,24 @@ typedef struct Node {
 	struct Link* link;
 } Node;
 
-
+//Create / get info from Nodes
 Node createNode(int value, int type, int x, int y);
 void linkNode(Node* root, Node* child);
 void printNodeInfo(Node node);
+
+//Checking Nodes functions
 int doInAndOutExist(Node nodesArray[], int* nbOfNodes);
 int isTherePathFromINtoOUT(Node nodesArray[], int* nbOfNodes);
 int depthFirstSearchFromRoot(Node nodesArray[], int* nbOfNodes, Node* root);
 int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 int travelPathFromNodeToNode(Node node1, Node node2);
+
+//Getters for next nodes
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
-void initializeDijkstra(Node* firstNode);
 
+//Functions for Dijkstra
+void initializeDijkstra(Node* firstNode);
 void setValarc(Node nodesArray[], int nbNodes);
 void markNode(Node* node);
 void updateNodesMinValarc(Node* node);

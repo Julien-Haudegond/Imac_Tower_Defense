@@ -28,6 +28,10 @@
 
 #include "../include/sdl_array.h"
 
+//removing uninitialized values warning (setting null pointers functions)
+#pragma GCC diagnostic ignored "-Wuninitialized"
+
+
 /***************
 *   define : 
 *   READTHIS 1 for PPM check & map debug + sprites
@@ -64,25 +68,21 @@ int main(int argc, char** argv)
     setValarc(nodesArray, 4);
    
     for(int i = 0; i < nbOfNodes; i++) {
-        //initializeDijkstra(&nodesArray[i]);
+        initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
-        //printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
+        printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
         //printf("\n");
     }
 
     /***********
     * TESTS ON DIJKSTRA FUNCTIONS
     ***********/
-    printf("\n TESTS DIJKSTRA \n");
-    //marking the Node 2 - FONCTIONNEL
-    //markNode(&nodesArray[2]);
-    //printNodeInfo(nodesArray[2]);
 
-    //returns the nextNode of 0 having min minValarc (result must be the address of Node 1)
-    markNode(&nodesArray[0]);
-    //printf("Valeur de la marque en 0 : %d \n", nodesArray[0].marqued);
-    setNextLinkMinValarc(nodesArray[1].link);
-    //free(ptrNode);
+    printf("\n ****** TESTS UDPATES VALARCS ****** \n");
+    initializeDijkstra(&nodesArray[0]);
+    updateNodesMinValarc(&nodesArray[0]);
+    printf("\n TEST MINVALARC NOEUD 0 : %d \n", nodesArray[0].minValarc);
+    printf("\n TEST MINVALARC NOEUD 1 : %d \n", nodesArray[1].minValarc);
 
 
     /* Initializing SDL */

@@ -3,21 +3,24 @@
 #include "../include/monster.h"
 
 void createMonster(Monster* m, MonsterType type, int resist){
-	m = (Monster*)malloc(sizeof(Monster));
-	switch(type){
-		case GIANT:
-			m = setMonsterStats(m, 0, 40, resist, 1, 30);
-			break;
-		case SWARMLING:
-			m = setMonsterStats(m, 1, 10, resist, 4, 5);
-			break;
-		default : 
-			exit(EXIT_FAILURE);
-			break;
-	}
 	if(m == NULL){
-		exit(EXIT_FAILURE);
+		m = (Monster*)malloc(sizeof(Monster));
+		switch(type){
+			case GIANT:
+				m = setMonsterStats(m, 0, 40, resist, 1, 30);
+				break;
+			case SWARMLING:
+				m = setMonsterStats(m, 1, 10, resist, 4, 5);
+				break;
+			default : 
+				exit(EXIT_FAILURE);
+				break;
+		}
+		if(m == NULL){
+			exit(EXIT_FAILURE);
+		}
 	}
+	
 	return;
 }
 

@@ -290,10 +290,10 @@ void setInitialValuesDijkstra(Link* link) {
 	}
 }
 
-//Set arbitraire des valarcs dans les links
+//Set arbitraire des valarcs dans les links en attendant de calculer les vrais valarcs
 void setValarc(Node nodesArray[], int nbNodes){
-	nodesArray[0].link->valarc = 0; // de 0 a 1
-	nodesArray[1].link->valarc = 0; // de 1 a 0
+	nodesArray[0].link->valarc = 7; // de 0 a 1
+	nodesArray[1].link->valarc = 7; // de 1 a 0
 	nodesArray[1].link->next->valarc = 5; // de 1 a 2
 	nodesArray[2].link->valarc = 5; // de 2 a 1 
 	nodesArray[2].link->next->valarc = 2; // de 2 a 3
@@ -319,7 +319,20 @@ void markNode(Node* node){
 }
 
 //Updates minValarc values according to the origin Node
-void updateNodesMinValarc(Node* node){
+void updateNodesMinValarc(Node* originNode){
+	int minValarcOrigin = originNode->minValarc;
+	int newMinValarc;
+	Link* tmpLink = originNode->link;
+	while(tmpLink != NULL){
+		newMinValarc = minValarcOrigin + tmpLink->valarc;
+		//First condition : Node's minValarc has never been set 
+		//Second condition : actual node's minValarc is bigger and could be smaller
+		if(tmpLink->node->minValarc == -1 || (tmpLink->node->minValarc > -1 && tmpLink->node->minValarc < newMinValarc)){
+			tmpLink->node->minValarc = newMinValarc;
+			printf("Update Node %d, minValarc set to %d", tmpLink->node->value, newMinValarc);
+		}
+		tmpLink = tmpLink -> next;
+	}
 	return;
 }
 
