@@ -28,7 +28,7 @@
 
 #include "../include/sdl_array.h"
 
-//removing uninitialized values warning (setting null pointers functions)
+//removing uninitialized values warning (functions setting values to pointers)
 #pragma GCC diagnostic ignored "-Wuninitialized"
 
 
