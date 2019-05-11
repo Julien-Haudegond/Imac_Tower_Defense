@@ -292,12 +292,39 @@ void setInitialValuesDijkstra(Link* link) {
 
 //Set arbitraire des valarcs dans les links en attendant de calculer les vrais valarcs
 void setValarc(Node nodesArray[], int nbNodes){
-	nodesArray[0].link->valarc = 7; // de 0 a 1
-	nodesArray[1].link->valarc = 7; // de 1 a 0
-	nodesArray[1].link->next->valarc = 5; // de 1 a 2
-	nodesArray[2].link->valarc = 5; // de 2 a 1 
-	nodesArray[2].link->next->valarc = 2; // de 2 a 3
-	nodesArray[3].link->valarc = 2; // de 3 a 2
+	//De 0 a 1
+	nodesArray[0].link->valarc = 7;
+	nodesArray[1].link->valarc = 7; 
+	//De 1 a 2
+	nodesArray[1].link->next->valarc = 5; 
+	nodesArray[2].link->valarc = 5; 
+	//De 2 a 3
+	nodesArray[2].link->next->valarc = 2; 
+	nodesArray[3].link->valarc = 2; 
+	//De 2 a 5
+	nodesArray[2].link->next->next->valarc = 8; 
+	nodesArray[5].link->valarc = 8; 
+	//De 3 a 4
+	nodesArray[3].link->next->valarc = 1; 
+	nodesArray[4].link->valarc = 1;
+	//De 4 a 5
+	nodesArray[4].link->next->valarc = 1; 
+	nodesArray[5].link->next->valarc = 1; 
+	//De 5 a 6
+	nodesArray[5].link->next->next->valarc = 0; 
+	nodesArray[6].link->valarc = 0; 
+	//De 5 a 7
+	nodesArray[5].link->next->next->next->valarc = 2; 
+	nodesArray[7].link->valarc = 2; 
+	//De 6 a 8
+	nodesArray[6].link->next->valarc = 0; 
+	nodesArray[8].link->valarc = 0; 
+	//De 7 a 8
+	nodesArray[7].link->next->valarc = 2; 
+	nodesArray[8].link->next->valarc = 2; 
+	//De 8 a 9
+	nodesArray[8].link->next->next->valarc = 1; 
+	nodesArray[9].link->valarc = 1; 
 	return;
 }
 
