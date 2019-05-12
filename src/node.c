@@ -57,7 +57,7 @@ void printNodeInfo(Node node) {
 		printValarc(node.link);
 	}
 
-	printf("\n");
+	printf("\n \n");
 }
 
 
@@ -272,9 +272,6 @@ Node* getNextNode(Node node){
 	return node.link->next->node;
 }
 
-
-
-
 /**************
 * FUNCTIONS FOR DIJKSTRA ALGORITHM
 **************/
@@ -285,7 +282,11 @@ void setInitialValuesDijkstra(Link* link) {
 	}
 	else {
 		link->node->marqued = 0;
-		link->node->minValarc = -1;
+		//So the first node of the path is not modified via links
+		if(link->node->type == 1)
+			link->node->minValarc = 0;
+		else
+			link->node->minValarc = -1;
 		setInitialValuesDijkstra(link->next);
 	}
 }
@@ -342,67 +343,109 @@ void initializeDijkstra(Node* firstNode){
 
 //sets the mark of the Node to 1 when it's been visited
 void markNode(Node* node){
+	//printf("Marquage du noeud %d \n", node->value);
 	node->marqued = 1;
 }
 
-//Updates minValarc values according to the origin Node
+//relache les arcs sortants
 void updateNodesMinValarc(Node* originNode){
+	//on recupere les infos du noeud
 	int minValarcOrigin = originNode->minValarc;
-	int newMinValarc;
-	Link* tmpLink = originNode->link;
-	while(tmpLink != NULL){
-		newMinValarc = minValarcOrigin + tmpLink->valarc;
-		//First condition : Node's minValarc has never been set 
-		//Second condition : actual node's minValarc is bigger and could be smaller
-		if(tmpLink->node->minValarc == -1 || (tmpLink->node->minValarc > -1 && tmpLink->node->minValarc < newMinValarc)){
-			tmpLink->node->minValarc = newMinValarc;
-			printf("Update Node %d, minValarc set to %d", tmpLink->node->value, newMinValarc);
+	Link* link = originNode->link;
+	int counter = 0;
+	while(link != NULL && counter < 8){
+		int newMinValarc = minValarcOrigin + link->valarc;
+		//if minValarc infinite : set to min
+		if (link->node->minValarc == -1 ||(link->node->minValarc > newMinValarc)){
+			link->node->minValarc = newMinValarc;
 		}
-		tmpLink = tmpLink -> next;
+		link = link->next;
+		counter ++;
 	}
 	return;
 }
 
-//Algo dégueu qui segfault (découpage ci dessus)
-/*
-Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes){
-   	Node currentNode = nodesArray[0];
-   	Node nextNode;
-   	Node nextNextNode;
-   	Node tmpNode;
-   	int nbNextNodes;
-   	int nbVisited = 0;
-   	int minValue;
-   	while(currentNode.value != finalNode.value){
-   		if (currentNode.type !=3){ // Node is not the end of the path
-   			//Taking each next node and updating attribute minValarc
-   			if(currentNode.type == 2){
-   				nextNode = getNextNode(currentNode);
-   				while(nextNode != NULL){
-   					nextNode.minValarc = currentNode.minValarc + currentNode.link->valarc;
-   					nextNode = getNextNode(nextNode);
-   				}
-   				nextNode = getFirstNextNode(currentNode);
-   			}else if(currentNode.type == 1){
-   				nextNode = getFirstNextNode(currentNode);
-   				while(nextNode != NULL){
-   					nextNode.minValarc = currentNode.minValarc + currentNode.link->valarc;
-   					nextNode = getNextNode(nextNode);
-   				}
-   				nextNode = getFirstNextNode(currentNode);
-   			}
-   			//Selecting the nextNode with the minimum minValarc value
-   			nbNextNodes = getAmountofNodes(currentNode->link);
-   			minValue = nextNode.minValarc;
-   			for(int j = 1; j < nbNextNodes; j++){
-   				nextNode = getNextNode(nextNode);
-   				if(nextNode.minValarc <= minValue){
-   					minValue = nextNode.minValarc;
-   					tmpNode = nextNode;
-   				}
-   			}
-   			currentNode = tmpNode; //Next node that has minimum value minValarc		
-   		}
-   		
-   	}
-}*/
+int areAllNodesVisited(Node *nodesArray, int nbNodes){
+	int counter = 0;
+	int allVisited = 0; //0 means all nodes are visited
+	//Stops the loop to the first encoutner of a non marked node
+	while(allVisited == 0 && counter < nbNodes){
+		if(nodesArray[counter].marqued == 0){
+			allVisited = 1;
+		}
+		counter++;
+	}
+	return allVisited;
+}
+
+
+//On recherche le sommet suivant avec le + petit minValarc
+int getNextNodeValueWithMinValarc(struct Link* link){
+	if(link->node != NULL){
+		int minNodeValue = 0;
+		int minValEncountered = 15000;
+		
+		while(link != NULL){
+			if(link->node->marqued == 0 && link->node->minValarc < minValEncountered){
+				minValEncountered = link->node->minValarc;
+				minNodeValue = link->node->value;
+			}
+			link = link->next;
+		}
+		return minNodeValue;
+	}
+	return 0;
+}
+
+int pickFirstNonMarquedNode(Node *nodesArray, int nbNodes){
+	int counter = 0;
+	int found = 0; //when one non marqued node is found, set to 1
+	Node* node = &nodesArray[0];
+	while(counter < nbNodes && found == 0){
+		if(nodesArray[counter].marqued == 0){
+			node = &nodesArray[counter];
+			//printf("Value du node a parcourir : %d\n", nodesArray[counter].value);
+			found = 1;
+		}
+		counter++;
+	}
+	return node->value;
+}
+
+void shortestPath(Node *nodesArray, int nbNodes){
+	//Initialization
+	for(int i =0; i < nbNodes; i++){
+		initializeDijkstra(&nodesArray[i]);
+	}
+	Node* currentNode = &nodesArray[0];
+	Link* tmpLink = nodesArray[0].link;
+	int minNodeValue;
+	int allVisited = 1; //will be set to 0 when all nodes will be visited
+
+	while(allVisited == 1){
+		markNode(currentNode); //node gets visited : mark set to 1
+
+		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed
+		//printf("\n On traite le noeud %d \n",currentNode->value);
+		minNodeValue = getNextNodeValueWithMinValarc(tmpLink); //Current node = neighbour node that's not been visited, with shorter valarc
+		for(int j = 0; j < nbNodes; j++){
+			if(nodesArray[j].value == minNodeValue){
+				currentNode = &nodesArray[j];
+			}
+		}
+
+		//Some nodes may not be marqued at the end and the algorithm is stuck
+		if(currentNode->value == 0 && currentNode->marqued == 1){
+			//printf("Algorithm stuck here \n");
+			minNodeValue = pickFirstNonMarquedNode(nodesArray, nbNodes);
+			for(int k = 0; k < nbNodes; k++){
+				if(nodesArray[k].value == minNodeValue){
+					currentNode = &nodesArray[k];
+				}
+			}
+		}
+		tmpLink = currentNode->link;
+		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes were visited
+	}
+	return;
+}

@@ -58,26 +58,5 @@ int getNodeValueFromLink(Link* link){
 }
 
 
-//Maybe check the type of node before ? 
-void setNextLinkMinValarc(Link* link){
-	printf("Valeur de la marque en %d - getNextNode : %d \n",link->node->value, link->node->marqued);
-	printf("Valeur de la marque en %d - getNextNode : %d \n",link->next->node->value, link->next->node->marqued);
-	if(link->node != NULL && link->next !=NULL){
-		int min = 15000;
-		Link* minLink; // noeud 0
-		//printf("Adresse de link %d \n",link);
-		while(link != NULL && link->next != NULL){
-			if(link->node->marqued == 0 && link->valarc < min){
-				printf("Noeud %d non marqué !\n", link->node->value);
-				min = link->valarc;
-				minLink = link;
-			}
 
-			link = link->next;
-			
-		}
-		printf("Noeud suivant le + petit valarc : %d \n",link->node->value);
-		link = minLink;
-	}
-}
 

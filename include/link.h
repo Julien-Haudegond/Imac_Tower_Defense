@@ -17,6 +17,5 @@ void printNodeLinks(Link* link);
 void printValarc(Link* link);
 //Link* getNextLink(Link* link);
 int getNodeValueFromLink(Link* link);
-void setNextLinkMinValarc(Link* link);
 
 #endif

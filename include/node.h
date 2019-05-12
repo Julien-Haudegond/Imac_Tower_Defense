@@ -36,11 +36,13 @@ Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
 
 //Functions for Dijkstra
+int areAllNodesVisited(Node *nodesArray, int nbNodes);
 void initializeDijkstra(Node* firstNode);
 void setValarc(Node nodesArray[], int nbNodes);
 void markNode(Node* node);
 void updateNodesMinValarc(Node* node);
 void setInitialValuesDijkstra(struct Link* link);
-//Node* shortestPath(Node nodesArray[], Node finalNode, int nbNodes)
+//struct Link* setNextLinkMinValarc(struct Link* link);
+void shortestPath(Node *nodesArray, int nbNodes);
 
 #endif

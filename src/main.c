@@ -65,25 +65,23 @@ int main(int argc, char** argv)
     readITD(itdPath, &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
     //test valarc et init Dijkstra
-    setValarc(nodesArray, 4);
-   
+    
+    setValarc(nodesArray, nbOfNodes);
+    
+    
     for(int i = 0; i < nbOfNodes; i++) {
         initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
-        printf("Minvalarc du Node : %d \n", nodesArray[i].minValarc);
         //printf("\n");
     }
 
-    /***********
-    * TESTS ON DIJKSTRA FUNCTIONS
-    ***********/
 
-    printf("\n ****** TESTS UDPATES VALARCS ****** \n");
-    initializeDijkstra(&nodesArray[0]);
-    updateNodesMinValarc(&nodesArray[0]);
-    printf("\n TEST MINVALARC NOEUD 0 : %d \n", nodesArray[0].minValarc);
-    printf("\n TEST MINVALARC NOEUD 1 : %d \n", nodesArray[1].minValarc);
-
+    shortestPath(nodesArray, nbOfNodes);
+    printf("\n \n ******* Test résultats Dijkstra ***** \n \n");
+    for (int j = 0; j < nbOfNodes; j++){
+        printNodeInfo(nodesArray[j]);
+    }
+    
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
