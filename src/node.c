@@ -293,6 +293,7 @@ void setInitialValuesDijkstra(Link* link) {
 
 //Set arbitraire des valarcs dans les links en attendant de calculer les vrais valarcs
 void setValarc(Node nodesArray[], int nbNodes){
+	/*
 	//De 0 a 1
 	nodesArray[0].link->valarc = 7;
 	nodesArray[1].link->valarc = 7; 
@@ -326,6 +327,41 @@ void setValarc(Node nodesArray[], int nbNodes){
 	//De 8 a 9
 	nodesArray[8].link->next->next->valarc = 1; 
 	nodesArray[9].link->valarc = 1; 
+	*/
+
+	//De 0 a 1
+	nodesArray[0].link->valarc = 2;
+	nodesArray[1].link->valarc = 2; 
+	//De 1 a 2
+	nodesArray[1].link->next->valarc = 4; 
+	nodesArray[2].link->valarc = 4; 
+	//De 2 a 3
+	nodesArray[2].link->next->valarc = 1; 
+	nodesArray[3].link->valarc = 1; 
+	//De 2 a 5
+	nodesArray[2].link->next->next->valarc = 4; 
+	nodesArray[5].link->valarc = 4; 
+	//De 3 a 4
+	nodesArray[3].link->next->valarc = 5; 
+	nodesArray[4].link->valarc = 5;
+	//De 4 a 5
+	nodesArray[4].link->next->valarc = 2; 
+	nodesArray[5].link->next->valarc = 2; 
+	//De 5 a 6
+	nodesArray[5].link->next->next->valarc = 0; 
+	nodesArray[6].link->valarc = 0; 
+	//De 5 a 7
+	nodesArray[5].link->next->next->next->valarc = 1; 
+	nodesArray[7].link->valarc = 1; 
+	//De 6 a 8
+	nodesArray[6].link->next->valarc = 3; 
+	nodesArray[8].link->valarc = 3; 
+	//De 7 a 8
+	nodesArray[7].link->next->valarc = 0; 
+	nodesArray[8].link->next->valarc = 0; 
+	//De 8 a 9
+	nodesArray[8].link->next->next->valarc = 2; 
+	nodesArray[9].link->valarc = 2; 
 	return;
 }
 
@@ -357,7 +393,9 @@ void updateNodesMinValarc(Node* originNode){
 		int newMinValarc = minValarcOrigin + link->valarc;
 		//if minValarc infinite : set to min
 		if (link->node->minValarc == -1 ||(link->node->minValarc > newMinValarc)){
+			//printf("Update node %d \n",link->node->value );
 			link->node->minValarc = newMinValarc;
+			printf("newMinValarc : %d set to %d \n ", newMinValarc, link->node->value);
 		}
 		link = link->next;
 		counter ++;
@@ -378,38 +416,31 @@ int areAllNodesVisited(Node *nodesArray, int nbNodes){
 	return allVisited;
 }
 
-
-//On recherche le sommet suivant avec le + petit minValarc
-int getNextNodeValueWithMinValarc(struct Link* link){
-	if(link->node != NULL){
-		int minNodeValue = 0;
-		int minValEncountered = 15000;
-		
-		while(link != NULL){
-			if(link->node->marqued == 0 && link->node->minValarc < minValEncountered){
-				minValEncountered = link->node->minValarc;
-				minNodeValue = link->node->value;
-			}
-			link = link->next;
+//On recherche le sommet du graphe avec le + petit minValarc qui n'a pas été parcouru
+Node* getNextNodeValueWithMinValarc(Node *nodesArray, int nbNodes){
+	int minValue = 15000;
+	Node* tmp;
+	for(int i = 0; i < nbNodes; i++){
+		if(nodesArray[i].marqued == 0 && nodesArray[i].minValarc < minValue && nodesArray[i].minValarc != -1){
+			tmp = &nodesArray[i];
 		}
-		return minNodeValue;
 	}
-	return 0;
+	return tmp;
 }
 
-int pickFirstNonMarquedNode(Node *nodesArray, int nbNodes){
+Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes){
 	int counter = 0;
 	int found = 0; //when one non marqued node is found, set to 1
 	Node* node = &nodesArray[0];
 	while(counter < nbNodes && found == 0){
 		if(nodesArray[counter].marqued == 0){
 			node = &nodesArray[counter];
-			//printf("Value du node a parcourir : %d\n", nodesArray[counter].value);
+			printf("Value du node a parcourir : %d\n", nodesArray[counter].value);
 			found = 1;
 		}
 		counter++;
 	}
-	return node->value;
+	return node;
 }
 
 void shortestPath(Node *nodesArray, int nbNodes){
@@ -421,31 +452,17 @@ void shortestPath(Node *nodesArray, int nbNodes){
 	Link* tmpLink = nodesArray[0].link;
 	int minNodeValue;
 	int allVisited = 1; //will be set to 0 when all nodes will be visited
-
-	while(allVisited == 1){
+	int loop = 0;
+	while(allVisited == 1 && loop < 15){
+		//printf("Node traité : %d \n", currentNode->value);
 		markNode(currentNode); //node gets visited : mark set to 1
 
 		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed
 		//printf("\n On traite le noeud %d \n",currentNode->value);
-		minNodeValue = getNextNodeValueWithMinValarc(tmpLink); //Current node = neighbour node that's not been visited, with shorter valarc
-		for(int j = 0; j < nbNodes; j++){
-			if(nodesArray[j].value == minNodeValue){
-				currentNode = &nodesArray[j];
-			}
-		}
-
-		//Some nodes may not be marqued at the end and the algorithm is stuck
-		if(currentNode->value == 0 && currentNode->marqued == 1){
-			//printf("Algorithm stuck here \n");
-			minNodeValue = pickFirstNonMarquedNode(nodesArray, nbNodes);
-			for(int k = 0; k < nbNodes; k++){
-				if(nodesArray[k].value == minNodeValue){
-					currentNode = &nodesArray[k];
-				}
-			}
-		}
-		tmpLink = currentNode->link;
+		currentNode = getNextNodeValueWithMinValarc(nodesArray,nbNodes);
+		//tmpLink = currentNode->link;
 		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes were visited
+		loop++;
 	}
 	return;
 }

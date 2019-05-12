@@ -42,6 +42,7 @@ void setValarc(Node nodesArray[], int nbNodes);
 void markNode(Node* node);
 void updateNodesMinValarc(Node* node);
 void setInitialValuesDijkstra(struct Link* link);
+Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes);
 //struct Link* setNextLinkMinValarc(struct Link* link);
 void shortestPath(Node *nodesArray, int nbNodes);
 
