@@ -56,6 +56,9 @@ void printNodeInfo(Node node) {
 		printf("Valarcs correspondants : ");
 		printValarc(node.link);
 	}
+	if(node.previousPath != NULL){
+		printf("Node précédent pour le chemin le plus court : %d", node.previousPath->value);
+	}
 
 	printf("\n \n");
 }
@@ -393,8 +396,8 @@ void updateNodesMinValarc(Node* originNode){
 		int newMinValarc = minValarcOrigin + link->valarc;
 		//if minValarc infinite : set to min
 		if (link->node->minValarc == -1 ||(link->node->minValarc > newMinValarc)){
-			//printf("Update node %d \n",link->node->value );
 			link->node->minValarc = newMinValarc;
+			link->node->previousPath = originNode;
 			printf("newMinValarc : %d set to %d \n ", newMinValarc, link->node->value);
 		}
 		link = link->next;
@@ -419,7 +422,7 @@ int areAllNodesVisited(Node *nodesArray, int nbNodes){
 //On recherche le sommet du graphe avec le + petit minValarc qui n'a pas été parcouru
 Node* getNextNodeValueWithMinValarc(Node *nodesArray, int nbNodes){
 	int minValue = 15000;
-	Node* tmp;
+	Node* tmp = NULL;
 	for(int i = 0; i < nbNodes; i++){
 		if(nodesArray[i].marqued == 0 && nodesArray[i].minValarc < minValue && nodesArray[i].minValarc != -1){
 			tmp = &nodesArray[i];
@@ -449,20 +452,35 @@ void shortestPath(Node *nodesArray, int nbNodes){
 		initializeDijkstra(&nodesArray[i]);
 	}
 	Node* currentNode = &nodesArray[0];
-	Link* tmpLink = nodesArray[0].link;
-	int minNodeValue;
 	int allVisited = 1; //will be set to 0 when all nodes will be visited
-	int loop = 0;
-	while(allVisited == 1 && loop < 15){
-		//printf("Node traité : %d \n", currentNode->value);
+	
+	while(allVisited == 1){ // while there are still nodes to visit
 		markNode(currentNode); //node gets visited : mark set to 1
-
 		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed
-		//printf("\n On traite le noeud %d \n",currentNode->value);
 		currentNode = getNextNodeValueWithMinValarc(nodesArray,nbNodes);
-		//tmpLink = currentNode->link;
-		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes were visited
-		loop++;
+		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes are visited
 	}
 	return;
+}
+
+int countNodesShortestPath(Node* nodesArray){
+	//getting the end Node of the path
+	Node* finalNode = &nodesArray[0];
+	int found = 0;
+	int counter = 0;
+	while(found == 0){
+		if(nodesArray[counter].type == 2){ //while it's not the end Node of the path
+			finalNode = &nodesArray[counter];
+			found = 1;
+		}
+		counter ++;
+	}
+
+	counter = 1;
+	//counting the nodes
+	while(finalNode->previousPath !=NULL){
+		finalNode = finalNode->previousPath;
+		counter ++;
+	}
+	return counter;
 }

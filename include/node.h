@@ -11,6 +11,7 @@ typedef enum {
 
 typedef struct Node {
 	int minValarc;
+	struct Node* previousPath; //Previous node for shortest path
 	int value;
 	int type;
 	int x, y; //Grid coords
@@ -45,5 +46,6 @@ void setInitialValuesDijkstra(struct Link* link);
 Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes);
 //struct Link* setNextLinkMinValarc(struct Link* link);
 void shortestPath(Node *nodesArray, int nbNodes);
+int countNodesShortestPath(Node* nodesArray);
 
 #endif

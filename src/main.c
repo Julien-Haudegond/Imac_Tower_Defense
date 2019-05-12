@@ -82,6 +82,8 @@ int main(int argc, char** argv)
         printNodeInfo(nodesArray[j]);
     }
     
+    int nbShortest = countNodesShortestPath(nodesArray);
+    printf("Nombre de nodes : %d \n", nbShortest);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
