@@ -47,5 +47,6 @@ Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes);
 //struct Link* setNextLinkMinValarc(struct Link* link);
 void shortestPath(Node *nodesArray, int nbNodes);
 int countNodesShortestPath(Node* nodesArray);
+void fillShortestPath(int* path, int nbNodes, Node* nodesArray);
 
 #endif

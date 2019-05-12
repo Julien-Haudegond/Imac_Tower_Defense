@@ -398,7 +398,6 @@ void updateNodesMinValarc(Node* originNode){
 		if (link->node->minValarc == -1 ||(link->node->minValarc > newMinValarc)){
 			link->node->minValarc = newMinValarc;
 			link->node->previousPath = originNode;
-			printf("newMinValarc : %d set to %d \n ", newMinValarc, link->node->value);
 		}
 		link = link->next;
 		counter ++;
@@ -446,6 +445,7 @@ Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes){
 	return node;
 }
 
+//Dijkstra algorithm : sets the minValarc of each node to the minimum from the first node
 void shortestPath(Node *nodesArray, int nbNodes){
 	//Initialization
 	for(int i =0; i < nbNodes; i++){
@@ -483,4 +483,24 @@ int countNodesShortestPath(Node* nodesArray){
 		counter ++;
 	}
 	return counter;
+}
+
+void fillShortestPath(int* path, int nbNodes, Node* nodesArray) {
+	//getting the end Node of the path
+	Node* finalNode = &nodesArray[0];
+	int found = 0;
+	int counter = 0;
+	while(found == 0){
+		if(nodesArray[counter].type == 2){ //while it's not the end Node of the path
+			finalNode = &nodesArray[counter];
+			found = 1;
+		}
+		counter ++;
+	}
+
+	for(int i = nbNodes-1; i >= 0; i--){
+		path[i] = finalNode->value;
+		finalNode = finalNode->previousPath;
+	}
+	return;
 }
