@@ -190,7 +190,7 @@ int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes) {
 	return EXIT_SUCCESS;
 }
 
-// A COMPLETER POUR AVOIR LES VALARCS !!
+/*
 //Travel every path pixel from one node to another
 int travelPathFromNodeToNode(Node node1, Node node2) {
 	///// VARIABLES
@@ -267,7 +267,7 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 
 	return EXIT_SUCCESS;
 }
-
+*/
 
 int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 	///// VARIABLES
@@ -280,7 +280,6 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 
 	int nbOfTowers = countTowers(tl);
 	int counter = 0; //To fill towersArray
-	Tower** towersArray;
 
 	int valarc = 0;
 
@@ -289,35 +288,37 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 
 	///// CODE
 
+	if(nbOfTowers == 0) {
+		return 0;
+	}
+
 	//Check the TowerList
-	if(nbOfTowers != 0) {
-		towersArray = malloc(nbOfTowers*sizeof(Tower*));
+	Tower** towersArray = malloc(nbOfTowers*sizeof(Tower*));
 
-		if(!towersArray) {
-			fprintf(stderr, "Error: bad alloc memory for the Towers Array (valarc calculation)\n");
-			exit(EXIT_FAILURE);
-		}
+	if(!towersArray) {
+		fprintf(stderr, "Error: bad alloc memory for the Towers Array (valarc calculation)\n");
+		exit(EXIT_FAILURE);
+	}
 
-		//Fill towersArray
-		counter = 0;
-		if(tl->tower) {
-			towersArray[counter] = tl->tower;
-			counter++;
+	//Fill towersArray
+	counter = 0;
+	if(tl->tower) {
+		towersArray[counter] = tl->tower;
+		counter++;
 
-			while(tl->nextTower) {
-				tl = tl->nextTower;
-				if(tl->tower) {
-					towersArray[counter] = tl->tower;
-					counter++;
-				}
+		while(tl->nextTower) {
+			tl = tl->nextTower;
+			if(tl->tower) {
+				towersArray[counter] = tl->tower;
+				counter++;
 			}
 		}
+	}
 
-		//Check if counter != nbOfTowers
-		if(counter != nbOfTowers) {
-			fprintf(stderr, "Error : counter is different of nbOfTowers\n");
-			exit(EXIT_FAILURE);
-		}
+	//Check if counter != nbOfTowers
+	if(counter != nbOfTowers) {
+		fprintf(stderr, "Error : counter is different of nbOfTowers\n");
+		exit(EXIT_FAILURE);
 	}
 
 	//Check if the nodes have the same spot
@@ -352,13 +353,11 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 				current_x = start_x + j;
 				current_y = start_y + i;
 
-				if(nbOfTowers != 0) {
-					for(int k = 0; k < nbOfTowers; k++) {
-						squareDistance = pow(current_x - towersArray[k]->win_x, 2) + pow(current_y - towersArray[k]->win_y, 2);
+				for(int k = 0; k < nbOfTowers; k++) {
+					squareDistance = pow(current_x - towersArray[k]->win_x, 2) + pow(current_y - towersArray[k]->win_y, 2);
 
-						if(squareDistance <= (towersArray[k]->range*towersArray[k]->range)) {
-							valarc++;
-						}
+					if(squareDistance <= (towersArray[k]->range*towersArray[k]->range)) {
+						valarc++;
 					}
 				}
 			}
@@ -383,16 +382,24 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 			for(int j = 0; j < offset; j++) { //Each pixel of the lines
 				current_x = start_x + j;
 				current_y = start_y + i;
-				printf("Hey c un test");
+
+				for(int k = 0; k < nbOfTowers; k++) {
+					squareDistance = pow(current_x - towersArray[k]->win_x, 2) + pow(current_y - towersArray[k]->win_y, 2);
+
+					if(squareDistance <= (towersArray[k]->range*towersArray[k]->range)) {
+						valarc++;
+					}
+				}
 			}
 		}
 	}
 
+	if(towersArray) {
+		free(towersArray);
+	}
+
 	return valarc;
 }
-
-
-
 
 
 Node* getFirstNextNode(Node node){

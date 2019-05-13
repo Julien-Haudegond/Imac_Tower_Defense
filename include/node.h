@@ -31,7 +31,7 @@ int doInAndOutExist(Node nodesArray[], int* nbOfNodes);
 int isTherePathFromINtoOUT(Node nodesArray[], int* nbOfNodes);
 int depthFirstSearchFromRoot(Node nodesArray[], int* nbOfNodes, Node* root);
 int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
-int travelPathFromNodeToNode(Node node1, Node node2);
+//int travelPathFromNodeToNode(Node node1, Node node2);
 
 int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl);
 
