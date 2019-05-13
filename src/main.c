@@ -77,16 +77,26 @@ int main(int argc, char** argv)
     for(int i = 0; i < nbOfNodes; i++) {
         initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
-        //printf("\n");
     }
 
-
+    //Setting minValarc values for shortest path
     shortestPath(nodesArray, nbOfNodes);
+
     printf("\n \n ******* Test résultats Dijkstra ***** \n \n");
     for (int j = 0; j < nbOfNodes; j++){
         printNodeInfo(nodesArray[j]);
     }
     
+    printf("\n \n ********** NODES CHEMIN LE + COURT ********** \n \n");
+    int nbShortest = countNodesShortestPath(nodesArray);
+    printf("Nombre de nodes : %d \n", nbShortest);
+    int *nodesPath = malloc(nbShortest*sizeof(int));
+    //filling nodesPath array
+    fillShortestPath(nodesPath, nbShortest, nodesArray);
+    for(int k = 0; k < nbShortest; k++){
+        printf("Noeud %d : %d \n", k, nodesPath[k]);
+    }
+    free(nodesPath);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
