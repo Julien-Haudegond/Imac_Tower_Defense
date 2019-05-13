@@ -41,7 +41,7 @@ void printValarc(Link* link) {
 		return;
 	}
 	else {
-		printf("%d ", link->valarc);
+		printf("%ld ", link->valarc);
 		printValarc(link->next);
 	}
 }
@@ -58,5 +58,23 @@ int getNodeValueFromLink(Link* link){
 }
 
 
+int updateAllValarcLinks(Node nodesArray[], int nbOfNodes, TowerList* tl) {
+	Node current;
+	Link* tmp = NULL;
 
+	for(int i = 0; i < nbOfNodes; i++) {
+		current = nodesArray[i];
 
+		if(current.link) {
+			tmp = current.link;
+			tmp->valarc = getValarcBetweenNodes(current, *(tmp->node), tl);
+
+			while(tmp->next) {
+				tmp = tmp->next;
+				tmp->valarc = getValarcBetweenNodes(current, *(tmp->node), tl);
+			}
+		}
+	}
+
+	return EXIT_SUCCESS;
+}

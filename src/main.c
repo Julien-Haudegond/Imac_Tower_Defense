@@ -15,6 +15,7 @@
 
 #include "../include/itd.h"
 #include "../include/node.h"
+#include "../include/link.h"
 #include "../include/image.h"
 
 #include "../include/map_draw.h"
@@ -71,18 +72,17 @@ int main(int argc, char** argv)
     addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
     addTower(towerList, ELECTRIC, 100, 50); //TEST POUR VALARCS
     addTower(towerList, WATER, 500, 40); //TEST POUR VALARCS
+    addTower(towerList, WATER, 900, 700); //TEST POUR VALARCS
 
     printTowerList(towerList);
     printf("Il y a %d tours.\n", countTowers(towerList));
 
-    int valarc1 = getValarcBetweenNodes(nodesArray[0], nodesArray[1], towerList);
-
-    printf("Valarc1 = %d\n", valarc1);
+    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
 
 
     //test valarc et init Dijkstra
     
-    setValarc(nodesArray, nbOfNodes);
+    //setValarc(nodesArray, nbOfNodes);
     
     
     for(int i = 0; i < nbOfNodes; i++) {

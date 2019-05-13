@@ -48,7 +48,7 @@ all : $(OBJ)
 	@echo "*** then, type       : ./bin/program.out Map_xx.itd    ***"
 	@echo "**********************************************************"
 
-$(MAIN_O) : src/main.c include/itd.h include/node.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
+$(MAIN_O) : src/main.c include/itd.h include/node.h include/link.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
 	mkdir -p obj
 	@echo "compile program"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

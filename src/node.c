@@ -269,7 +269,7 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 }
 */
 
-int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
+long getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 	///// VARIABLES
 
 	Node min_node;
@@ -281,7 +281,7 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 	int nbOfTowers = countTowers(tl);
 	int counter = 0; //To fill towersArray
 
-	int valarc = 0;
+	long valarc = 0;
 
 	int squareDistance = 0;
 
@@ -400,6 +400,7 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 
 	return valarc;
 }
+
 
 
 Node* getFirstNextNode(Node node){

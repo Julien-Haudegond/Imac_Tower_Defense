@@ -33,7 +33,7 @@ int depthFirstSearchFromRoot(Node nodesArray[], int* nbOfNodes, Node* root);
 int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 //int travelPathFromNodeToNode(Node node1, Node node2);
 
-int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl);
+long getValarcBetweenNodes(Node node1, Node node2, TowerList* tl);
 
 //Getters for next nodes
 Node* getFirstNextNode(Node node);
