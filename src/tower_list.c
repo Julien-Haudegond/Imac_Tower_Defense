@@ -13,6 +13,15 @@ TowerList* createEmptyTowerList() {
 	return tl;
 }
 
+void freeTowerList(TowerList* tl) {
+	if(tl) {
+		if(tl->nextTower) {
+			freeTowerList(tl->nextTower);
+		}
+		free(tl);
+	}
+}
+
 /*************
 *	Adds tower to the list specified in arguments
 *************/
@@ -89,4 +98,24 @@ void printTowerList(TowerList* tl){
 	if(tl->tower == NULL && tl->nextTower == NULL) {
 		printf("Tower list is empty.\n");
 	}
+}
+
+int countTowers(TowerList* tl) {
+	int counter = 0;
+
+	if(tl->tower == NULL && tl->nextTower == NULL) {
+		return 0;
+	}
+
+	if(tl->tower) {
+		counter++;
+		while(tl->nextTower) {
+			tl = tl->nextTower;
+			if(tl->tower) {
+				counter++;				
+			}
+		}
+	}
+
+	return counter;
 }

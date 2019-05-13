@@ -13,6 +13,7 @@ typedef struct TowerList{
 
 
 TowerList* createEmptyTowerList();
+void freeTowerList(TowerList* tl);
 
 
 void addTower(TowerList* tl, TowerType type, int x, int y);
@@ -20,5 +21,6 @@ void addTower(TowerList* tl, TowerType type, int x, int y);
 //int deleteTower(TowerList** head, int x, int y);
 TowerList* deleteTower(TowerList* head, int x, int y);
 void printTowerList(TowerList *tl);
+int countTowers(TowerList* tl);
 
 #endif

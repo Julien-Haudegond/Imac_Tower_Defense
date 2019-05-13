@@ -68,6 +68,17 @@ int main(int argc, char** argv)
     //Initialize a list of towers and buildings
     TowerList* towerList = createEmptyTowerList();
 
+    addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
+    addTower(towerList, ELECTRIC, 100, 50); //TEST POUR VALARCS
+    addTower(towerList, WATER, 500, 40); //TEST POUR VALARCS
+
+    printTowerList(towerList);
+    printf("Il y a %d tours.\n", countTowers(towerList));
+
+    int valarc1 = getValarcBetweenNodes(nodesArray[0], nodesArray[1], towerList);
+
+    printf("Valarc1 = %d\n", valarc1);
+
 
     //test valarc et init Dijkstra
     
@@ -202,6 +213,9 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+
+    /* Free Tower List */
+    freeTowerList(towerList);
 
     /* Close fonts */
     closeAllFonts(fonts, MAX_FONTS);

@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <math.h>
 
 #include "../include/node.h"
 #include "../include/const.h"
@@ -268,7 +269,7 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 }
 
 
-int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers) {
+int getValarcBetweenNodes(Node node1, Node node2, TowerList* tl) {
 	///// VARIABLES
 
 	Node min_node;
@@ -277,14 +278,46 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers) 
 	int offset;
 	int semiBloc = GL_SPRITE_SIZE / 2;
 
-	Tower towers[MAX_TOWERS];
+	int nbOfTowers = countTowers(tl);
+	int counter = 0; //To fill towersArray
+	Tower** towersArray;
+
+	int valarc = 0;
+
+	int squareDistance = 0;
 
 
 	///// CODE
 
 	//Check the TowerList
-	if(tl.tower) {
-		
+	if(nbOfTowers != 0) {
+		towersArray = malloc(nbOfTowers*sizeof(Tower*));
+
+		if(!towersArray) {
+			fprintf(stderr, "Error: bad alloc memory for the Towers Array (valarc calculation)\n");
+			exit(EXIT_FAILURE);
+		}
+
+		//Fill towersArray
+		counter = 0;
+		if(tl->tower) {
+			towersArray[counter] = tl->tower;
+			counter++;
+
+			while(tl->nextTower) {
+				tl = tl->nextTower;
+				if(tl->tower) {
+					towersArray[counter] = tl->tower;
+					counter++;
+				}
+			}
+		}
+
+		//Check if counter != nbOfTowers
+		if(counter != nbOfTowers) {
+			fprintf(stderr, "Error : counter is different of nbOfTowers\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	//Check if the nodes have the same spot
@@ -318,9 +351,16 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers) 
 			for(int j = 0; j < GL_SPRITE_SIZE; j++) { //Each pixel on a line inside a bloc
 				current_x = start_x + j;
 				current_y = start_y + i;
-				
-				//DO WORKS
 
+				if(nbOfTowers != 0) {
+					for(int k = 0; k < nbOfTowers; k++) {
+						squareDistance = pow(current_x - towersArray[k]->win_x, 2) + pow(current_y - towersArray[k]->win_y, 2);
+
+						if(squareDistance <= (towersArray[k]->range*towersArray[k]->range)) {
+							valarc++;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -348,7 +388,7 @@ int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers) 
 		}
 	}
 
-	return EXIT_SUCCESS;
+	return valarc;
 }
 
 
