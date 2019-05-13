@@ -2,6 +2,7 @@
 #define NODE_H__
 
 #include "../include/link.h"
+#include "../include/tower_list.h"
 
 #define MAX_NODES 20 //Max number of nodes will be 20-1 = 19
 
@@ -30,6 +31,8 @@ int isTherePathFromINtoOUT(Node nodesArray[], int* nbOfNodes);
 int depthFirstSearchFromRoot(Node nodesArray[], int* nbOfNodes, Node* root);
 int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 int travelPathFromNodeToNode(Node node1, Node node2);
+
+int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers);
 
 //Getters for next nodes
 Node* getFirstNextNode(Node node);

@@ -7,6 +7,7 @@
 #include "../include/node.h"
 #include "../include/const.h"
 #include "../include/window.h"
+#include "../include/tower.h"
 
 Node createNode(int value, int type, int x, int y) {
 	Node node;
@@ -262,6 +263,93 @@ int travelPathFromNodeToNode(Node node1, Node node2) {
 
 	return EXIT_SUCCESS;
 }
+
+
+int getValarcBetweenNodes(Node node1, Node node2, TowerList tl, int nbOfTowers) {
+	///// VARIABLES
+
+	Node min_node;
+	float start_x, start_y; //start position of the pixel in the window coords
+	float current_x, current_y; //current position of the pixel in the window coords
+	int offset;
+	int semiBloc = GL_SPRITE_SIZE / 2;
+
+	Tower towers[MAX_TOWERS];
+
+
+	///// CODE
+
+	//Check the TowerList
+	if(tl.tower) {
+		
+	}
+
+	//Check if the nodes have the same spot
+	if(node1.x == node2.x && node1.y == node2.y) {
+		fprintf(stderr, "Error: both nodes have the same coords\n");
+		exit(EXIT_FAILURE);
+	}
+
+	//If the nodes don't have one same coord
+	if(node1.x != node2.x && node1.y != node2.y) {
+		fprintf(stderr, "The nodes are not on the same horizontal/vertical line\n");
+		exit(EXIT_FAILURE);
+	}
+
+
+	//If path is vertical
+	if(node1.x == node2.x) {
+		offset = abs(node1.win_y - node2.win_y) + 1 + 2*semiBloc; // +2*semiBloc beacause it is from center of the bloc to center of the other bloc
+
+		min_node = node1; //min_node is firstly equal to node1
+		//If the 'y' value of node2 is inferior to the 'y' value of min_node
+		if(node2.y < min_node.y) {
+			min_node = node2;
+		}
+
+		//Put the starter at the top left of the min_node sprite
+		start_x = (float) min_node.win_x - semiBloc;
+		start_y = (float) min_node.win_y - semiBloc;
+		
+		for(int i = 0; i < offset; i++) { //Each line
+			for(int j = 0; j < GL_SPRITE_SIZE; j++) { //Each pixel on a line inside a bloc
+				current_x = start_x + j;
+				current_y = start_y + i;
+				
+				//DO WORKS
+
+			}
+		}
+	}
+
+	//If path is horizontal
+	if(node1.y == node2.y) {
+		offset = abs(node1.win_x - node2.win_x) + 1 + 2*semiBloc; // +2*semiBloc beacause it is from center of the bloc to center of the other bloc
+
+		min_node = node1; //min_node is firstly equal to node1
+		//If the 'x' value of node2 is inferior to the 'x' value of min_node
+		if(node2.x < min_node.x) {
+			min_node = node2;
+		}
+
+		//Put the starter at the top left of the min_node sprite
+		start_x = (float) min_node.win_x - semiBloc;
+		start_y = (float) min_node.win_y - semiBloc;
+
+		for(int i = 0; i < GL_SPRITE_SIZE; i++) { //Each line inside a bloc
+			for(int j = 0; j < offset; j++) { //Each pixel of the lines
+				current_x = start_x + j;
+				current_y = start_y + i;
+				printf("Hey c un test");
+			}
+		}
+	}
+
+	return EXIT_SUCCESS;
+}
+
+
+
 
 
 Node* getFirstNextNode(Node node){

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../include/tower.h"
 #include "../include/wave.h"
+#include "../include/window.h"
 #define BASE_DMG 10
 #define BASE_FIRESPEED 0.2 //Amount of shots in a unity of time : 1/10 s
 #define BASE_RANGE 100 //Range in pixels
@@ -9,9 +10,23 @@
 //TO DO
 //void fire(Tower t);
 
-/*Creates one tower depending on the type)*/
-Tower* createTower(Tower* tower, TowerType type){
-	tower = (Tower*)malloc(sizeof(Tower));
+/*Creates one tower depending on the type*/
+Tower* createTower(TowerType type, int x, int y) {
+	Tower* tower = malloc(sizeof(Tower));
+	
+	if(!tower) {
+		fprintf(stderr, "Error: bad memory allocation to make a new tower\n");
+		exit(EXIT_FAILURE);
+	}
+
+	int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+	tower->x = grid_x;
+	tower->y = grid_y;
+	tower->win_x = gridCoordToWindowCoord(grid_x);
+	tower->win_y = gridCoordToWindowCoord(grid_y);
+
 	switch(type){
 		//Lasers : lots of dmg, fires slowly, average range
 		case LASER :
@@ -34,9 +49,6 @@ Tower* createTower(Tower* tower, TowerType type){
 			exit(EXIT_FAILURE);
 			break;
 	}
-	if(tower == NULL){
-		exit(EXIT_FAILURE);
-	}
 	return tower;
 };
 
@@ -49,8 +61,9 @@ Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range
 }
 
 void printTower(Tower *t){
+	printf("Grid (%d,%d) / Window (%d,%d)\n", t->x, t->y, t->win_x, t->win_y);
 	printf("Type: %d \n", t->type);
 	printf("Damage : %d \n", t->dmg);
 	printf("Firespeed : %f \n", t->firespeed);
-	printf("Range : %d \n", t->range);
+	printf("Range : %d \n\n", t->range);
 }

@@ -82,7 +82,7 @@ $(WAVE_O) : src/wave.c include/monster.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "monster waves : done !"
 
-$(TOWER_O) : src/tower.c include/tower.h include/wave.h
+$(TOWER_O) : src/tower.c include/tower.h include/wave.h include/window.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "towers : done !"
 
@@ -90,11 +90,11 @@ $(MAP_DRAW_O) : src/map_draw.c include/map_draw.h include/const.h include/sprite
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "map_draw : done !"
 
-$(WINDOW_O) : src/window.c include/window.h
+$(WINDOW_O) : src/window.c include/window.h include/const.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "window : done !"
 
-$(TOWER_LIST_O) : src/tower_list.c include/tower_list.h include/tower.h
+$(TOWER_LIST_O) : src/tower_list.c include/tower_list.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Tower Lists : done !"
 

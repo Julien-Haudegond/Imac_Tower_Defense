@@ -2,6 +2,8 @@
 #ifndef TOWER_H__
 #define TOWER_H__
 
+#define MAX_TOWERS 20
+
 typedef enum{
 	LASER, ROCKET, ELECTRIC, WATER
 }TowerType;
@@ -25,8 +27,8 @@ typedef struct Tower{
 
 
 //void fire(Tower t);
-Tower* createTower(Tower* tower, TowerType type);
+Tower* createTower(TowerType type, int x, int y);
 Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range);
-void printTower();
+void printTower(Tower *t);
 
 #endif

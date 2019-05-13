@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "../include/window.h"
+#include "../include/const.h"
 
 void reshape(SDL_Surface** surface, unsigned int width, unsigned int height)
 {

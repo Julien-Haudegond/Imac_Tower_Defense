@@ -4,14 +4,21 @@
 #ifndef TOWER_LIST_H__
 #define TOWER_LIST_H__
 
+#include "../include/tower.h"
 
 typedef struct TowerList{
-	Tower tower;
+	Tower* tower;
 	struct TowerList * nextTower;
 }TowerList;
 
 
-TowerList* addTower(TowerList* tl, Tower myNewTower);
-TowerList* deleteTower(TowerList* tl, int x, int y);
+TowerList* createEmptyTowerList();
+
+
+void addTower(TowerList* tl, TowerType type, int x, int y);
+//void deleteTower(TowerList** head, int x, int y);
+//int deleteTower(TowerList** head, int x, int y);
+TowerList* deleteTower(TowerList* head, int x, int y);
 void printTowerList(TowerList *tl);
+
 #endif

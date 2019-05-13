@@ -64,6 +64,11 @@ int main(int argc, char** argv)
 
     readITD(itdPath, &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
+
+    //Initialize a list of towers and buildings
+    TowerList* towerList = createEmptyTowerList();
+
+
     //test valarc et init Dijkstra
     
     setValarc(nodesArray, nbOfNodes);

@@ -1,46 +1,62 @@
 //Same function than wave
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/tower.h"
 #include "../include/tower_list.h"
+#include "../include/window.h"
+
+
+TowerList* createEmptyTowerList() {
+	TowerList* tl = malloc(sizeof(TowerList));
+	tl->tower = NULL;
+	tl->nextTower = NULL;
+
+	return tl;
+}
 
 /*************
 *	Adds tower to the list specified in arguments
 *************/
-TowerList* addTower(TowerList* tl, Tower myNewTower){
-	TowerList* currentTower = tl;
-	TowerList* newTowerNode;
-	if(currentTower != NULL && currentTower->nextTower != NULL){
-		currentTower = currentTower->nextTower;
-	}
-	newTowerNode = (TowerList*)malloc(sizeof(TowerList));
-	if(newTowerNode == NULL){
+void addTower(TowerList* tl, TowerType type, int x, int y) {
+	if(!tl) {
+		fprintf(stderr, "Error: no tower list\n");
 		exit(EXIT_FAILURE);
 	}
-	newTowerNode -> tower = myNewTower;
-	newTowerNode -> nextTower = NULL;
-	if(currentTower != NULL){
-		currentTower -> nextTower = newTowerNode;
-	}else{
-		tl = newTowerNode;
+
+	if(tl->tower == NULL) {
+		tl->tower = createTower(type, x, y);
+		return;
 	}
-	return tl;
+
+	while(tl->nextTower != NULL) {
+		tl = tl->nextTower;
+	}
+	
+	tl->nextTower = malloc(sizeof(TowerList));
+	tl = tl->nextTower;
+	tl->tower = createTower(type, x, y);
+	tl->nextTower = NULL;
 }
 
 /*****************
 *	Delete the tower with the coordinates specified in arguments
 *	From the list tl
 *****************/
-TowerList* deleteTower(TowerList* head, int x, int y){
+TowerList* deleteTower(TowerList* head, int x, int y) {
 	TowerList* tmp = head;
 	TowerList* prev = malloc(sizeof(TowerList));
-	if(tmp != NULL && tmp->tower.x == x && tmp->tower.y == y){
+
+	int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+
+	if(tmp != NULL && tmp->tower->x == grid_x && tmp->tower->y == grid_y){
 		head = tmp->nextTower;
 		free(tmp);
+		free(prev);
 		return head;
 	}
 
-	while(tmp != NULL && tmp->tower.x  != x && tmp->tower.y != y){
+	while(tmp != NULL && (tmp->tower->x != grid_x || tmp->tower->y != grid_y)) {
 		prev = tmp;
 		tmp = tmp->nextTower;
 	}
@@ -55,19 +71,22 @@ TowerList* deleteTower(TowerList* head, int x, int y){
 
 void printTowerList(TowerList* tl){
 	int counter = 1;
-	if(tl != NULL){
+	if(tl->tower != NULL){
 		// a optimiser
 		while(tl->nextTower != NULL){
 			printf("Tower %d \n", counter);
-			printTower(&(tl->tower));
+			printTower(tl->tower);
 			tl = tl->nextTower;
 			counter++;
 		}
 		if(tl->nextTower == NULL){
-		//printing last monster
+		//printing last tower
 			printf("Tower %d \n", counter);
-			printTower(&(tl->tower));
-			tl = tl->nextTower;
+			printTower(tl->tower);
+			//tl = tl->nextTower;
 		}
+	}
+	if(tl->tower == NULL && tl->nextTower == NULL) {
+		printf("Tower list is empty.\n");
 	}
 }
