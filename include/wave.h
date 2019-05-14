@@ -5,12 +5,13 @@
 #include "monster.h"
 
 typedef struct Wave{
-	Monster monster;
+	Monster* monster;
 	struct Wave * nextMonster;
 }Wave;
 
-Wave* addMonster(Wave* wave, Monster myNewMonster);
+void addMonster(Wave* wave, MonsterType type, int resist);
 Wave* deleteMonster(Wave* wave);
 void printWave(Wave* wave);
+Wave* createEmptyWave();
 
 #endif

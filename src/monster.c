@@ -2,47 +2,42 @@
 #include <stdlib.h>
 #include "../include/monster.h"
 
-void createMonster(Monster* m, MonsterType type, int resist){
-	if(m == NULL){
-		m = (Monster*)malloc(sizeof(Monster));
-		switch(type){
-			case GIANT:
-				m = setMonsterStats(m, 0, 40, resist, 1, 30);
-				break;
-			case SWARMLING:
-				m = setMonsterStats(m, 1, 10, resist, 4, 5);
-				break;
-			default : 
-				exit(EXIT_FAILURE);
-				break;
-		}
-		if(m == NULL){
+Monster* createMonster(MonsterType type, int resist){
+	Monster* m = (Monster*)malloc(sizeof(Monster));
+	switch(type){
+		case GIANT:
+			setMonsterStats(m, 0, 40, resist, 1, 30);
+			break;
+		case SWARMLING:
+			setMonsterStats(m, 1, 10, resist, 4, 5);
+			break;
+		default : 
 			exit(EXIT_FAILURE);
-		}
+			break;
+	}
+	if(m == NULL){
+		exit(EXIT_FAILURE);
 	}
 	
-	return;
+	return m;
 }
 
-Monster* setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward){
+void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward){
 	m->type = type;
 	m->health = health;
 	m->resist = resist;
 	m->speed = speed;
 	m-> reward = reward;
-	return m;
 }
 
 
-Monster* setPosition(Monster* m, int x, int y){
+void setPosition(Monster* m, int x, int y){
 	if(m != NULL){
 		m->x = x;
 		m->y = y;
 	}else{
 		exit(EXIT_FAILURE);
 	}
-	
-	return m;
 }
 
 void printMonster(Monster *m){

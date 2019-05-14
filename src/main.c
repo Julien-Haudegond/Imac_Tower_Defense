@@ -66,7 +66,7 @@ int main(int argc, char** argv)
     readITD(itdPath, &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
 
 
-    //Initialize a list of towers and buildings
+    //Initialize a list of towers and buildings 
     TowerList* towerList = createEmptyTowerList();
 
     addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
@@ -107,6 +107,12 @@ int main(int argc, char** argv)
     for(int k = 0; k < nbShortest; k++){
         printf("Noeud %d : %d \n", k, nodesPath[k]);
     }
+
+    //Test on monsters - waves
+    Wave* wave = createEmptyWave();
+    addMonster(wave, GIANT, 0);
+    printWave(wave);
+
     free(nodesPath);
 
     /* Initializing SDL */

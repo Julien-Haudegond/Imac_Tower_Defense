@@ -14,6 +14,7 @@ typedef enum{
 
 typedef struct Monster{
 	int type;
+	int *path;
 	int x,y;
 	int win_x, win_y;
 	float health;
@@ -22,9 +23,9 @@ typedef struct Monster{
 	int reward;
 }Monster;
 
-void createMonster(Monster* m, MonsterType type, int resist);
-Monster* setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward);
-Monster* setPosition(Monster* monster, int x, int y);
+Monster* createMonster(MonsterType type, int resist);
+void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward);
+void setPosition(Monster* monster, int x, int y);
 void printMonster(Monster *m);
 
 #endif

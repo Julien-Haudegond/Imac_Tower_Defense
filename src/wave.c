@@ -3,28 +3,40 @@
 #include "../include/monster.h"
 #include "../include/wave.h"
 
+
+Wave* createEmptyWave() {
+	Wave* wave = malloc(sizeof(Wave));
+	wave->monster = NULL;
+	wave->nextMonster = NULL;
+
+	return wave;
+}
+
 /*************
 *	Adds monster to the wave specified in arguments
 * 	This function must be used after initializing the list containing the new monter
 *************/
-Wave* addMonster(Wave* wave, Monster myNewMonster){
-	Wave* currentMonster = wave;
-	Wave* newMonster;
-	while(currentMonster != NULL && currentMonster->nextMonster != NULL){
-		currentMonster = currentMonster->nextMonster;
-	}
-	newMonster = (Wave*)malloc(sizeof(Wave));
-	if(newMonster == NULL){
+void addMonster(Wave* wave, MonsterType type, int resist){
+	if(!wave){
+		fprintf(stderr, "Error: no wave\n");
 		exit(EXIT_FAILURE);
 	}
-	newMonster -> monster = myNewMonster;
-	newMonster -> nextMonster = NULL;
-	if(currentMonster != NULL){
-		currentMonster -> nextMonster = newMonster;
-	}else{
-		wave = newMonster;
+
+	//empty wave : setting first element
+	if(wave->monster == NULL){
+		wave->monster = createMonster(type, resist);
+		return;
 	}
-	return wave;
+
+	//parsing wave until finding a non NULL element
+	while(wave->nextMonster != NULL){
+		wave = wave->nextMonster;
+	}
+
+	wave->nextMonster = malloc(sizeof(Wave));
+	wave = wave->nextMonster;
+	wave->monster = createMonster(type, resist);
+	wave->nextMonster = NULL;
 }
 
 //deletes one element
@@ -33,20 +45,20 @@ Wave* deleteMonster(Wave* head){
 	Wave* tmp = head;
 	Wave* prev = malloc(sizeof(Wave));
 	//If the first Monster of the list is dead, delete and replace it by the next one 
-	if(tmp != NULL && tmp->monster.health <= 0){
+	if(tmp != NULL && tmp->monster->health <= 0){
 		head = tmp->nextMonster;
 		free(tmp);
 		return head;
 	}
 
-	while(tmp != NULL && tmp->monster.health > 0){
+	while(tmp != NULL && tmp->monster->health > 0){
 		prev = tmp;
 		tmp = tmp->nextMonster;
 	}
 
 	if(tmp == NULL) return head;
 	if (prev!=NULL){		
-		prev->nextMonster = tmp -> nextMonster;
+		prev->nextMonster = tmp->nextMonster;
 		free(tmp);
 	}
 
@@ -59,14 +71,14 @@ void printWave(Wave* wave){
 		// a optimiser
 		while(wave->nextMonster != NULL){
 			printf("Monster %d \n", counter);
-			printMonster(&(wave->monster));
+			printMonster(wave->monster);
 			wave = wave->nextMonster;
 			counter++;
 		}
 		//printing last monster
 		if(wave->nextMonster == NULL){
 			printf("Monster %d \n", counter);
-			printMonster(&(wave->monster));
+			printMonster(wave->monster);
 			wave = wave->nextMonster;
 		}
 	}
