@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include "../include/monster.h"
 
-Monster* createMonster(MonsterType type, int resist){
+Monster* createMonster(MonsterType type, int resist, int* path, int nbPath){
 	Monster* m = (Monster*)malloc(sizeof(Monster));
+	m->path = malloc(nbPath*sizeof(int));
 	switch(type){
 		case GIANT:
-			setMonsterStats(m, 0, 40, resist, 1, 30);
+			setMonsterStats(m, 0, 40, resist, 1, 30, path, nbPath);
 			break;
 		case SWARMLING:
-			setMonsterStats(m, 1, 10, resist, 4, 5);
+			setMonsterStats(m, 1, 10, resist, 4, 5, path, nbPath);
 			break;
 		default : 
 			exit(EXIT_FAILURE);
@@ -22,12 +23,14 @@ Monster* createMonster(MonsterType type, int resist){
 	return m;
 }
 
-void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward){
+void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward, int* path, int nbPath){
 	m->type = type;
 	m->health = health;
 	m->resist = resist;
 	m->speed = speed;
-	m-> reward = reward;
+	m->reward = reward;
+	m->path = path;
+	m->nbPath = nbPath;
 }
 
 
@@ -44,5 +47,10 @@ void printMonster(Monster *m){
 	printf("Health : %f \n", m->health);
 	printf("Speed : %f \n", m->speed);
 	printf("Reward : %d \n", m->reward);
+	printf("Shortest path : ");
+	for(int i = 0; i < m->nbPath; i++){
+        printf("%d ",m->path[i]);
+    }
+    printf("\n");
 }
 

@@ -16,7 +16,7 @@ Wave* createEmptyWave() {
 *	Adds monster to the wave specified in arguments
 * 	This function must be used after initializing the list containing the new monter
 *************/
-void addMonster(Wave* wave, MonsterType type, int resist){
+void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath){
 	if(!wave){
 		fprintf(stderr, "Error: no wave\n");
 		exit(EXIT_FAILURE);
@@ -24,7 +24,7 @@ void addMonster(Wave* wave, MonsterType type, int resist){
 
 	//empty wave : setting first element
 	if(wave->monster == NULL){
-		wave->monster = createMonster(type, resist);
+		wave->monster = createMonster(type, resist, path, nbPath);
 		return;
 	}
 
@@ -35,7 +35,7 @@ void addMonster(Wave* wave, MonsterType type, int resist){
 
 	wave->nextMonster = malloc(sizeof(Wave));
 	wave = wave->nextMonster;
-	wave->monster = createMonster(type, resist);
+	wave->monster = createMonster(type, resist, path, nbPath);
 	wave->nextMonster = NULL;
 }
 

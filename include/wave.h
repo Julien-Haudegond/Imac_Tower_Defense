@@ -9,7 +9,7 @@ typedef struct Wave{
 	struct Wave * nextMonster;
 }Wave;
 
-void addMonster(Wave* wave, MonsterType type, int resist);
+void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath);
 Wave* deleteMonster(Wave* wave);
 void printWave(Wave* wave);
 Wave* createEmptyWave();

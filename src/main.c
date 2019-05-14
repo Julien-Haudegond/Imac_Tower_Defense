@@ -110,10 +110,12 @@ int main(int argc, char** argv)
 
     //Test on monsters - waves
     Wave* wave = createEmptyWave();
-    addMonster(wave, GIANT, 0);
+    addMonster(wave, GIANT, 0, nodesPath, nbShortest);
     printWave(wave);
 
+
     free(nodesPath);
+    free(wave);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
@@ -220,8 +222,11 @@ int main(int argc, char** argv)
         }
     }
 
-    /* Free Tower List */
+    /* Free Tower List and Free buildings */
     freeTowerList(towerList);
+
+    /* Free wave */
+
 
     /* Close fonts */
     closeAllFonts(fonts, MAX_FONTS);
