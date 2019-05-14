@@ -478,8 +478,8 @@ void setValarc(Node nodesArray[], int nbNodes){
 	nodesArray[2].link->next->valarc = 1; 
 	nodesArray[3].link->valarc = 1; 
 	//De 2 a 5
-	nodesArray[2].link->next->next->valarc = 4; 
-	nodesArray[5].link->valarc = 4; 
+	nodesArray[2].link->next->next->valarc = 10; 
+	nodesArray[5].link->valarc = 10; 
 	//De 3 a 4
 	nodesArray[3].link->next->valarc = 5; 
 	nodesArray[4].link->valarc = 5;
@@ -493,8 +493,8 @@ void setValarc(Node nodesArray[], int nbNodes){
 	nodesArray[5].link->next->next->next->valarc = 1; 
 	nodesArray[7].link->valarc = 1; 
 	//De 6 a 8
-	nodesArray[6].link->next->valarc = 3; 
-	nodesArray[8].link->valarc = 3; 
+	nodesArray[6].link->next->valarc = 0; 
+	nodesArray[8].link->valarc = 0; 
 	//De 7 a 8
 	nodesArray[7].link->next->valarc = 0; 
 	nodesArray[8].link->next->valarc = 0; 
@@ -556,10 +556,11 @@ int areAllNodesVisited(Node *nodesArray, int nbNodes){
 
 //On recherche le sommet du graphe avec le + petit minValarc qui n'a pas été parcouru
 Node* getNextNodeValueWithMinValarc(Node *nodesArray, int nbNodes){
-	int minValue = 15000;
+	long minValue = 90000;
 	Node* tmp = NULL;
 	for(int i = 0; i < nbNodes; i++){
 		if(nodesArray[i].marqued == 0 && nodesArray[i].minValarc < minValue && nodesArray[i].minValarc != -1){
+			minValue = nodesArray[i].minValarc;
 			tmp = &nodesArray[i];
 		}
 	}
@@ -587,14 +588,20 @@ void shortestPath(Node *nodesArray, int nbNodes){
 	for(int i =0; i < nbNodes; i++){
 		initializeDijkstra(&nodesArray[i]);
 	}
+	
 	Node* currentNode = &nodesArray[0];
 	int allVisited = 1; //will be set to 0 when all nodes will be visited
 	
 	while(allVisited == 1){ // while there are still nodes to visit
+		printf("CA PASSEEEEEE noeud courant %d \n", currentNode->value);
 		markNode(currentNode); //node gets visited : mark set to 1
+
 		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed
+		//printf("printf Prochain noeud à traiter :  %d \n", currentNode->value);
 		currentNode = getNextNodeValueWithMinValarc(nodesArray,nbNodes);
+
 		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes are visited
+		
 	}
 	return;
 }
