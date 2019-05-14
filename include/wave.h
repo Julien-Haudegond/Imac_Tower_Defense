@@ -6,7 +6,7 @@
 
 typedef struct Wave{
 	Monster* monster;
-	struct Wave * nextMonster;
+	struct Wave* nextMonster;
 }Wave;
 
 void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath);

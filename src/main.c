@@ -112,10 +112,12 @@ int main(int argc, char** argv)
     Wave* wave = createEmptyWave();
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
     printWave(wave);
-
-
-    free(nodesPath);
-    free(wave);
+    wave->monster->health = 0;
+    
+    wave = deleteMonster(wave);
+    
+    //free(nodesPath);
+    //free(wave);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 

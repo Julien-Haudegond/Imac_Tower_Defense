@@ -39,29 +39,49 @@ void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath)
 	wave->nextMonster = NULL;
 }
 
-//deletes one element
 //a optimiser ou à appeler en boucle tant que tous les monstres dead ne sont pas éliminés
 Wave* deleteMonster(Wave* head){
+
 	Wave* tmp = head;
 	Wave* prev = malloc(sizeof(Wave));
-	//If the first Monster of the list is dead, delete and replace it by the next one 
-	if(tmp != NULL && tmp->monster->health <= 0){
-		head = tmp->nextMonster;
-		free(tmp);
-		return head;
-	}
+	
 
-	while(tmp != NULL && tmp->monster->health > 0){
+
+	//If the first Monster of the list is dead, delete and replace it by the next one (if not null)
+	if(tmp != NULL && tmp->monster != NULL && tmp->monster->health <= 0 && tmp->nextMonster != NULL){
+		printf("pas null");
+		head = tmp->nextMonster;
+		free(tmp->monster->path);
+		free(tmp->monster);
+		free(tmp);
+		free(prev);
+		return head;
+
+
+	//Only monster in the wave	
+	}else if(tmp != NULL && tmp->monster != NULL && tmp->monster->health <= 0 && tmp->nextMonster==NULL){
+		printf("Ca passe \n");
+		
+		free(tmp->monster->path);
+		free(tmp->monster);
+		free(tmp);
+		free(prev);
+		return tmp; // segfault here
+	}
+	printf("Ca passe 2");
+	while(tmp != NULL && tmp->monster !=NULL && tmp->monster->health > 0){
 		prev = tmp;
 		tmp = tmp->nextMonster;
 	}
 
 	if(tmp == NULL) return head;
-	if (prev!=NULL){		
+
+	if (prev != NULL){		
 		prev->nextMonster = tmp->nextMonster;
+		free(tmp->monster->path);
+		free(tmp->monster);
 		free(tmp);
 	}
-
 	return head;
 }
 
