@@ -15,6 +15,9 @@ TowerList* createEmptyTowerList() {
 
 void freeTowerList(TowerList* tl) {
 	if(tl) {
+		if(tl->tower) {
+			free(tl->tower);
+		}
 		if(tl->nextTower) {
 			freeTowerList(tl->nextTower);
 		}

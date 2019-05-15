@@ -32,4 +32,6 @@ void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
 int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[]);
 void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
 
+void drawTowerSprites(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]);
+
 #endif

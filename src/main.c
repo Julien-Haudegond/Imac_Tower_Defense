@@ -43,7 +43,7 @@
 
 #ifdef READTHIS1
 
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help);
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct);
 
 int main(int argc, char** argv) 
 {
@@ -183,8 +183,10 @@ int main(int argc, char** argv)
 	    fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
   
     /* Global variables */
-    int mouse_x = 0, mouse_y = 0;
-    int help = 0;
+    int mouse_x = 0, mouse_y = 0; 
+    int help = -1; //To print the 'help' popup
+    int constructStatus = -1; //To construct something
+    int towerConstruct = -1, buildingConstruct = -1; //For construction types
 
     /* Global variables for GL Lists */
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -206,12 +208,18 @@ int main(int argc, char** argv)
 	        glCallList(debug_draw);
 	        renderCenterText(&text_area[0], &text_texture[0], 610, 700);
 
+	        //Hold 'h' to make the menu appear
 	        if(help == 1) {
 	        	glCallList(help_window);
 	        }
 
-	        //available area test
-	        //constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
+	        //Hold a specific key to build towers or buildings
+	        if(constructStatus != -1) {
+	        	constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
+	        	if(towerConstruct != -1) drawTowerSprites(mouse_x, mouse_y, towerConstruct, sprite_texture);
+	        	//else if(buildingConstruct != -1) drawBuildingSprites(mouse_x, mouse_y, buildingConstruct, sprite_texture);
+	        }
+
 
         /* Update window */
         SDL_GL_SwapBuffers();
@@ -225,7 +233,7 @@ int main(int argc, char** argv)
                 break;
             }
 
-            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help);
+            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help, &constructStatus, &towerConstruct, &buildingConstruct);
         }
 
         /* Passed time */
@@ -270,7 +278,7 @@ int main(int argc, char** argv)
 }
 
 
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help) {
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct) {
     switch(e.type) 
     {
         /* Redimensionnement fenetre */
@@ -283,14 +291,41 @@ void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mou
 
 			if(e.key.keysym.sym == SDLK_h) {
 				*help = 1;
-			} 
+			}
+
+			if(e.key.keysym.sym == SDLK_a) {
+				*constructStatus = 1;
+				*towerConstruct = LASER;
+			}
+
+			if(e.key.keysym.sym == SDLK_z) {
+				*constructStatus = 1;
+				*towerConstruct = ROCKET;
+			}
+
+			if(e.key.keysym.sym == SDLK_e) {
+				*constructStatus = 1;
+				*towerConstruct = ELECTRIC;
+			}
+
+			if(e.key.keysym.sym == SDLK_r) {
+				*constructStatus = 1;
+				*towerConstruct = WATER;
+			}
+
             break;
 
         case SDL_KEYUP:
 
 			if(e.key.keysym.sym == SDLK_h) {
-				*help = 0;
+				*help = -1;
 			}
+
+			if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
+				*constructStatus = -1;
+				*towerConstruct = -1;
+			}
+
 			break;
 
         case SDL_MOUSEMOTION:

@@ -10,7 +10,7 @@
 
 /***** SPRITES ARRAY *****/
 
-//HERE TO CHANGE THE SPRITES
+//HERE TO CHANGE THE SPRITES (PLEASE DO NOT MODIFY ORDER)
 void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
 
     //Texture 0 : Constructible area
@@ -28,6 +28,23 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     //Texture 3 : Non available area
     loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
     initSpriteTexture(&sprite_img[3], &sprite_texture[3]);
+
+    //Texture 4 : TOWER Laser
+    loadSpriteArea(&sprite_img[4], "Tower_Laser_RGBA.png");
+    initSpriteTexture(&sprite_img[4], &sprite_texture[4]);
+
+    //Texture 5 : TOWER Rocket
+    loadSpriteArea(&sprite_img[5], "Tower_Rocket_RGBA.png");
+    initSpriteTexture(&sprite_img[5], &sprite_texture[5]);
+
+    //Texture 6 : TOWER Electric
+    loadSpriteArea(&sprite_img[6], "Tower_Electric_RGBA.png");
+    initSpriteTexture(&sprite_img[6], &sprite_texture[6]);
+
+    //Texture 7 : TOWER Water
+    loadSpriteArea(&sprite_img[7], "Tower_Water_RGBA.png");
+    initSpriteTexture(&sprite_img[7], &sprite_texture[7]);
+
 }
 
 
@@ -74,16 +91,16 @@ void drawSprite(GLuint* texture) {
 
     glBegin(GL_QUADS);
 
-        glTexCoord2f(0,0);
+        glTexCoord2f(0,1);
         glVertex2f(- offset, offset);
 
-        glTexCoord2f(1,0);
+        glTexCoord2f(1,1);
         glVertex2f(offset, offset);
 
-        glTexCoord2f(1,1);
+        glTexCoord2f(1,0);
         glVertex2f(offset, - offset);
 
-        glTexCoord2f(0,1);
+        glTexCoord2f(0,0);
         glVertex2f(- offset, - offset);
 
     glEnd();

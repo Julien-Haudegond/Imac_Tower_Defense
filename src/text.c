@@ -9,25 +9,28 @@
 
 #include "../include/text.h"
 
-//HERE TO CHANGE THE FONTS
+//HERE TO CHANGE THE FONTS (PLEASE DO NOT MODIFY ORDER)
 void initFontsArray(TTF_Font* fonts[]) {
 
     //Font 0
     fonts[0] = loadFont(FONT_1, 24);
+
 }
 
-//HERE TO CHANGE THE COLORS
+//HERE TO CHANGE THE COLORS (PLEASE DO NOT MODIFY ORDER)
 void initColorsArray(SDL_Color colors[]) {
 
     //Color 0 : Red color
     colors[0] = (SDL_Color) {255, 0, 0, 0};
+
 }
 
-//HERE TO CHANGE THE STATIC TEXTS
+//HERE TO CHANGE THE STATIC TEXTS (PLEASE DO NOT MODIFY ORDER)
 void fillTextsArrays(TTF_Font* fonts[], SDL_Color colors[], SDL_Surface* text_area[], GLuint text_texture[]) {
 
     //Text 0 : Press 'h' to get help !
     loadText("Press 'h' to get some help !", &fonts[0], colors[0], &text_area[0], &text_texture[0]);
+    
 }
 
 

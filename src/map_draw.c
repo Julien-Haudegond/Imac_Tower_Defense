@@ -295,14 +295,55 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
 void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]) {
     int value = isItAvailableArea(x, y, ppm, itdInstructions);
 
+    if(value != 1 && value != 0) {
+        fprintf(stderr, "Error: we can't know if the area is available or not\n");
+        exit(EXIT_FAILURE);
+    }
+
     if(value == 1) {
         availableArea(x, y, sprite_text);
     }
     else if(value == 0) {
         nonAvailableArea(x, y, sprite_text);
     }
-    else {
-        fprintf(stderr, "Error: we wan't know if the area is available or not\n");
-        exit(EXIT_FAILURE);
+}
+
+void drawTowerSprites(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]) {
+    int center_x = windowCoordToBlocCenter(mouse_x);
+    int center_y = windowCoordToBlocCenter(mouse_y);
+
+    switch(type) {
+
+        case LASER:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[4]);
+            glPopMatrix();
+
+            break;
+
+        case ROCKET:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[5]);
+            glPopMatrix();
+
+            break;
+
+        case ELECTRIC:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[6]);
+            glPopMatrix();
+
+            break;
+
+        case WATER:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[7]);
+            glPopMatrix();
+
+            break;
     }
 }
