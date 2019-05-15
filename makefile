@@ -110,7 +110,7 @@ $(TEXT_O) : src/text.c include/text.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Texts : done !"
 
-$(GRAPHIC_O) : src/graphic.c include/graphic.h
+$(GRAPHIC_O) : src/graphic.c include/graphic.h include/text.h include/map_draw.h include/sprite.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Graphic : done !"
 

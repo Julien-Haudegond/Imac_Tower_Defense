@@ -43,7 +43,7 @@
 
 #ifdef READTHIS1
 
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct);
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct, TowerList* towerList);
 
 int main(int argc, char** argv) 
 {
@@ -69,10 +69,10 @@ int main(int argc, char** argv)
     //Initialize a list of towers and buildings 
     TowerList* towerList = createEmptyTowerList();
 
-    addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
-    addTower(towerList, ELECTRIC, 100, 50); //TEST POUR VALARCS
-    addTower(towerList, WATER, 500, 40); //TEST POUR VALARCS
-    addTower(towerList, WATER, 900, 700); //TEST POUR VALARCS
+    //addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
+    //addTower(towerList, ELECTRIC, 100, 50); //TEST POUR VALARCS
+    //addTower(towerList, WATER, 500, 40); //TEST POUR VALARCS
+    //addTower(towerList, WATER, 900, 700); //TEST POUR VALARCS
 
     printTowerList(towerList);
     printf("Il y a %d tours.\n", countTowers(towerList));
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
     int mouse_x = 0, mouse_y = 0; 
     int help = -1; //To print the 'help' popup
     int constructStatus = -1; //To construct something
-    int towerConstruct = -1, buildingConstruct = -1; //For construction types
+    int towerConstruct = -1, buildingConstruct = -1; //For construction types and validate constructions
 
     /* Global variables for GL Lists */
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -208,18 +208,30 @@ int main(int argc, char** argv)
 	        glCallList(debug_draw);
 	        renderCenterText(&text_area[0], &text_texture[0], 610, 700);
 
-	        //Hold 'h' to make the menu appear
-	        if(help == 1) {
-	        	glCallList(help_window);
-	        }
-
 	        //Hold a specific key to build towers or buildings
 	        if(constructStatus != -1) {
 	        	constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
-	        	if(towerConstruct != -1) drawTowerSprites(mouse_x, mouse_y, towerConstruct, sprite_texture);
+	        	if(towerConstruct != -1) drawTowerGuides(mouse_x, mouse_y, towerConstruct, sprite_texture);
 	        	//else if(buildingConstruct != -1) drawBuildingSprites(mouse_x, mouse_y, buildingConstruct, sprite_texture);
 	        }
 
+	        //TOWERS
+	        if(towerList->tower) {
+	        	TowerList* tmp = towerList;
+	        	drawTowerSprite(tmp->tower, sprite_texture);
+
+	        	while(tmp->nextTower) {
+	        		tmp = tmp->nextTower;
+	        		if(tmp->tower) {
+	        			drawTowerSprite(tmp->tower, sprite_texture);
+	        		}
+	        	}
+	        }
+
+			//Hold 'h' to make the menu appear
+	        if(help == 1) {
+	        	glCallList(help_window);
+	        }
 
         /* Update window */
         SDL_GL_SwapBuffers();
@@ -233,7 +245,7 @@ int main(int argc, char** argv)
                 break;
             }
 
-            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help, &constructStatus, &towerConstruct, &buildingConstruct);
+            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help, &constructStatus, &towerConstruct, &buildingConstruct, towerList);
         }
 
         /* Passed time */
@@ -243,6 +255,8 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+
+    printTowerList(towerList);
 
     /* Free Tower List and Free buildings */
     freeTowerList(towerList);
@@ -278,7 +292,7 @@ int main(int argc, char** argv)
 }
 
 
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct) {
+void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct, TowerList* towerList) {
     switch(e.type) 
     {
         /* Redimensionnement fenetre */
@@ -332,7 +346,23 @@ void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mou
             *mouse_x = e.button.x * WINDOW_WIDTH / (*surface)->w;
             *mouse_y = e.button.y * WINDOW_HEIGHT / (*surface)->h;
             //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
-            break;               
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+
+        	//If the player is holding a 'construct key'
+        	if(*constructStatus == 1) {
+        		//if it is a 'tower key'
+        		if(*towerConstruct != -1) {
+        			addTower(towerList, *towerConstruct, *mouse_x, *mouse_y);
+				}
+        		//else if it is a 'building key'
+        		else if(*buildingConstruct != -1) {
+
+        		}
+        	}
+
+            break;          
             
         default:
             break;

@@ -9,7 +9,6 @@
 #include "../include/sprite.h"
 #include "../include/window.h"
 #include "../include/image.h"
-//#include "../include/tower_list.h"
 
 
 void drawGridSquare(int filled) {
@@ -308,7 +307,7 @@ void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstruc
     }
 }
 
-void drawTowerSprites(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]) {
+void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 

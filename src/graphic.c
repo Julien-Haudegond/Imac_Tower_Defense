@@ -10,6 +10,7 @@
 #include "../include/graphic.h"
 #include "../include/text.h"
 #include "../include/map_draw.h"
+#include "../include/sprite.h"
 
 GLuint createHelpList(GLuint text_texture[]) {
     ///// VARIABLES
@@ -82,4 +83,31 @@ GLuint createHelpList(GLuint text_texture[]) {
     }
 
     return id;
+}
+
+
+void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
+    float x = (float) tower->win_x;
+    float y = (float) tower->win_y;
+
+    glPushMatrix();
+        glTranslatef(x + 0.5, y + 0.5, 0.);
+
+        switch(tower->type) {
+            case LASER:
+                drawSprite(&sprite_text[4]);
+                break;
+            case ROCKET:
+                drawSprite(&sprite_text[5]);
+                break;
+            case ELECTRIC:
+                drawSprite(&sprite_text[6]);
+                break;
+            case WATER:
+                drawSprite(&sprite_text[7]);
+                break;
+            default:
+                break;
+        }
+    glPopMatrix();
 }
