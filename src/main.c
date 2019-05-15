@@ -43,8 +43,6 @@
 
 #ifdef READTHIS1
 
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct, TowerList* towerList);
-
 int main(int argc, char** argv) 
 {
 
@@ -245,7 +243,82 @@ int main(int argc, char** argv)
                 break;
             }
 
-            handleGameEvents(e, &surface, &mouse_x, &mouse_y, &help, &constructStatus, &towerConstruct, &buildingConstruct, towerList);
+		    switch(e.type) 
+		    {
+		        /* Resize window */
+		        case SDL_VIDEORESIZE:
+		            reshape(&surface, e.resize.w, e.resize.h);
+		            break;
+		        
+		        /* Keyboard DOWN */
+		        case SDL_KEYDOWN:
+
+					if(e.key.keysym.sym == SDLK_h) {
+						help = 1;
+					}
+
+					if(e.key.keysym.sym == SDLK_a) {
+						constructStatus = 1;
+						towerConstruct = LASER;
+					}
+
+					if(e.key.keysym.sym == SDLK_z) {
+						constructStatus = 1;
+						towerConstruct = ROCKET;
+					}
+
+					if(e.key.keysym.sym == SDLK_e) {
+						constructStatus = 1;
+						towerConstruct = ELECTRIC;
+					}
+
+					if(e.key.keysym.sym == SDLK_r) {
+						constructStatus = 1;
+						towerConstruct = WATER;
+					}
+
+		            break;
+
+		        /* Keyboard UP */
+		        case SDL_KEYUP:
+
+					if(e.key.keysym.sym == SDLK_h) {
+						help = -1;
+					}
+
+					if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
+						constructStatus = -1;
+						towerConstruct = -1;
+					}
+
+					break;
+
+
+		        case SDL_MOUSEMOTION:
+		            mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
+		            mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
+
+		            break;
+
+		        case SDL_MOUSEBUTTONUP:
+
+		        	//If the player is holding a 'construct key'
+		        	if(constructStatus == 1) {
+		        		//if it is a 'tower key'
+		        		if(towerConstruct != -1) {
+		        			addTower(towerList, towerConstruct, mouse_x, mouse_y);
+						}
+		        		//else if it is a 'building key'
+		        		else if(buildingConstruct != -1) {
+
+		        		}
+		        	}
+
+		            break;          
+		            
+		        default:
+		            break;
+		    }
         }
 
         /* Passed time */
@@ -289,84 +362,6 @@ int main(int argc, char** argv)
     SDL_Quit();
     
     return EXIT_SUCCESS;
-}
-
-
-void handleGameEvents(SDL_Event e, SDL_Surface** surface, int* mouse_x, int* mouse_y, int* help, int* constructStatus, int* towerConstruct, int* buildingConstruct, TowerList* towerList) {
-    switch(e.type) 
-    {
-        /* Redimensionnement fenetre */
-        case SDL_VIDEORESIZE:
-            reshape(surface, e.resize.w, e.resize.h);
-            break;
-        
-        /* Touche clavier */
-        case SDL_KEYDOWN:
-
-			if(e.key.keysym.sym == SDLK_h) {
-				*help = 1;
-			}
-
-			if(e.key.keysym.sym == SDLK_a) {
-				*constructStatus = 1;
-				*towerConstruct = LASER;
-			}
-
-			if(e.key.keysym.sym == SDLK_z) {
-				*constructStatus = 1;
-				*towerConstruct = ROCKET;
-			}
-
-			if(e.key.keysym.sym == SDLK_e) {
-				*constructStatus = 1;
-				*towerConstruct = ELECTRIC;
-			}
-
-			if(e.key.keysym.sym == SDLK_r) {
-				*constructStatus = 1;
-				*towerConstruct = WATER;
-			}
-
-            break;
-
-        case SDL_KEYUP:
-
-			if(e.key.keysym.sym == SDLK_h) {
-				*help = -1;
-			}
-
-			if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
-				*constructStatus = -1;
-				*towerConstruct = -1;
-			}
-
-			break;
-
-        case SDL_MOUSEMOTION:
-            *mouse_x = e.button.x * WINDOW_WIDTH / (*surface)->w;
-            *mouse_y = e.button.y * WINDOW_HEIGHT / (*surface)->h;
-            //printf("clic en : window(%d, %d)\n", mouse_x, mouse_y);
-            break;
-
-        case SDL_MOUSEBUTTONUP:
-
-        	//If the player is holding a 'construct key'
-        	if(*constructStatus == 1) {
-        		//if it is a 'tower key'
-        		if(*towerConstruct != -1) {
-        			addTower(towerList, *towerConstruct, *mouse_x, *mouse_y);
-				}
-        		//else if it is a 'building key'
-        		else if(*buildingConstruct != -1) {
-
-        		}
-        	}
-
-            break;          
-            
-        default:
-            break;
-    }
 }
 
 
