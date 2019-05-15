@@ -79,6 +79,12 @@ TowerList* deleteTower(TowerList* head, int x, int y) {
 }
 
 void printTowerList(TowerList* tl){
+
+	if(!tl) {
+		fprintf(stderr, "Error : no tower list\n");
+		exit(EXIT_FAILURE);
+	}
+
 	int counter = 1;
 	if(tl->tower != NULL){
 		// a optimiser

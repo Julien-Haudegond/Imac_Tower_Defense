@@ -29,8 +29,11 @@ void setMonsterStats(Monster* m, int type, float health, int resist, float speed
 	m->resist = resist;
 	m->speed = speed;
 	m->reward = reward;
-	m->path = path;
 	m->nbPath = nbPath;
+
+	for(int i = 0; i < nbPath; i++) {
+		m->path[i] = path[i];
+	}
 }
 
 

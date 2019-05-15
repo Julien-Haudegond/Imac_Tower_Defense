@@ -111,13 +111,17 @@ int main(int argc, char** argv)
     //Test on monsters - waves
     Wave* wave = createEmptyWave();
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
+    addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
+    addMonster(wave, GIANT, 0, nodesPath, nbShortest);
     printWave(wave);
     wave->monster->health = 0;
     
     wave = deleteMonster(wave);
+
+    printWave(wave);
     
-    //free(nodesPath);
-    //free(wave);
+    free(nodesPath);
+    free(wave);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 

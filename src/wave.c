@@ -42,14 +42,22 @@ void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath)
 //a optimiser ou à appeler en boucle tant que tous les monstres dead ne sont pas éliminés
 Wave* deleteMonster(Wave* head){
 
+	if(!head) {
+		fprintf(stderr, "Error : no wave (deleteMonster)\n");
+		exit(EXIT_FAILURE);
+	}
+
 	Wave* tmp = head;
 	Wave* prev = malloc(sizeof(Wave));
+
+	//if wave is empty
+	if(tmp != NULL && tmp->monster == NULL && tmp->nextMonster == NULL) {
+		return tmp;
+	}
 	
-
-
 	//If the first Monster of the list is dead, delete and replace it by the next one (if not null)
 	if(tmp != NULL && tmp->monster != NULL && tmp->monster->health <= 0 && tmp->nextMonster != NULL){
-		printf("pas null");
+		//printf("pas null\n");
 		head = tmp->nextMonster;
 		free(tmp->monster->path);
 		free(tmp->monster);
@@ -60,15 +68,17 @@ Wave* deleteMonster(Wave* head){
 
 	//Only monster in the wave	
 	}else if(tmp != NULL && tmp->monster != NULL && tmp->monster->health <= 0 && tmp->nextMonster==NULL){
-		printf("Ca passe \n");
+		//printf("Ca passe \n");
 		
 		free(tmp->monster->path);
 		free(tmp->monster);
-		free(tmp);
+		tmp->monster = NULL;
+		tmp->nextMonster = NULL;
+
 		free(prev);
 		return tmp; // segfault here
 	}
-	printf("Ca passe 2");
+	//printf("Ca passe 2\n");
 	while(tmp != NULL && tmp->monster !=NULL && tmp->monster->health > 0){
 		prev = tmp;
 		tmp = tmp->nextMonster;
@@ -87,7 +97,12 @@ Wave* deleteMonster(Wave* head){
 
 void printWave(Wave* wave){
 	int counter = 1;
-	if(wave != NULL){
+	if(!wave) {
+		fprintf(stderr, "Error: no wave\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if(wave->monster != NULL){
 		// a optimiser
 		while(wave->nextMonster != NULL){
 			printf("Monster %d \n", counter);
@@ -99,8 +114,12 @@ void printWave(Wave* wave){
 		if(wave->nextMonster == NULL){
 			printf("Monster %d \n", counter);
 			printMonster(wave->monster);
-			wave = wave->nextMonster;
+			//wave = wave->nextMonster;
 		}
+	}
+
+	if(wave->monster == NULL && wave->nextMonster == NULL) {
+		printf("Wave is empty.\n");
 	}
 }
 	
