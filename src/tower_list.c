@@ -51,17 +51,39 @@ void addTower(TowerList* tl, TowerType type, int x, int y) {
 *	From the list tl
 *****************/
 TowerList* deleteTower(TowerList* head, int x, int y) {
+
+	if(!head) {
+		fprintf(stderr, "Error : no tower list (deleteTower)\n");
+		exit(EXIT_FAILURE);
+	}
+
 	TowerList* tmp = head;
 	TowerList* prev = malloc(sizeof(TowerList));
 
 	int grid_x = windowCoordToGridCoord(x);
     int grid_y = windowCoordToGridCoord(y);
 
+    //If the list is empty
+    if(tmp->tower == NULL && tmp->nextTower == NULL) {
+    	return tmp;
+    }
 
+    //If only one tower in the list and we delete it
+    if((tmp->tower->x == grid_x && tmp->tower->y == grid_y) && tmp->nextTower == NULL) {
+    	free(tmp->tower);
+    	tmp->tower = NULL;
+    	tmp->nextTower = NULL;
+
+    	return tmp;
+    }
+
+    //If the first one is the good tower to delete but there are several towers in the list
 	if(tmp != NULL && tmp->tower->x == grid_x && tmp->tower->y == grid_y){
 		head = tmp->nextTower;
+		free(tmp->tower);
 		free(tmp);
 		free(prev);
+
 		return head;
 	}
 
@@ -74,7 +96,9 @@ TowerList* deleteTower(TowerList* head, int x, int y) {
 
 	prev->nextTower = tmp -> nextTower;
 
+	free(tmp->tower);
 	free(tmp);
+
 	return head;
 }
 

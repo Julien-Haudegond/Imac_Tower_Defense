@@ -76,7 +76,7 @@ Wave* deleteMonster(Wave* head){
 		tmp->nextMonster = NULL;
 
 		free(prev);
-		return tmp; // segfault here
+		return tmp; 
 	}
 	//printf("Ca passe 2\n");
 	while(tmp != NULL && tmp->monster !=NULL && tmp->monster->health > 0){

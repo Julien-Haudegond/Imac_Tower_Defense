@@ -77,6 +77,13 @@ int main(int argc, char** argv)
     printTowerList(towerList);
     printf("Il y a %d tours.\n", countTowers(towerList));
 
+    towerList = deleteTower(towerList, 800, 50);
+
+    printf("\n\n\n");
+
+    printTowerList(towerList);
+    printf("Il y a %d tours.\n", countTowers(towerList));
+
     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
 
 
@@ -109,7 +116,7 @@ int main(int argc, char** argv)
     }
 
     //Test on monsters - waves
-    Wave* wave = createEmptyWave();
+/*    Wave* wave = createEmptyWave();
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
     addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
@@ -122,6 +129,7 @@ int main(int argc, char** argv)
     
     free(nodesPath);
     free(wave);
+*/
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
