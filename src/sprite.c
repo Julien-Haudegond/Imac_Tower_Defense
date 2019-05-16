@@ -45,6 +45,15 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     loadSpriteArea(&sprite_img[7], "Tower_Water_RGBA.png");
     initSpriteTexture(&sprite_img[7], &sprite_texture[7]);
 
+    //Texture 8 : MONSTER Giant
+    loadSpriteArea(&sprite_img[8], "Monster_Giant_RGBA.png");
+    initSpriteTexture(&sprite_img[8], &sprite_texture[8]);
+
+
+    //Texture 9 : MONSTER Swarmling
+    loadSpriteArea(&sprite_img[9], "Monster_swarmling_RGBA.png");
+    initSpriteTexture(&sprite_img[9], &sprite_texture[9]);
+
 }
 
 

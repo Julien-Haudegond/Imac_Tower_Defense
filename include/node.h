@@ -35,9 +35,10 @@ int deleteAllMarksOnNodes(Node nodesArray[], int* nbOfNodes);
 
 long getValarcBetweenNodes(Node node1, Node node2, TowerList* tl);
 
-//Getters for next nodes
+//Getters
 Node* getFirstNextNode(Node node);
 Node* getNextNode(Node node);
+Node* getNodeFromValue(Node *nodesArray, int nbNodes, int value);
 
 //Functions for Dijkstra
 int areAllNodesVisited(Node *nodesArray, int nbNodes);
@@ -51,5 +52,6 @@ Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes);
 void shortestPath(Node *nodesArray, int nbNodes);
 int countNodesShortestPath(Node* nodesArray);
 void fillShortestPath(int* path, int nbNodes, Node* nodesArray);
+
 
 #endif

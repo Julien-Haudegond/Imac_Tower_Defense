@@ -411,6 +411,23 @@ Node* getNextNode(Node node){
 	return node.link->next->node;
 }
 
+Node* getNodeFromValue(Node* nodesArray, int nbNodes, int value){
+	Node* tmp = NULL;
+	int index = 0;
+	int found = 0;
+
+	while(found == 0 && index < nbNodes){
+		tmp = &nodesArray[index];
+		if(tmp->value == value){
+			found = 1;
+		}
+	}
+	if(tmp) 
+		return tmp;
+	else 
+		return NULL;
+}
+
 /**************
 * FUNCTIONS FOR DIJKSTRA ALGORITHM
 **************/

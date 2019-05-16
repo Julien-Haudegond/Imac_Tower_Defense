@@ -111,3 +111,23 @@ void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
         }
     glPopMatrix();
 }
+
+
+void drawMonsterSprite(Monster* m, GLuint sprite_text[]) {
+    float x = (float) m->win_x;
+    float y = (float) m->win_y;
+
+    glPushMatrix();
+        glTranslatef(x + 0.5, y + 0.5, 0.);
+        switch(m->type) {
+            case 0:
+                drawSprite(&sprite_text[8]);
+                break;
+            case 1:
+                drawSprite(&sprite_text[9]);
+                break;
+            default:
+                break;
+        }
+    glPopMatrix();
+}

@@ -1,6 +1,8 @@
 #ifndef MONSTER_H__
 #define MONSTER_H__
 
+#include "node.h"
+
 //giants : health and resist ++ but slow
 //swarmlings : fast but low health / resist
 typedef enum{
@@ -16,8 +18,8 @@ typedef struct Monster{
 	int type;
 	int *path;
 	int nbPath;
-	int x,y;
-	int win_x, win_y;
+	float x,y;
+	float win_x, win_y;
 	float health;
 	int resist;
 	float speed;
@@ -26,7 +28,7 @@ typedef struct Monster{
 
 Monster* createMonster(MonsterType type, int resist, int* path, int nbPath);
 void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward, int* path, int nbPath);
-void setPosition(Monster* monster, int x, int y);
+void setPosition(Monster* monster, float x, float y);
 void printMonster(Monster *m);
 
 #endif

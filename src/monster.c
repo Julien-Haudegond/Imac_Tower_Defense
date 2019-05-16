@@ -37,10 +37,10 @@ void setMonsterStats(Monster* m, int type, float health, int resist, float speed
 }
 
 
-void setPosition(Monster* m, int x, int y){
+void setPosition(Monster* m, float x, float y){
 	if(m != NULL){
-		m->x = x;
-		m->y = y;
+		m->win_x = x;
+		m->win_y = y;
 	}else{
 		exit(EXIT_FAILURE);
 	}

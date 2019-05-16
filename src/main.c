@@ -114,20 +114,17 @@ int main(int argc, char** argv)
     }
 
     //Test on monsters - waves
-/*    Wave* wave = createEmptyWave();
+    Wave* wave = createEmptyWave();
+
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-    addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
-    addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-    printWave(wave);
-    wave->monster->health = 0;
     
-    wave = deleteMonster(wave);
+    
+    //wave = deleteMonster(wave);
 
     printWave(wave);
     
-    free(nodesPath);
-    free(wave);
-*/
+    //free(nodesPath);
+    //free(wave);
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
@@ -189,6 +186,12 @@ int main(int argc, char** argv)
     /* Global variables for GL Lists */
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
     GLuint help_window = createHelpList(help_window_texture);
+    
+    //initializing monster position
+    int pathIndex = 0;
+    wave->monster->nbPath = wave->monster->path[pathIndex];
+    Node* nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->nbPath);
+    setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
 
     /* MAIN LOOP */
     int loop = 1;
@@ -205,7 +208,7 @@ int main(int argc, char** argv)
 
 	        glCallList(debug_draw);
 	        renderCenterText(&text_area[0], &text_texture[0], 610, 700);
-
+            
 	        //Hold a specific key to build towers or buildings
 	        if(constructStatus != -1) {
 	        	constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
@@ -225,6 +228,19 @@ int main(int argc, char** argv)
 	        		}
 	        	}
 	        }
+            
+            if(wave->monster){
+                //printf("%d current node: ", wave->monster->nbPath);
+
+                //searching previous node 
+                nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->nbPath);
+                setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
+                drawMonsterSprite(wave->monster, sprite_texture);
+                /*if(wave->monster->path[pathIndex+1] && wave->monster->win_x == nodesearch->win_x && wave->monster->win_y == nodesearch->win_y{
+                    //deplacer le monstre ici
+                    //update node courant si les coordonnees ont ete atteintes
+                }*/
+            }
 
 			//Hold 'h' to make the menu appear
 	        if(help == 1) {
