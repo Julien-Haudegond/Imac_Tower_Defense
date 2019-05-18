@@ -349,7 +349,7 @@ int main(int argc, char** argv)
     freeTowerList(towerList);
 
     /*Free global shortest path*/
-    free()
+   free(nodesPath);
 
     /* Free wave */
     free(wave->monster->path);
