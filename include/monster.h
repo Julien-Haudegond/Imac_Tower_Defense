@@ -17,9 +17,14 @@ typedef enum{
 typedef struct Monster{
 	int type;
 	int *path;
+	//previous node where the monster went
+	int prevNode;
+	//current destination node
+	int currentNode;
+	//nb of nodes in the path
 	int nbPath;
-	float x,y;
-	float win_x, win_y;
+	int x,y;
+	int win_x, win_y;
 	float health;
 	int resist;
 	float speed;
@@ -30,5 +35,6 @@ Monster* createMonster(MonsterType type, int resist, int* path, int nbPath);
 void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward, int* path, int nbPath);
 void setPosition(Monster* monster, float x, float y);
 void printMonster(Monster *m);
+void updateCoords(Monster *m, struct Node* nodesArray, int nbNodes);
 
 #endif

@@ -65,7 +65,6 @@ Wave* deleteMonster(Wave* head){
 		free(prev);
 		return head;
 
-
 	//Only monster in the wave	
 	}else if(tmp != NULL && tmp->monster != NULL && tmp->monster->health <= 0 && tmp->nextMonster==NULL){
 		//printf("Ca passe \n");

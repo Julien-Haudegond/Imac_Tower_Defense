@@ -29,9 +29,6 @@
 
 #include "../include/sdl_array.h"
 
-//removing uninitialized values warning (functions setting values to pointers)
-#pragma GCC diagnostic ignored "-Wuninitialized"
-
 
 /***************
 *   define : 
@@ -86,10 +83,7 @@ int main(int argc, char** argv)
 
 
     //test valarc et init Dijkstra
-    
-    //setValarc(nodesArray, nbOfNodes);
-    
-    
+      
     for(int i = 0; i < nbOfNodes; i++) {
         initializeDijkstra(&nodesArray[i]);
         printNodeInfo(nodesArray[i]);
@@ -117,15 +111,14 @@ int main(int argc, char** argv)
     Wave* wave = createEmptyWave();
 
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-    
-    
-    //wave = deleteMonster(wave);
+
+    //initializing monster position
+    wave->monster->currentNode = wave->monster->path[0];
+    Node* nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
+    setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
 
     printWave(wave);
     
-    //free(nodesPath);
-    //free(wave);
-
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
     {
@@ -186,15 +179,11 @@ int main(int argc, char** argv)
     /* Global variables for GL Lists */
     GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
     GLuint help_window = createHelpList(help_window_texture);
-    
-    //initializing monster position
     int pathIndex = 0;
-    wave->monster->nbPath = wave->monster->path[pathIndex];
-    Node* nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->nbPath);
-    setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
 
     /* MAIN LOOP */
     int loop = 1;
+   
     while(loop) 
     {
         /* Time at the beginning of the loop */
@@ -229,19 +218,28 @@ int main(int argc, char** argv)
 	        	}
 	        }
             
-            if(wave->monster){
-                //printf("%d current node: ", wave->monster->nbPath);
-
-                //searching previous node 
-                nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->nbPath);
-                setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
+            if(wave->monster){    
+                //update on sprites and current node
                 drawMonsterSprite(wave->monster, sprite_texture);
-                /*if(wave->monster->path[pathIndex+1] && wave->monster->win_x == nodesearch->win_x && wave->monster->win_y == nodesearch->win_y{
-                    //deplacer le monstre ici
-                    //update node courant si les coordonnees ont ete atteintes
-                }*/
+                nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
+                
+                if(nodesearch->type == 2 && nodesearch->win_x == wave->monster->win_x && nodesearch->win_y == wave->monster->win_y){
+                    //free monster, and give money to the player
+                }else{
+                    //updates current node if it's been reached
+                    if(wave->monster->path[pathIndex+1] && (wave->monster->win_x == nodesearch-> win_x && wave->monster->win_y == nodesearch->win_y)){
+                        wave->monster->prevNode = wave->monster->currentNode;
+                        pathIndex++;
+                        wave->monster->currentNode = wave->monster->path[pathIndex];
+                        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, wave->monster->currentNode);
+                    }
+                    //updates monster coords if the node has not been reached
+                    if((wave->monster->win_x != nodesearch-> win_x || wave->monster->win_y != nodesearch->win_y)){
+                        updateCoords(wave->monster,nodesArray,nbOfNodes);
+                    }
+                }
             }
-
+            
 			//Hold 'h' to make the menu appear
 	        if(help == 1) {
 	        	glCallList(help_window);
@@ -350,8 +348,13 @@ int main(int argc, char** argv)
     /* Free Tower List and Free buildings */
     freeTowerList(towerList);
 
-    /* Free wave */
+    /*Free global shortest path*/
+    free()
 
+    /* Free wave */
+    free(wave->monster->path);
+    free(wave->monster);
+    free(wave);
 
     /* Close fonts */
     closeAllFonts(fonts, MAX_FONTS);
@@ -494,38 +497,9 @@ int main(int argc, char** argv)
 
 #ifdef READTHIS3
 
-void TestMonsters2(){
-    Monster *m;
-    createMonster(m, GIANT, 1);
-    Monster *m2;
-    createMonster(m2, SWARMLING, 2);
-    
-    Wave* wave = addMonster(wave, *m);
-    wave = addMonster(wave, *m2);
-    
-    wave->nextMonster->monster.health = 0;
-
-    printWave(wave);
-    wave = deleteMonster(wave);
-    wave = deleteMonster(wave);
-    printWave(wave);
-    
-}
-
-void TestTower(){
-    Tower* t = createTower(t, WATER);
-    //printTower(t);
-    Tower* t1 = createTower(t, ROCKET);
-    //printTower(t1);
-    TowerList* tl = addTower(tl, *t);
-    tl = addTower(tl, *t1);
-    printTowerList(tl);
-    free(tl);
-}
 //Main pour tests
-int main(){
-    TestMonsters2();
-    return 0;
+int main(int argc, char** argv){
+  return 0;
 }
 
 #endif

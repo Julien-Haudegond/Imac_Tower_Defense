@@ -421,6 +421,7 @@ Node* getNodeFromValue(Node* nodesArray, int nbNodes, int value){
 		if(tmp->value == value){
 			found = 1;
 		}
+		index++;
 	}
 	if(tmp) 
 		return tmp;

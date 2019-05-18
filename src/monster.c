@@ -30,6 +30,8 @@ void setMonsterStats(Monster* m, int type, float health, int resist, float speed
 	m->speed = speed;
 	m->reward = reward;
 	m->nbPath = nbPath;
+	m->prevNode= -1;
+	m->currentNode = 0;
 
 	for(int i = 0; i < nbPath; i++) {
 		m->path[i] = path[i];
@@ -45,6 +47,37 @@ void setPosition(Monster* m, float x, float y){
 		exit(EXIT_FAILURE);
 	}
 }
+
+//int getMonsterDirection(Monster* m,)
+void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
+	
+	
+	//Getting previous and current node to compare coords and set monster direction
+	int prevNodeValue = m->prevNode;
+
+	int currentNodeValue = m->currentNode;
+	Node* prevNode = getNodeFromValue(nodesArray, nbNodes, prevNodeValue);
+	Node* currentNode = getNodeFromValue(nodesArray, nbNodes, currentNodeValue);
+	//Direction : down
+	
+	if(prevNode->win_x == currentNode->win_x && prevNode->win_y < currentNode->win_y){
+		m->win_y ++;
+	}
+	//Direction : up
+	else if(prevNode->win_x == currentNode->win_x && prevNode->win_y > currentNode->win_y){
+		m->win_y --;
+	}
+	//direction : right
+	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x < currentNode->win_x){
+		m->win_x ++;
+	}
+	//direction : left
+	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x > currentNode->win_x){
+		m->win_x --;
+	}
+	return;
+}
+
 
 void printMonster(Monster *m){
 	printf("Health : %f \n", m->health);
