@@ -29,9 +29,10 @@ void nonConstructibleArea();
 void availableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
 void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
 
-int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[]);
-void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
+int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], TowerList* tl);
+int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl);
 
 void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]);
+/*void drawBuildingSprites(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]);*/
 
 #endif
