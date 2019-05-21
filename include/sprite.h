@@ -10,5 +10,6 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]);
 int loadSpriteArea(SDL_Surface** image, const char* fichier);
 int initSpriteTexture(SDL_Surface** image, GLuint* texture);
 void drawSprite(GLuint* texture);
+void drawSpriteHere(GLuint* texture, int x, int y);
 
 #endif

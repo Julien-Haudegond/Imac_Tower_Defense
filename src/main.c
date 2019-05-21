@@ -161,6 +161,7 @@ int main(int argc, char** argv)
     int help = -1; //To print the 'help' popup
     int constructStatus = -1, availableStatus = 0; //To construct something and if it is an available area
     int towerConstructType = -1, buildingConstructType = -1; //For construction types and validate constructions
+    int deleteStatus = -1; //For deleting constructions
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -225,6 +226,12 @@ int main(int argc, char** argv)
                     }
                 }
             }
+
+	        //Hold 'delete key'
+	        if(deleteStatus != -1) {
+	        	drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
+	        }
+
             
 			//Hold 'h' to make the menu appear
 	        if(help == 1) {
@@ -277,6 +284,10 @@ int main(int argc, char** argv)
 						towerConstructType = WATER;
 					}
 
+					if(e.key.keysym.sym == SDLK_DELETE) {
+						deleteStatus = 1;
+					}
+
 		            break;
 
 		        /* Keyboard UP */
@@ -291,6 +302,10 @@ int main(int argc, char** argv)
 						towerConstructType = -1;
 					}
 
+					if(e.key.keysym.sym == SDLK_DELETE) {
+						deleteStatus = -1;
+					}
+
 					break;
 
 
@@ -302,16 +317,31 @@ int main(int argc, char** argv)
 
 		        case SDL_MOUSEBUTTONUP:
 
-		        	//If the player is holding a 'construct key' and if the area is available
-		        	if(constructStatus == 1 && availableStatus == 1) {
-		        		//if it is a 'tower key'
-		        		if(towerConstructType != -1) {
-		        			addTower(towerList, towerConstructType, mouse_x, mouse_y);
-						}
-		        		//else if it is a 'building key'
-		        		else if(buildingConstructType != -1) {
-                            //ADD BUILDING HERE
+		        	//If mouse left button
+		        	if(e.button.button == SDL_BUTTON_LEFT) {
+
+			        	//If the player is holding a 'construct key' and if the area is available
+			        	if(constructStatus == 1 && availableStatus == 1) {
+			        		//if it is a 'tower key'
+			        		if(towerConstructType != -1) {
+			        			addTower(towerList, towerConstructType, mouse_x, mouse_y);
+							}
+			        		//else if it is a 'building key'
+			        		else if(buildingConstructType != -1) {
+	                            //ADD BUILDING HERE
+			        		}
+			        	}
+
+			        	//If the player is holding the 'delete key'
+		        		if(deleteStatus == 1) {
+		        			towerList = deleteTower(towerList, mouse_x, mouse_y);
+		        			//deleteBuilding(....);
 		        		}
+		        	}
+
+		        	//If mouse right button
+		        	if(e.button.button == SDL_BUTTON_RIGHT) {
+
 		        	}
 
 		            break;          
