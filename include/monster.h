@@ -27,7 +27,7 @@ typedef struct Monster{
 	int win_x, win_y;
 	float health;
 	int resist;
-	float speed;
+	int speed;
 	int reward;
 }Monster;
 
@@ -36,5 +36,7 @@ void setMonsterStats(Monster* m, int type, float health, int resist, float speed
 void setPosition(Monster* monster, float x, float y);
 void printMonster(Monster *m);
 void updateCoords(Monster *m, struct Node* nodesArray, int nbNodes);
+int getDirection(Monster *m, Node* nodesArray, int nbNodes);
+void clipMonsterPosition(Monster* m, int direction, Node* currentNode);
 
 #endif

@@ -156,6 +156,7 @@ int playGame(const char* itdPath)
 
     /*Global variables monsters*/
     int pathIndex = 0;
+    int getMonsterDirection = 0;
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -203,6 +204,13 @@ int playGame(const char* itdPath)
                 drawMonsterSprite(wave->monster, sprite_texture);
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
                 
+                //if current node is reached, clip monster on it
+                if(nodesearch->value != 0){
+                    getMonsterDirection = getDirection(wave->monster, nodesArray, nbOfNodes);
+                    clipMonsterPosition(wave->monster, getMonsterDirection, nodesearch);
+                }
+
+                //printf("direction : %d", getMonsterDirection);
                 if(nodesearch->type == 2 && nodesearch->win_x == wave->monster->win_x && nodesearch->win_y == wave->monster->win_y){
                     //free monster, and give money to the player
                 }else{

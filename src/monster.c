@@ -7,7 +7,7 @@ Monster* createMonster(MonsterType type, int resist, int* path, int nbPath){
 	m->path = malloc(nbPath*sizeof(int));
 	switch(type){
 		case GIANT:
-			setMonsterStats(m, 0, 40, resist, 1, 30, path, nbPath);
+			setMonsterStats(m, 0, 40, resist, 3, 30, path, nbPath);
 			break;
 		case SWARMLING:
 			setMonsterStats(m, 1, 10, resist, 4, 5, path, nbPath);
@@ -60,19 +60,19 @@ void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
 	//Direction : down
 	
 	if(prevNode->win_x == currentNode->win_x && prevNode->win_y < currentNode->win_y){
-		m->win_y ++;
+		m->win_y += m->speed ;
 	}
 	//Direction : up
 	else if(prevNode->win_x == currentNode->win_x && prevNode->win_y > currentNode->win_y){
-		m->win_y --;
+		m->win_y -= m->speed;
 	}
 	//direction : right
 	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x < currentNode->win_x){
-		m->win_x ++;
+		m->win_x += m->speed;
 	}
 	//direction : left
 	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x > currentNode->win_x){
-		m->win_x --;
+		m->win_x -= m->speed;
 	}
 	return;
 }
@@ -105,10 +105,20 @@ int getDirection(Monster *m, Node* nodesArray, int nbNodes){
 	return -1;
 }
 
+void clipMonsterPosition(Monster* m, int direction, Node* currentNode){
+	if((direction == 1 && (m->win_y + m->speed) > currentNode->win_y) ||  //case direction = down & monster lower than node
+		(direction == 2 && (m->win_y - m->speed) < currentNode->win_y) || //case direction = up & monster upper than node
+		(direction == 3 && (m->win_x + m->speed) > currentNode->win_x) || //case direction = right & monster more right than node
+		(direction == 4 && (m->win_x - m->speed) < currentNode->win_x)){  //case direction = left & monster more left than node
+			m->win_x = currentNode->win_x;
+			m->win_y = currentNode->win_y; 			
+		}
+}
+
 
 void printMonster(Monster *m){
 	printf("Health : %f \n", m->health);
-	printf("Speed : %f \n", m->speed);
+	printf("Speed : %d \n", m->speed);
 	printf("Reward : %d \n", m->reward);
 	printf("Shortest path : ");
 	for(int i = 0; i < m->nbPath; i++){
