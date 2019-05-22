@@ -255,7 +255,7 @@ void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
 
 
 //Return 1 if true and 0 if false
-int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[]) {
+int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], TowerList* tl) {
     ///// VARIABLES
     int grid_x = windowCoordToGridCoord(x);
     int grid_y = windowCoordToGridCoord(y);
@@ -282,7 +282,23 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
 
     //If the bloc is on a constructible area (at the beginning)
     if(current_pixel.r == construct.r && current_pixel.g == construct.g && current_pixel.b == construct.b) {
-        //CHECK THE TOWERS AND THE BUILDINGS
+        //CHECK THE TOWERS
+        if(tl->tower) {
+            TowerList* tmp = tl;
+            
+            if(tl->tower->x == grid_x && tl->tower->y == grid_y) return 0;
+
+            while(tmp->nextTower) {
+                tmp = tmp->nextTower;
+                if(tmp->tower) {
+                    if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) return 0;
+                }
+            }
+        }
+
+        //CHECK THE BUILDINGS
+
+
 
         return 1;
     }
@@ -291,8 +307,8 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
     }
 }
 
-void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[]) {
-    int value = isItAvailableArea(x, y, ppm, itdInstructions);
+int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl) {
+    int value = isItAvailableArea(x, y, ppm, itdInstructions, tl);
 
     if(value != 1 && value != 0) {
         fprintf(stderr, "Error: we can't know if the area is available or not\n");
@@ -301,10 +317,13 @@ void constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstruc
 
     if(value == 1) {
         availableArea(x, y, sprite_text);
+        return 1;
     }
     else if(value == 0) {
         nonAvailableArea(x, y, sprite_text);
     }
+
+    return 0;
 }
 
 void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]) {
@@ -346,3 +365,12 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
             break;
     }
 }
+
+/*
+void drawBuildingSprites(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]) {
+    int center_x = windowCoordToBlocCenter(mouse_x);
+    int center_y = windowCoordToBlocCenter(mouse_y);
+
+    
+}
+*/

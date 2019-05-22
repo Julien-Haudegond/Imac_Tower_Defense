@@ -81,7 +81,7 @@ TowerList* deleteTower(TowerList* head, int x, int y) {
     }
 
     //If the first one is the good tower to delete but there are several towers in the list
-	if(tmp != NULL && tmp->tower->x == grid_x && tmp->tower->y == grid_y){
+	if(tmp->tower != NULL && tmp->nextTower != NULL && tmp->tower->x == grid_x && tmp->tower->y == grid_y) {
 		head = tmp->nextTower;
 		free(tmp->tower);
 		free(tmp);
@@ -90,7 +90,7 @@ TowerList* deleteTower(TowerList* head, int x, int y) {
 		return head;
 	}
 
-	while(tmp != NULL && (tmp->tower->x != grid_x || tmp->tower->y != grid_y)) {
+	while(tmp->tower != NULL && (tmp->tower->x != grid_x || tmp->tower->y != grid_y)) {
 		prev = tmp;
 		tmp = tmp->nextTower;
 	}

@@ -7,6 +7,7 @@
 
 #include "../include/sprite.h"
 #include "../include/const.h"
+#include "../include/window.h"
 
 /***** SPRITES ARRAY *****/
 
@@ -53,6 +54,10 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     //Texture 9 : MONSTER Swarmling
     loadSpriteArea(&sprite_img[9], "Monster_swarmling_RGBA.png");
     initSpriteTexture(&sprite_img[9], &sprite_texture[9]);
+
+    //Texture 10 : Delete Sprite
+    loadSpriteArea(&sprite_img[10], "delete_area_RGBA.png");
+    initSpriteTexture(&sprite_img[10], &sprite_texture[10]);
 
 }
 
@@ -117,4 +122,14 @@ void drawSprite(GLuint* texture) {
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
+}
+
+void drawSpriteHere(GLuint* texture, int x, int y) {
+    int center_x = windowCoordToBlocCenter(x);
+    int center_y = windowCoordToBlocCenter(y);
+
+    glPushMatrix();
+        glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+        drawSprite(texture);
+    glPopMatrix();
 }

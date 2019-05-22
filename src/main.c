@@ -64,20 +64,6 @@ int main(int argc, char** argv)
     //Initialize a list of towers and buildings 
     TowerList* towerList = createEmptyTowerList();
 
-    //addTower(towerList, LASER, 100, 250); //TEST POUR VALARCS
-    //addTower(towerList, ELECTRIC, 100, 50); //TEST POUR VALARCS
-    //addTower(towerList, WATER, 500, 40); //TEST POUR VALARCS
-    //addTower(towerList, WATER, 900, 700); //TEST POUR VALARCS
-
-    printTowerList(towerList);
-    printf("Il y a %d tours.\n", countTowers(towerList));
-
-    towerList = deleteTower(towerList, 800, 50);
-
-    printf("\n\n\n");
-
-    printTowerList(towerList);
-    printf("Il y a %d tours.\n", countTowers(towerList));
 
     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
 
@@ -173,11 +159,12 @@ int main(int argc, char** argv)
     /* Global variables */
     int mouse_x = 0, mouse_y = 0; 
     int help = -1; //To print the 'help' popup
-    int constructStatus = -1; //To construct something
-    int towerConstruct = -1, buildingConstruct = -1; //For construction types and validate constructions
+    int constructStatus = -1, availableStatus = 0; //To construct something and if it is an available area
+    int towerConstructType = -1, buildingConstructType = -1; //For construction types and validate constructions
+    int deleteStatus = -1; //For deleting constructions
 
     /* Global variables for GL Lists */
-    GLuint debug_draw = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
+    GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
     GLuint help_window = createHelpList(help_window_texture);
     int pathIndex = 0;
 
@@ -189,20 +176,20 @@ int main(int argc, char** argv)
         /* Time at the beginning of the loop */
         Uint32 startTime = SDL_GetTicks();
         
-        /* Drawing code */
+        /* DRAWING CODE */
 	        glClear(GL_COLOR_BUFFER_BIT);
 
 	        glMatrixMode(GL_MODELVIEW);
 	        glLoadIdentity();
 
-	        glCallList(debug_draw);
-	        renderCenterText(&text_area[0], &text_texture[0], 610, 700);
+	        glCallList(map); //Draw the map
+	        renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
             
 	        //Hold a specific key to build towers or buildings
 	        if(constructStatus != -1) {
-	        	constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture);
-	        	if(towerConstruct != -1) drawTowerGuides(mouse_x, mouse_y, towerConstruct, sprite_texture);
-	        	//else if(buildingConstruct != -1) drawBuildingSprites(mouse_x, mouse_y, buildingConstruct, sprite_texture);
+	        	availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList);
+	        	if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
+	        	//else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingSprites(mouse_x, mouse_y, buildingConstructType, sprite_texture);
 	        }
 
 	        //TOWERS
@@ -239,6 +226,12 @@ int main(int argc, char** argv)
                     }
                 }
             }
+
+	        //Hold 'delete key'
+	        if(deleteStatus != -1) {
+	        	drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
+	        }
+
             
 			//Hold 'h' to make the menu appear
 	        if(help == 1) {
@@ -273,22 +266,26 @@ int main(int argc, char** argv)
 
 					if(e.key.keysym.sym == SDLK_a) {
 						constructStatus = 1;
-						towerConstruct = LASER;
+						towerConstructType = LASER;
 					}
 
 					if(e.key.keysym.sym == SDLK_z) {
 						constructStatus = 1;
-						towerConstruct = ROCKET;
+						towerConstructType = ROCKET;
 					}
 
 					if(e.key.keysym.sym == SDLK_e) {
 						constructStatus = 1;
-						towerConstruct = ELECTRIC;
+						towerConstructType = ELECTRIC;
 					}
 
 					if(e.key.keysym.sym == SDLK_r) {
 						constructStatus = 1;
-						towerConstruct = WATER;
+						towerConstructType = WATER;
+					}
+
+					if(e.key.keysym.sym == SDLK_DELETE) {
+						deleteStatus = 1;
 					}
 
 		            break;
@@ -302,7 +299,11 @@ int main(int argc, char** argv)
 
 					if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
 						constructStatus = -1;
-						towerConstruct = -1;
+						towerConstructType = -1;
+					}
+
+					if(e.key.keysym.sym == SDLK_DELETE) {
+						deleteStatus = -1;
 					}
 
 					break;
@@ -316,16 +317,31 @@ int main(int argc, char** argv)
 
 		        case SDL_MOUSEBUTTONUP:
 
-		        	//If the player is holding a 'construct key'
-		        	if(constructStatus == 1) {
-		        		//if it is a 'tower key'
-		        		if(towerConstruct != -1) {
-		        			addTower(towerList, towerConstruct, mouse_x, mouse_y);
-						}
-		        		//else if it is a 'building key'
-		        		else if(buildingConstruct != -1) {
+		        	//If mouse left button
+		        	if(e.button.button == SDL_BUTTON_LEFT) {
 
+			        	//If the player is holding a 'construct key' and if the area is available
+			        	if(constructStatus == 1 && availableStatus == 1) {
+			        		//if it is a 'tower key'
+			        		if(towerConstructType != -1) {
+			        			addTower(towerList, towerConstructType, mouse_x, mouse_y);
+							}
+			        		//else if it is a 'building key'
+			        		else if(buildingConstructType != -1) {
+	                            //ADD BUILDING HERE
+			        		}
+			        	}
+
+			        	//If the player is holding the 'delete key'
+		        		if(deleteStatus == 1) {
+		        			towerList = deleteTower(towerList, mouse_x, mouse_y);
+		        			//deleteBuilding(....);
 		        		}
+		        	}
+
+		        	//If mouse right button
+		        	if(e.button.button == SDL_BUTTON_RIGHT) {
+
 		        	}
 
 		            break;          

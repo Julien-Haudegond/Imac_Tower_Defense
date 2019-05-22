@@ -98,7 +98,7 @@ $(TOWER_LIST_O) : src/tower_list.c include/tower_list.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Tower Lists : done !"
 
-$(SPRITE_O) : src/sprite.c include/sprite.h include/const.h
+$(SPRITE_O) : src/sprite.c include/sprite.h include/const.h include/window.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Sprite : done !"
 
