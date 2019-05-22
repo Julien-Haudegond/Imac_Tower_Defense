@@ -51,7 +51,6 @@ void setPosition(Monster* m, float x, float y){
 //int getMonsterDirection(Monster* m,)
 void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
 	
-	
 	//Getting previous and current node to compare coords and set monster direction
 	int prevNodeValue = m->prevNode;
 
@@ -76,6 +75,34 @@ void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
 		m->win_x --;
 	}
 	return;
+}
+
+//int getMonsterDirection(Monster* m,)
+int getDirection(Monster *m, Node* nodesArray, int nbNodes){
+	
+	//Getting previous and current node to compare coords and set monster direction
+	int prevNodeValue = m->prevNode;
+	int currentNodeValue = m->currentNode;
+	Node* prevNode = getNodeFromValue(nodesArray, nbNodes, prevNodeValue);
+	Node* currentNode = getNodeFromValue(nodesArray, nbNodes, currentNodeValue);
+	
+	//Direction : down
+	if(prevNode->win_x == currentNode->win_x && prevNode->win_y < currentNode->win_y){
+		return 1;
+	}
+	//Direction : up
+	else if(prevNode->win_x == currentNode->win_x && prevNode->win_y > currentNode->win_y){
+		return 2;
+	}
+	//direction : right
+	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x < currentNode->win_x){
+		return 3;
+	}
+	//direction : left
+	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x > currentNode->win_x){
+		return 4;
+	}
+	return -1;
 }
 
 
