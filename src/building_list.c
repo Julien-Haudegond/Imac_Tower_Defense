@@ -49,7 +49,6 @@ void addBuilding(BuildingList* bl, BuildingType type, int x, int y) {
 	bl->nextBuild = NULL;
 }
 
-
 BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
 	if(!head) {
 		fprintf(stderr, "Error : no building list (deleteBuilding)\n");
@@ -58,31 +57,9 @@ BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
 
 	int grid_x = windowCoordToGridCoord(x);
     int grid_y = windowCoordToGridCoord(y);
-    int x_y = 0;
 
 	BuildingList* tmp = head;
-
-	//Check if there is a building with those coords in the list / If not, we return the list.  (TRES SCHLAG, PAS DU TOUT OPTIMISE)
-    if(head->build) {
-    	if(head->build->x == grid_x && head->build->y == grid_y) {
-    		x_y = 1;
-    	}
-
-    	while(tmp->nextBuild) {
-    		tmp = tmp->nextBuild;
-    		if(tmp->build) {
-    			if(tmp->build->x == grid_x && tmp->build->y == grid_y) {
-		    		x_y = 1;
-		    	}
-    		}
-    	}
-    }
-
-    if(x_y != 1) return head;
-
-
-	tmp = head;
-	BuildingList* prev = malloc(sizeof(BuildingList));
+	BuildingList* prev = head;
 
     //If the list is empty
     if(tmp->build == NULL && tmp->nextBuild == NULL) {
@@ -103,22 +80,25 @@ BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
 		head = tmp->nextBuild;
 		free(tmp->build);
 		free(tmp);
-		free(prev);
 
 		return head;
 	}
 
-	while(tmp->build != NULL && (tmp->build->x != grid_x || tmp->build->y != grid_y)) {
-		prev = tmp;
-		tmp = tmp->nextBuild;
+	while(tmp) {
+		if(tmp->build) {
+			if(tmp->build->x == grid_x && tmp->build->y == grid_y) {
+				prev->nextBuild = tmp->nextBuild;
+				free(tmp->build);
+				free(tmp);
+
+				break;
+			}
+			else {
+				prev = tmp;
+				tmp = tmp->nextBuild;			
+			}
+		}
 	}
-
-	if(tmp == NULL) return head;
-
-	prev->nextBuild = tmp->nextBuild;
-
-	free(tmp->build);
-	free(tmp);
 
 	return head;
 }
