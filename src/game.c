@@ -58,8 +58,6 @@ int playGame(const char* itdPath)
     TowerList* towerList = createEmptyTowerList();
     BuildingList* buildingList = createEmptyBuildingList();
 
-            //addTower(towerList, LASER, 50, 50);
-
 
     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
 
@@ -364,10 +362,12 @@ int playGame(const char* itdPath)
 			        		//if it is a 'tower key'
 			        		if(towerConstructType != -1) {
 			        			addTower(towerList, towerConstructType, mouse_x, mouse_y);
+                                updateTowersBuildings(towerList, buildingList);
 							}
 			        		//else if it is a 'building key'
 			        		else if(buildingConstructType != -1) {
 	                            addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
+                                updateTowersBuildings(towerList, buildingList);
 			        		}
 			        	}
 
@@ -375,6 +375,7 @@ int playGame(const char* itdPath)
 		        		if(deleteStatus == 1) {
 		        			towerList = deleteTower(towerList, mouse_x, mouse_y);
 		        			buildingList = deleteBuilding(buildingList, mouse_x, mouse_y);
+                            updateTowersBuildings(towerList, buildingList);
 		        		}
 		        	}
 

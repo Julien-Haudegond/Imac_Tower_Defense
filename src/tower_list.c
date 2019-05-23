@@ -1,6 +1,8 @@
 //Same function than wave
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+
 #include "../include/tower_list.h"
 #include "../include/window.h"
 
@@ -152,4 +154,108 @@ int countTowers(TowerList* tl) {
 	}
 
 	return counter;
+}
+
+
+/*************************************************************/
+
+int getSquareDistanceTowerBuilding(Tower* t, Building* b) {
+	int squareDistance = 0;
+
+	squareDistance = pow((t->win_x - b->win_x), 2) + pow((t->win_y - b->win_y), 2);
+
+	return squareDistance;
+}
+
+
+void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
+	if(!tl) {
+		fprintf(stderr, "Error : no tower list (updateTowersBuildings).\n");
+		exit(EXIT_FAILURE);
+	}
+	if(!bl) {
+		fprintf(stderr, "Error : no building list (updateTowersBuildings).\n");
+		exit(EXIT_FAILURE);
+	}
+
+	//Get all the buildings
+		int index = 0;
+		int nbOfBuildings = countBuildings(bl);
+
+		if(nbOfBuildings == 0) {
+			return;
+		}
+
+		Building** buildingArray = malloc(nbOfBuildings*sizeof(Building)); //Temporary dynamic array which contains all the buildings
+
+		if(!buildingArray) {
+			fprintf(stderr, "Error: bad alloc memory for the Towers Array (valarc calculation)\n");
+			exit(EXIT_FAILURE);
+		}
+
+		//Fill the array
+	    if(bl->build) {
+	        BuildingList* tmp = bl;
+	        buildingArray[index] = tmp->build;
+	        index++;
+
+	        while(tmp->nextBuild) {
+	            tmp = tmp->nextBuild;
+	            if(tmp->build) {
+	                buildingArray[index] = tmp->build;
+	        		index++;
+	            }
+	        }
+	    }
+
+	    if(index != nbOfBuildings) {
+	    	fprintf(stderr, "Error : problem with the number of buildings (updateTowersBuildings).\n");
+	    	exit(EXIT_FAILURE);
+	    }
+
+
+    //Make the updates for each tower
+	    if(tl->tower) {
+	    	TowerList* tmp = tl;
+	    	//Check each building effect
+	    	for(int i = 0; i < nbOfBuildings; i++) {
+	    		if(getSquareDistanceTowerBuilding(tmp->tower, buildingArray[i]) < pow(buildingArray[i]->range, 2)) {
+	    			switch(buildingArray[i]->type) {
+	    				case RADAR: //Increase range by 25%
+	    					tmp->tower->range = (int) tmp->tower->range * 1.25;
+	    					break;
+	    				case FACTORY: //Increase damage by 25%
+	    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
+	    					break;
+	    				case AMMO: //Increase firespeed by 25%
+	    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
+	    					break;
+	    			}
+	    		}
+	    	}
+
+	    	while(tmp->nextTower) {
+	    		tmp = tmp->nextTower;
+	    		if(tmp->tower) {
+			    	//Check each building effect
+			    	for(int i = 0; i < nbOfBuildings; i++) {
+			    		if(getSquareDistanceTowerBuilding(tmp->tower, buildingArray[i]) < pow(buildingArray[i]->range, 2)) {
+			    			switch(buildingArray[i]->type) {
+			    				case RADAR: //Increase range by 25%
+			    					tmp->tower->range = (int) tmp->tower->range * 1.25;
+			    					break;
+			    				case FACTORY: //Increase damage by 25%
+			    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
+			    					break;
+			    				case AMMO: //Increase firespeed by 25%
+			    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
+			    					break;
+			    			}
+			    		}
+			    	}	    			
+	    		}
+	    	}
+	    }
+
+    free(buildingArray);
 }

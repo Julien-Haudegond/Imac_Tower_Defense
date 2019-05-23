@@ -3,8 +3,6 @@
 
 #define BASE_BUILDING_RANGE 100 //Range in pixels
 
-#include "../include/tower_list.h"
-
 typedef enum{
 	RADAR, FACTORY, AMMO
 } BuildingType;

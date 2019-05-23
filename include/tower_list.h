@@ -5,6 +5,8 @@
 #define TOWER_LIST_H__
 
 #include "../include/tower.h"
+#include "../include/building_list.h"
+#include "../include/building.h"
 
 typedef struct TowerList{
 	Tower* tower;
@@ -20,5 +22,8 @@ void addTower(TowerList* tl, TowerType type, int x, int y);
 TowerList* deleteTower(TowerList* head, int x, int y);
 void printTowerList(TowerList *tl);
 int countTowers(TowerList* tl);
+
+int getSquareDistanceTowerBuilding(Tower* t, Building* b);
+void updateTowersBuildings(TowerList* tl, BuildingList* bl);
 
 #endif

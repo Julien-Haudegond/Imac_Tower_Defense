@@ -4,7 +4,7 @@
 #include "../include/building.h"
 
 typedef struct BuildingList {
-	Building* build;
+	struct Building* build;
 	struct BuildingList * nextBuild;
 } BuildingList;
 
