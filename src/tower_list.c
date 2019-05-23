@@ -217,26 +217,57 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
     //Make the updates for each tower
 	    if(tl->tower) {
 	    	TowerList* tmp = tl;
-	    	//Check each building effect
-	    	for(int i = 0; i < nbOfBuildings; i++) {
-	    		if(getSquareDistanceTowerBuilding(tmp->tower, buildingArray[i]) < pow(buildingArray[i]->range, 2)) {
-	    			switch(buildingArray[i]->type) {
-	    				case RADAR: //Increase range by 25%
-	    					tmp->tower->range = (int) tmp->tower->range * 1.25;
-	    					break;
-	    				case FACTORY: //Increase damage by 25%
-	    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
-	    					break;
-	    				case AMMO: //Increase firespeed by 25%
-	    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
-	    					break;
-	    			}
-	    		}
-	    	}
+	    		//Reset all the parameters of the towers
+	    		switch(tmp->tower->type){
+					case LASER :
+						tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+						break;
+					case ROCKET : 
+						tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+						break;
+					case ELECTRIC : 
+						tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+						break;
+					case WATER : 
+						tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+						break;
+				}
+
+		    	//Check each building effect
+		    	for(int i = 0; i < nbOfBuildings; i++) {
+		    		if(getSquareDistanceTowerBuilding(tmp->tower, buildingArray[i]) < pow(buildingArray[i]->range, 2)) {
+		    			switch(buildingArray[i]->type) {
+		    				case RADAR: //Increase range by 25%
+		    					tmp->tower->range = (int) tmp->tower->range * 1.25;
+		    					break;
+		    				case FACTORY: //Increase damage by 25%
+		    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
+		    					break;
+		    				case AMMO: //Increase firespeed by 25%
+		    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
+		    					break;
+		    			}
+		    		}
+		    	}
 
 	    	while(tmp->nextTower) {
 	    		tmp = tmp->nextTower;
 	    		if(tmp->tower) {
+		    		//Reset all the parameters of the towers
+		    		switch(tmp->tower->type){
+						case LASER :
+							tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+							break;
+						case ROCKET : 
+							tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+							break;
+						case ELECTRIC : 
+							tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+							break;
+						case WATER : 
+							tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+							break;
+					}
 			    	//Check each building effect
 			    	for(int i = 0; i < nbOfBuildings; i++) {
 			    		if(getSquareDistanceTowerBuilding(tmp->tower, buildingArray[i]) < pow(buildingArray[i]->range, 2)) {
