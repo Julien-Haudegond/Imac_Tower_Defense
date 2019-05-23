@@ -4,6 +4,8 @@
 #include "../include/image.h"
 #include "../include/itd.h"
 #include "../include/node.h"
+#include "../include/tower.h"
+#include "../include/building.h"
 
 
 void drawGridSquare(int filled);
@@ -33,6 +35,6 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
 int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl);
 
 void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]);
-/*void drawBuildingSprites(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]);*/
+void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]);
 
 #endif

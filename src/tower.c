@@ -3,9 +3,7 @@
 #include "../include/tower.h"
 #include "../include/wave.h"
 #include "../include/window.h"
-#define BASE_DMG 10
-#define BASE_FIRESPEED 0.2 //Amount of shots in a unity of time : 1/10 s
-#define BASE_RANGE 100 //Range in pixels
+
 
 //TO DO
 //void fire(Tower t);
@@ -30,19 +28,19 @@ Tower* createTower(TowerType type, int x, int y) {
 	switch(type){
 		//Lasers : lots of dmg, fires slowly, average range
 		case LASER :
-			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_RANGE);
+			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
 			break;
 		//Rockets : average dmg, fires fast, low range
 		case ROCKET : 
-			tower = setTowerStats(tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_RANGE*0.5));
+			tower = setTowerStats(tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
 			break;
 		//Electric: low dmg, fires slowly, low range
 		case ELECTRIC : 
-			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_RANGE*0.7));
+			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
 			break;
 		//Water : low dmg, fires fast, high range
 		case WATER : 
-			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_RANGE*2));
+			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
 			break;
 		default : 
 			printf("The type of tower you specified does not exist");

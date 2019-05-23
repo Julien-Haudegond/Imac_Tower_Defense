@@ -2,7 +2,9 @@
 #ifndef TOWER_H__
 #define TOWER_H__
 
-#define MAX_TOWERS 20
+#define BASE_DMG 10
+#define BASE_FIRESPEED 0.2 //Amount of shots in a unity of time : 1/10 s
+#define BASE_TOWER_RANGE 100 //Range in pixels
 
 typedef enum{
 	LASER, ROCKET, ELECTRIC, WATER
@@ -16,6 +18,7 @@ typedef enum{
 *		3 : Water
 * Will later be compared to monsters resist
 */
+
 typedef struct Tower{
 	int x,y;
 	int win_x, win_y;

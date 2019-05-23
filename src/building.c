@@ -1,33 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/building.h"
+#include <stdio.h>
 
-Building* createBuilding(Building* bd, TowerType type){
-	tower = (Tower*)malloc(sizeof(Tower));
-	switch(type){
-		//Lasers : lots of dmg, fires slowly, average range
-		case LASER :
-			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_RANGE);
-			break;
-		//Rockets : average dmg, fires fast, low range
-		case ROCKET : 
-			tower = setTowerStats(tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_RANGE*0.5));
-			break;
-		//Electric: low dmg, fires slowly, low range
-		case ELECTRIC : 
-			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_RANGE*0.7));
-			break;
-		//Water : low dmg, fires fast, high range
-		case WATER : 
-			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_RANGE*2));
-			break;
-		default : 
-			printf("The type of tower you specified does not exist");
-			exit(EXIT_FAILURE);
-			break;
-	}
-	if(tower == NULL){
+#include "../include/building.h"
+#include "../include/window.h"
+
+Building* createBuilding(BuildingType type, int x, int y) {
+	Building* build = malloc(sizeof(Building));
+
+	if(!build) {
+		fprintf(stderr, "Error: bad memory allocation to make a new building.\n");
 		exit(EXIT_FAILURE);
 	}
-	return tower;
-};
+
+	if(type != RADAR && type != FACTORY && type != AMMO) {
+		fprintf(stderr, "Error: this type of building doesn't exist.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+	build->x = grid_x;
+	build->y = grid_y;
+	build->win_x = gridCoordToWindowCoord(grid_x);
+	build->win_y = gridCoordToWindowCoord(grid_y);
+
+	build->type = type;
+
+	build->range = BASE_BUILDING_RANGE;
+
+	return build;
+}
+
+void printBuilding(Building* build) {
+	printf("Position: grid(%d,%d) / window(%d,%d)\n", build->x, build->y, build->win_x, build->win_y);
+	printf("Range: %d\n", build->range);
+	printf("Type: %d\n", build->type);
+}

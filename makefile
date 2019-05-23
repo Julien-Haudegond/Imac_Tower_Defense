@@ -22,6 +22,8 @@ MONSTER_O = obj/monster.o
 WAVE_O = obj/wave.o
 TOWER_O = obj/tower.o
 TOWER_LIST_O = obj/tower_list.o
+BUILDING_O = obj/building.o
+BUILDING_LIST_O = obj/building_list.o
 
 MAP_DRAW_O = obj/map_draw.o
 WINDOW_O = obj/window.o
@@ -34,7 +36,7 @@ ARGS_O = obj/args.o
 
 SDL_ARRAY_O = obj/sdl_array.o
 
-OBJ = $(MAIN_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O) $(SDL_ARRAY_O)
+OBJ = $(MAIN_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(BUILDING_O) $(BUILDING_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O) $(SDL_ARRAY_O)
 
 PROG = bin/program.out
 
@@ -55,7 +57,7 @@ $(MAIN_O) : src/main.c include/game.h include/args.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "done!"
 
-$(GAME_O) : src/game.c include/game.h include/itd.h include/node.h include/link.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h  include/tower_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
+$(GAME_O) : src/game.c include/game.h include/itd.h include/node.h include/link.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h include/tower_list.h include/building.h include/building_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
 	@echo "compile game"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "done!"
@@ -103,6 +105,14 @@ $(WINDOW_O) : src/window.c include/window.h include/const.h
 $(TOWER_LIST_O) : src/tower_list.c include/tower_list.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Tower Lists : done !"
+
+$(BUILDING_O) : src/building.c include/building.h
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "Building : done !"
+
+$(BUILDING_LIST_O) : src/building_list.c include/building_list.h
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "Building List : done !"
 
 $(SPRITE_O) : src/sprite.c include/sprite.h include/const.h include/window.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

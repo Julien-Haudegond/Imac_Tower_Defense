@@ -366,11 +366,35 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
     }
 }
 
-/*
-void drawBuildingSprites(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]) {
+
+void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 
-    
+    switch(type) {
+
+        case RADAR:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[11]);
+            glPopMatrix();
+
+            break;
+
+        case FACTORY:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[12]);
+            glPopMatrix();
+
+            break;
+
+        case AMMO:
+            glPushMatrix();
+                glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawSprite(&sprite_text[13]);
+            glPopMatrix();
+
+            break;
+    }
 }
-*/

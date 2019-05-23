@@ -131,3 +131,26 @@ void drawMonsterSprite(Monster* m, GLuint sprite_text[]) {
         }
     glPopMatrix();
 }
+
+void drawBuildingSprite(Building* build, GLuint sprite_text[]) {
+    float x = (float) build->win_x;
+    float y = (float) build->win_y;
+
+    glPushMatrix();
+        glTranslatef(x + 0.5, y + 0.5, 0.);
+
+        switch(build->type) {
+            case RADAR:
+                drawSprite(&sprite_text[11]);
+                break;
+            case FACTORY:
+                drawSprite(&sprite_text[12]);
+                break;
+            case AMMO:
+                drawSprite(&sprite_text[13]);
+                break;
+            default:
+                break;
+        }
+    glPopMatrix();    
+}

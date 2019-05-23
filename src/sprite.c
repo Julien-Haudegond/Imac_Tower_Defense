@@ -50,7 +50,6 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     loadSpriteArea(&sprite_img[8], "Monster_Giant_RGBA.png");
     initSpriteTexture(&sprite_img[8], &sprite_texture[8]);
 
-
     //Texture 9 : MONSTER Swarmling
     loadSpriteArea(&sprite_img[9], "Monster_swarmling_RGBA.png");
     initSpriteTexture(&sprite_img[9], &sprite_texture[9]);
@@ -58,6 +57,18 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     //Texture 10 : Delete Sprite
     loadSpriteArea(&sprite_img[10], "delete_area_RGBA.png");
     initSpriteTexture(&sprite_img[10], &sprite_texture[10]);
+
+    //Texture 11 : BUILDING Radar
+    loadSpriteArea(&sprite_img[11], "Building_Radar_RGBA.png");
+    initSpriteTexture(&sprite_img[11], &sprite_texture[11]);
+
+    //Texture 12 : BUILDING Factory
+    loadSpriteArea(&sprite_img[12], "Building_Factory_RGBA.png");
+    initSpriteTexture(&sprite_img[12], &sprite_texture[12]);
+
+    //Texture 13 : BUILDING Ammo
+    loadSpriteArea(&sprite_img[13], "Building_Ammo_RGBA.png");
+    initSpriteTexture(&sprite_img[13], &sprite_texture[13]);
 
 }
 

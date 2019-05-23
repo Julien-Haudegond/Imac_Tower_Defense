@@ -13,6 +13,8 @@
 #include "../include/wave.h"
 #include "../include/tower.h"
 #include "../include/tower_list.h"
+#include "../include/building.h"
+#include "../include/building_list.h"
 
 #include "../include/itd.h"
 #include "../include/node.h"
@@ -54,6 +56,9 @@ int playGame(const char* itdPath)
 
     //Initialize a list of towers and buildings 
     TowerList* towerList = createEmptyTowerList();
+    BuildingList* buildingList = createEmptyBuildingList();
+
+            //addTower(towerList, LASER, 50, 50);
 
 
     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
@@ -183,7 +188,7 @@ int playGame(const char* itdPath)
 	        if(constructStatus != -1) {
 	        	availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList);
 	        	if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
-	        	//else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingSprites(mouse_x, mouse_y, buildingConstructType, sprite_texture);
+	        	else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
 	        }
 
 	        //TOWERS
@@ -198,6 +203,19 @@ int playGame(const char* itdPath)
 	        		}
 	        	}
 	        }
+
+            //BUILDINGS
+            if(buildingList->build) {
+                BuildingList* tmp = buildingList;
+                drawBuildingSprite(tmp->build, sprite_texture);
+
+                while(tmp->nextBuild) {
+                    tmp = tmp->nextBuild;
+                    if(tmp->build) {
+                        drawBuildingSprite(tmp->build, sprite_texture);
+                    }
+                }
+            }
             
             if(wave->monster){    
                 //update on sprites and current node
@@ -285,6 +303,21 @@ int playGame(const char* itdPath)
 						towerConstructType = WATER;
 					}
 
+                    if(e.key.keysym.sym == SDLK_q) {
+                        constructStatus = 1;
+                        buildingConstructType = RADAR;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_s) {
+                        constructStatus = 1;
+                        buildingConstructType = FACTORY;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_d) {
+                        constructStatus = 1;
+                        buildingConstructType = AMMO;
+                    }
+
 					if(e.key.keysym.sym == SDLK_DELETE) {
 						deleteStatus = 1;
 					}
@@ -302,6 +335,11 @@ int playGame(const char* itdPath)
 						constructStatus = -1;
 						towerConstructType = -1;
 					}
+
+                    if(e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_s || e.key.keysym.sym == SDLK_d) {
+                        constructStatus = -1;
+                        buildingConstructType = -1;
+                    }
 
 					if(e.key.keysym.sym == SDLK_DELETE) {
 						deleteStatus = -1;
@@ -329,14 +367,14 @@ int playGame(const char* itdPath)
 							}
 			        		//else if it is a 'building key'
 			        		else if(buildingConstructType != -1) {
-	                            //ADD BUILDING HERE
+	                            addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
 			        		}
 			        	}
 
 			        	//If the player is holding the 'delete key'
 		        		if(deleteStatus == 1) {
 		        			towerList = deleteTower(towerList, mouse_x, mouse_y);
-		        			//deleteBuilding(....);
+		        			buildingList = deleteBuilding(buildingList, mouse_x, mouse_y);
 		        		}
 		        	}
 
@@ -361,12 +399,14 @@ int playGame(const char* itdPath)
     }
 
     printTowerList(towerList);
+    printBuildingList(buildingList);
 
     /* Free Tower List and Free buildings */
     freeTowerList(towerList);
+    freeBuildingList(buildingList);
 
     /*Free global shortest path*/
-   free(nodesPath);
+    free(nodesPath);
 
     /* Free wave */
     free(wave->monster->path);

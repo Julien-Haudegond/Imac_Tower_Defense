@@ -26,7 +26,7 @@ void freeTowerList(TowerList* tl) {
 }
 
 /*************
-*	Adds tower to the list specified in arguments
+*	Add tower to the list specified in arguments
 *************/
 void addTower(TowerList* tl, TowerType type, int x, int y) {
 	if(!tl) {
@@ -54,17 +54,37 @@ void addTower(TowerList* tl, TowerType type, int x, int y) {
 *	From the list tl
 *****************/
 TowerList* deleteTower(TowerList* head, int x, int y) {
-
 	if(!head) {
 		fprintf(stderr, "Error : no tower list (deleteTower)\n");
 		exit(EXIT_FAILURE);
 	}
 
-	TowerList* tmp = head;
-	TowerList* prev = malloc(sizeof(TowerList));
-
 	int grid_x = windowCoordToGridCoord(x);
     int grid_y = windowCoordToGridCoord(y);
+	int x_y = 0;
+
+	TowerList* tmp = head;
+
+	//Check if there is a tower with those coords in the list / If not, we return the list. (TRES SCHLAG, PAS DU TOUT OPTIMISE)
+    if(head->tower) {
+    	if(head->tower->x == grid_x && head->tower->y == grid_y) {
+    		x_y = 1;
+    	}
+
+    	while(tmp->nextTower) {
+    		tmp = tmp->nextTower;
+    		if(tmp->tower) {
+    			if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) {
+		    		x_y = 1;
+		    	}
+    		}
+    	}
+    }
+
+    if(x_y != 1) return head;
+
+	tmp = head;
+	TowerList* prev = malloc(sizeof(TowerList));
 
     //If the list is empty
     if(tmp->tower == NULL && tmp->nextTower == NULL) {
@@ -97,7 +117,7 @@ TowerList* deleteTower(TowerList* head, int x, int y) {
 
 	if(tmp == NULL) return head;
 
-	prev->nextTower = tmp -> nextTower;
+	prev->nextTower = tmp->nextTower;
 
 	free(tmp->tower);
 	free(tmp);
@@ -125,7 +145,6 @@ void printTowerList(TowerList* tl){
 		//printing last tower
 			printf("Tower %d \n", counter);
 			printTower(tl->tower);
-			//tl = tl->nextTower;
 		}
 	}
 	if(tl->tower == NULL && tl->nextTower == NULL) {
