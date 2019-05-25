@@ -49,7 +49,7 @@ void addBuilding(BuildingList* bl, BuildingType type, int x, int y) {
 	bl->nextBuild = NULL;
 }
 
-BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
+BuildingList* deleteBuilding(BuildingList* head, int x, int y, int* global_money) {
 	if(!head) {
 		fprintf(stderr, "Error : no building list (deleteBuilding)\n");
 		exit(EXIT_FAILURE);
@@ -68,6 +68,7 @@ BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
 
     //If only one building in the list and we delete it
     if((tmp->build->x == grid_x && tmp->build->y == grid_y) && tmp->nextBuild == NULL) {
+    	*global_money += (int) tmp->build->money_cost / 2;
     	free(tmp->build);
     	tmp->build = NULL;
     	tmp->nextBuild = NULL;
@@ -78,6 +79,7 @@ BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
     //If the first one is the good building to delete but there are several buildings in the list
 	if(tmp->build != NULL && tmp->nextBuild != NULL && tmp->build->x == grid_x && tmp->build->y == grid_y) {
 		head = tmp->nextBuild;
+		*global_money += (int) tmp->build->money_cost / 2;
 		free(tmp->build);
 		free(tmp);
 
@@ -88,6 +90,7 @@ BuildingList* deleteBuilding(BuildingList* head, int x, int y) {
 		if(tmp->build) {
 			if(tmp->build->x == grid_x && tmp->build->y == grid_y) {
 				prev->nextBuild = tmp->nextBuild;
+				*global_money += (int) tmp->build->money_cost / 2;
 				free(tmp->build);
 				free(tmp);
 
@@ -127,6 +130,7 @@ void printBuildingList(BuildingList* bl) {
 	if(bl->build == NULL && bl->nextBuild == NULL) {
 		printf("Building list is empty.\n");
 	}
+	printf("\n");
 }
 
 int countBuildings(BuildingList* bl) {

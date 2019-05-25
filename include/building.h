@@ -3,9 +3,13 @@
 
 #define BASE_BUILDING_RANGE 100 //Range in pixels
 
-typedef enum{
+typedef enum { 
 	RADAR, FACTORY, AMMO
 } BuildingType;
+
+typedef enum {
+	RADAR_COST = 500, FACTORY_COST = 500, AMMO_COST = 500
+} BuildingCost;
 
 /******************
 * Types of Buildings 
@@ -19,8 +23,10 @@ typedef struct Building {
 	int win_x, win_y;
 	int type;
 	int range;
+	int money_cost;
 } Building;
 
+int checkBuildingMoney(BuildingType type, int money_cost);
 Building* createBuilding(BuildingType type, int x, int y);
 void printBuilding(Building* build);
 

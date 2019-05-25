@@ -19,7 +19,7 @@ void freeTowerList(TowerList* tl);
 
 
 void addTower(TowerList* tl, TowerType type, int x, int y);
-TowerList* deleteTower(TowerList* head, int x, int y);
+TowerList* deleteTower(TowerList* head, int x, int y, int* global_money);
 void printTowerList(TowerList *tl);
 int countTowers(TowerList* tl);
 

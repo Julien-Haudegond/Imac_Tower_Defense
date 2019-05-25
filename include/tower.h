@@ -6,9 +6,13 @@
 #define BASE_FIRESPEED 0.2 //Amount of shots in a unity of time : 1/10 s
 #define BASE_TOWER_RANGE 100 //Range in pixels
 
-typedef enum{
+typedef enum {
 	LASER, ROCKET, ELECTRIC, WATER
-}TowerType;
+} TowerType;
+
+typedef enum {
+	LASER_COST = 500, ROCKET_COST = 500, ELECTRIC_COST = 500, WATER_COST = 500
+} TowerCost;
 
 /******************
 * Types of towers
@@ -19,17 +23,19 @@ typedef enum{
 * Will later be compared to monsters resist
 */
 
-typedef struct Tower{
+typedef struct Tower {
 	int x,y;
 	int win_x, win_y;
 	int type;
 	int dmg;
 	float firespeed;
 	int range;
-}Tower;
+	int money_cost;
+} Tower;
 
 
 //void fire(Tower t);
+int checkTowerMoney(TowerType type, int money_cost);
 Tower* createTower(TowerType type, int x, int y);
 Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range);
 void printTower(Tower *t);

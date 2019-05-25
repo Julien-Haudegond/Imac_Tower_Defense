@@ -12,7 +12,7 @@ BuildingList* createEmptyBuildingList();
 void freeBuildingList(BuildingList* bl);
 
 void addBuilding(BuildingList* bl, BuildingType type, int x, int y);
-BuildingList* deleteBuilding(BuildingList* head, int x, int y);
+BuildingList* deleteBuilding(BuildingList* head, int x, int y, int* global_money);
 void printBuildingList(BuildingList* bl);
 int countBuildings(BuildingList* bl);
 

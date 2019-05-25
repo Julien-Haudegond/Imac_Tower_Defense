@@ -43,8 +43,11 @@
 
 #ifdef READTHIS1
 
+
 int playGame(const char* itdPath) 
 {
+    int global_money = 10000000;
+
     //Loading ITD File
     Image imgPPM;
     ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
@@ -180,7 +183,6 @@ int playGame(const char* itdPath)
 	        glLoadIdentity();
 
 	        glCallList(map); //Draw the map
-	        renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
             
 	        //Hold a specific key to build towers or buildings
 	        if(constructStatus != -1) {
@@ -249,7 +251,12 @@ int playGame(const char* itdPath)
 	        	drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
 	        }
 
-            
+            //MONEY
+            loadMoneyText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
+            renderRightText(&text_area[1], &text_texture[1], 1200, 20); //Money text
+
+            //HELP
+            renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
 			//Hold 'h' to make the menu appear
 	        if(help == 1) {
 	        	glCallList(help_window);
@@ -361,20 +368,28 @@ int playGame(const char* itdPath)
 			        	if(constructStatus == 1 && availableStatus == 1) {
 			        		//if it is a 'tower key'
 			        		if(towerConstructType != -1) {
-			        			addTower(towerList, towerConstructType, mouse_x, mouse_y);
-                                updateTowersBuildings(towerList, buildingList);
+                                int price = checkTowerMoney(towerConstructType, global_money);
+                                if(price != 0) {
+                                    addTower(towerList, towerConstructType, mouse_x, mouse_y);
+                                    updateTowersBuildings(towerList, buildingList);
+                                    global_money -= price;
+                                }
 							}
 			        		//else if it is a 'building key'
 			        		else if(buildingConstructType != -1) {
-	                            addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
-                                updateTowersBuildings(towerList, buildingList);
+                                int price = checkBuildingMoney(buildingConstructType, global_money);
+                                if(price != 0) {
+                                    addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
+                                    updateTowersBuildings(towerList, buildingList);
+                                    global_money -= price;                              
+                                }
 			        		}
 			        	}
 
 			        	//If the player is holding the 'delete key'
 		        		if(deleteStatus == 1) {
-		        			towerList = deleteTower(towerList, mouse_x, mouse_y);
-		        			buildingList = deleteBuilding(buildingList, mouse_x, mouse_y);
+		        			towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
+		        			buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
                             updateTowersBuildings(towerList, buildingList);
 		        		}
 		        	}
