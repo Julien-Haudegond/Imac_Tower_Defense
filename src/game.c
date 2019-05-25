@@ -184,7 +184,7 @@ int playGame(const char* itdPath)
             
 	        //Hold a specific key to build towers or buildings
 	        if(constructStatus != -1) {
-	        	availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList);
+	        	availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList, buildingList);
 	        	if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
 	        	else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
 	        }

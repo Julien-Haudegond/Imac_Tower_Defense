@@ -255,7 +255,7 @@ void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
 
 
 //Return 1 if true and 0 if false
-int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], TowerList* tl) {
+int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], TowerList* tl, BuildingList* bl) {
     ///// VARIABLES
     int grid_x = windowCoordToGridCoord(x);
     int grid_y = windowCoordToGridCoord(y);
@@ -297,7 +297,18 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
         }
 
         //CHECK THE BUILDINGS
+        if(bl->build) {
+            BuildingList* tmp2 = bl;
+            
+            if(bl->build->x == grid_x && bl->build->y == grid_y) return 0;
 
+            while(tmp2->nextBuild) {
+                tmp2 = tmp2->nextBuild;
+                if(tmp2->build) {
+                    if(tmp2->build->x == grid_x && tmp2->build->y == grid_y) return 0;
+                }
+            }
+        }
 
 
         return 1;
@@ -307,8 +318,8 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
     }
 }
 
-int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl) {
-    int value = isItAvailableArea(x, y, ppm, itdInstructions, tl);
+int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl, BuildingList* bl) {
+    int value = isItAvailableArea(x, y, ppm, itdInstructions, tl, bl);
 
     if(value != 1 && value != 0) {
         fprintf(stderr, "Error: we can't know if the area is available or not\n");
