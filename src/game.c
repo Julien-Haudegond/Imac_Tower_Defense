@@ -149,16 +149,18 @@ int playGame(const char* itdPath)
     	//Initializing TEXTURES
 	    GLuint text_texture[MAX_TEXTS];
 	    GLuint help_window_texture[MAX_TEXTS];
+        GLuint properties_window_texture[MAX_TEXTS];
 
 	    //WRITING texts
 	    fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
   
     /* Global variables */
-    int mouse_x = 0, mouse_y = 0; 
+    int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
     int help = -1; //To print the 'help' popup
     int constructStatus = -1, availableStatus = 0; //To construct something and if it is an available area
     int towerConstructType = -1, buildingConstructType = -1; //For construction types and validate constructions
     int deleteStatus = -1; //For deleting constructions
+    int towerPropStatus = -1; //To show the tower properties
 
     /*Global variables monsters*/
     int pathIndex = 0;
@@ -167,6 +169,7 @@ int playGame(const char* itdPath)
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
     GLuint help_window = createHelpList(help_window_texture, sprite_texture);
+    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, properties_window_texture);
     
 
     /* MAIN LOOP */
@@ -177,6 +180,7 @@ int playGame(const char* itdPath)
         Uint32 startTime = SDL_GetTicks();
         
         /* DRAWING CODE */
+
 	        glClear(GL_COLOR_BUFFER_BIT);
 
 	        glMatrixMode(GL_MODELVIEW);
@@ -251,11 +255,17 @@ int playGame(const char* itdPath)
 	        	drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
 	        }
 
+            //Draw the tower properties
+            if(towerPropStatus != -1) {
+                properties_window = createPropertiesWindowList(towerList, button_x, button_y, properties_window_texture);
+                glCallList(properties_window);
+            }
+
             //MONEY
-            loadMoneyText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
+            loadIntegerText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
             renderRightText(&text_area[1], &text_texture[1], 1170, 30); //Money text
             glPushMatrix();
-                glTranslatef(1190., 30., 0.);
+                glTranslatef(1190, 30, 0);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&sprite_texture[14]);
             glPopMatrix();
@@ -364,9 +374,13 @@ int playGame(const char* itdPath)
 
 		            break;
 
-		        case SDL_MOUSEBUTTONUP:
 
-		        	//If mouse left button
+		        case SDL_MOUSEBUTTONDOWN:
+
+                    button_x = e.button.x * WINDOW_WIDTH / surface->w;
+                    button_y = e.button.y * WINDOW_HEIGHT / surface->h;
+
+		        	//If mouse left button is down
 		        	if(e.button.button == SDL_BUTTON_LEFT) {
 
 			        	//If the player is holding a 'construct key' and if the area is available
@@ -399,12 +413,28 @@ int playGame(const char* itdPath)
 		        		}
 		        	}
 
-		        	//If mouse right button
+		        	//If mouse right button is down
 		        	if(e.button.button == SDL_BUTTON_RIGHT) {
 
+                        //Change the tower properties status
+                        if(isThereTowerHere(towerList, button_x, button_y) == 1) {
+                            towerPropStatus = 1;
+                        }                  
 		        	}
 
-		            break;          
+		            break;
+
+
+                case SDL_MOUSEBUTTONUP:
+
+                    //If mouse right button is up
+                    if(e.button.button == SDL_BUTTON_RIGHT) {
+
+                        //Change the tower properties status
+                        if(towerPropStatus != -1) {
+                            towerPropStatus = -1;
+                        }
+                    }   
 		            
 		        default:
 		            break;
@@ -445,6 +475,7 @@ int playGame(const char* itdPath)
     freeSurfacesArray(text_area, MAX_TEXTS);
     freeTexturesArray(text_texture, MAX_TEXTS);
     freeTexturesArray(help_window_texture, MAX_TEXTS);
+    freeTexturesArray(properties_window_texture, MAX_TEXTS);
 
     /* Free links of all nodes and the PPM */
     for(int i = 0; i < nbOfNodes; i++) {

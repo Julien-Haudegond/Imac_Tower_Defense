@@ -23,6 +23,9 @@ TowerList* deleteTower(TowerList* head, int x, int y, int* global_money);
 void printTowerList(TowerList *tl);
 int countTowers(TowerList* tl);
 
+int isThereTowerHere(TowerList* tl, int x, int y);
+void getTowerInfosFromPosition(Tower** t, TowerList* tl, int x, int y);
+
 int getSquareDistanceTowerBuilding(Tower* t, Building* b);
 void updateTowersBuildings(TowerList* tl, BuildingList* bl);
 

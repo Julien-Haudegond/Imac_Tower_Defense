@@ -20,6 +20,6 @@ void renderCenterText(SDL_Surface** sFont, GLuint* texture, int x , int y);
 void renderLeftText(SDL_Surface** sFont, GLuint* texture, int x , int y);
 void renderRightText(SDL_Surface** sFont, GLuint* texture, int x , int y);
 
-void loadMoneyText(int global_money, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture);
+void loadIntegerText(int integer, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture);
 
 #endif

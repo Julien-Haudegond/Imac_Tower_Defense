@@ -39,7 +39,6 @@ void fillTextsArrays(TTF_Font* fonts[], SDL_Color colors[], SDL_Surface* text_ar
 
 
 
-
 //Don't forget to close the font at the end
 TTF_Font* loadFont(const char* fontName, int size) {
     char fontPath[80] = "fonts/";
@@ -149,7 +148,7 @@ void renderRightText(SDL_Surface** sFont, GLuint* texture, int x , int y) {
 
 
 
-void loadMoneyText(int global_money, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture) {
+void loadIntegerText(int integer, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture) {
     glGenTextures(1, texture);
     glBindTexture(GL_TEXTURE_2D, *texture);
 
@@ -159,7 +158,7 @@ void loadMoneyText(int global_money, TTF_Font** font, SDL_Color color, SDL_Surfa
     }
 
     char text[10];
-    snprintf(text, sizeof(text), "%d", global_money);
+    snprintf(text, sizeof(text), "%d", integer);
 
     *sFont = TTF_RenderText_Blended(*font, text, color);
 

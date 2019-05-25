@@ -11,6 +11,7 @@
 void drawGridSquare(int filled);
 void drawWindowSquare(int filled);
 void drawFullScreen(uint r, uint g, uint b, uint a);
+void drawPropertiesScreen(uint r, uint g, uint b, uint a);
 
 
 //DEBUG DRAW

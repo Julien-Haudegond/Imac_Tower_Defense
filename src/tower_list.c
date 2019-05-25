@@ -160,6 +160,68 @@ int countTowers(TowerList* tl) {
 	return counter;
 }
 
+// 0 if no tower, 1 if tower
+int isThereTowerHere(TowerList* tl, int x, int y) {
+    if(!tl) {
+        fprintf(stderr, "Error : no tower list (isThereTowerHere)\n");
+        exit(EXIT_FAILURE);
+    }
+
+	int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+    if(tl->tower) {
+        TowerList* tmp = tl;
+        if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) return 1;
+
+        while(tmp->nextTower) {
+            tmp = tmp->nextTower;
+            if(tmp->tower) {
+                if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+void getTowerInfosFromPosition(Tower** t, TowerList* tl, int x, int y) {
+    if(!tl) {
+        fprintf(stderr, "Error : no tower list (getTowerFromPosition)\n");
+        exit(EXIT_FAILURE);
+    }
+
+	int grid_x = windowCoordToGridCoord(x);
+    int grid_y = windowCoordToGridCoord(y);
+
+
+    if(tl->tower) {
+        TowerList* tmp = tl;
+        if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) {
+        	(*t)->x = tmp->tower->x;
+        	(*t)->y = tmp->tower->y;
+        	(*t)->range = tmp->tower->range;
+        	(*t)->dmg = tmp->tower->dmg;
+        	(*t)->firespeed = tmp->tower->firespeed;
+        	return;
+        }
+
+        while(tmp->nextTower) {
+            tmp = tmp->nextTower;
+            if(tmp->tower) {
+                if(tmp->tower->x == grid_x && tmp->tower->y == grid_y) {
+			        (*t)->x = tmp->tower->x;
+		        	(*t)->y = tmp->tower->y;
+		        	(*t)->range = tmp->tower->range;
+		        	(*t)->dmg = tmp->tower->dmg;
+		        	(*t)->firespeed = tmp->tower->firespeed;
+	                return; 	
+                } 
+            }
+        }
+    }
+}
+
 
 /*************************************************************/
 

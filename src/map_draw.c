@@ -59,17 +59,36 @@ void drawFullScreen(uint r, uint g, uint b, uint a) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glBegin(GL_TRIANGLE_FAN);
+        glBegin(GL_QUADS);
 
             glColor4ub(r, g, b, a);
             
-            glVertex2f(0.0, 0.0);
-            glVertex2f( WINDOW_WIDTH , - WINDOW_HEIGHT);
+            glVertex2f(0., 0.);
+            glVertex2f( WINDOW_WIDTH , 0.);
             glVertex2f( WINDOW_WIDTH , WINDOW_HEIGHT);
-            glVertex2f( - WINDOW_WIDTH , WINDOW_HEIGHT);
-            glVertex2f( - WINDOW_WIDTH , - WINDOW_HEIGHT);
-            glVertex2f( WINDOW_WIDTH, - WINDOW_HEIGHT);
+            glVertex2f(0., WINDOW_HEIGHT);
 
+        glEnd();
+
+        glDisable(GL_BLEND);
+    glPopAttrib();
+    glPopMatrix();
+}
+
+void drawPropertiesScreen(uint r, uint g, uint b, uint a) {
+    glPushMatrix();
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glBegin(GL_QUADS);
+
+            glColor4ub(r, g, b, a);
+            
+            glVertex2f( 0 , WINDOW_HEIGHT);
+            glVertex2f( 200 , WINDOW_HEIGHT);
+            glVertex2f( 200 , WINDOW_HEIGHT - 100);
+            glVertex2f( 0 , WINDOW_HEIGHT - 100);
 
         glEnd();
 
