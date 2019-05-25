@@ -46,7 +46,7 @@
 
 int playGame(const char* itdPath) 
 {
-    int global_money = 10000000;
+    int global_money = 10000;
 
     //Loading ITD File
     Image imgPPM;
@@ -166,7 +166,7 @@ int playGame(const char* itdPath)
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
-    GLuint help_window = createHelpList(help_window_texture);
+    GLuint help_window = createHelpList(help_window_texture, sprite_texture);
     
 
     /* MAIN LOOP */
@@ -253,7 +253,12 @@ int playGame(const char* itdPath)
 
             //MONEY
             loadMoneyText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
-            renderRightText(&text_area[1], &text_texture[1], 1200, 20); //Money text
+            renderRightText(&text_area[1], &text_texture[1], 1170, 30); //Money text
+            glPushMatrix();
+                glTranslatef(1190., 30., 0.);
+                glScalef(0.7, 0.7, 1.);
+                drawSprite(&sprite_texture[14]);
+            glPopMatrix();
 
             //HELP
             renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help

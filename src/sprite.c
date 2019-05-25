@@ -70,6 +70,9 @@ void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
     loadSpriteArea(&sprite_img[13], "Building_Ammo_RGBA.png");
     initSpriteTexture(&sprite_img[13], &sprite_texture[13]);
 
+    //Texture 14 : MONEY
+    loadSpriteArea(&sprite_img[14], "money_RGBA.png");
+    initSpriteTexture(&sprite_img[14], &sprite_texture[14]);
 }
 
 

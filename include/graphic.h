@@ -5,7 +5,7 @@
 #include "../include/monster.h"
 #include "../include/building.h"
 
-GLuint createHelpList(GLuint text_texture[]);
+GLuint createHelpList(GLuint text_texture[], GLuint sprite_texture[]);
 
 void drawTowerSprite(Tower* tower, GLuint sprite_text[]);
 void drawMonsterSprite(Monster* m, GLuint sprite_text[]);
