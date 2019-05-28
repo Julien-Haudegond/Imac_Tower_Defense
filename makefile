@@ -4,7 +4,7 @@
 CC		= gcc
 CFLAGS	= -Wall -O2 -g
 LDFLAGS	= -Llib/lib -lSDL -lGLU -lGL -lm -lSDL_image -lSDL_ttf -lfmod
-INCLUDE = -Ilib/build/include
+INCLUDE = -Ilib/include
 
 BINDIR	= bin/
 SRCDIR	= src/
