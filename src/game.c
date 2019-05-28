@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <FMOD/fmod.h>
 
 #include "../include/const.h"
 #include "../include/game.h"
@@ -117,6 +118,29 @@ int playGame(const char* itdPath)
         fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
     }
+
+    /* Initializing FMOD */
+    FMOD_SYSTEM* system;
+    FMOD_SOUND* music;
+    FMOD_RESULT result;
+
+    FMOD_System_Create(&system);
+    FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
+
+        //Opening the music
+        result = FMOD_System_CreateSound(system, "sounds/test.mp3", FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &music);
+
+        //Check if it well opened
+        if(result != FMOD_OK) {
+            fprintf(stderr, "Error: impossible to read the music file\n");
+            exit(EXIT_FAILURE);
+        }
+
+        //Loop the music
+        FMOD_Sound_SetLoopCount(music, -1);
+
+        //Play the music
+        FMOD_System_PlaySound(system, music, NULL, 0, NULL);
    
     /* Open a window and create the OpenGL context */
     SDL_Surface* surface;
@@ -482,6 +506,11 @@ int playGame(const char* itdPath)
         freeAllLinks(nodesArray[i].link);
     }
     freeImage(&imgPPM);
+
+    /* Free FMOD */
+    FMOD_Sound_Release(music);
+    FMOD_System_Close(system);
+    FMOD_System_Release(system);
 
     /* Free TTF */
     TTF_Quit();
