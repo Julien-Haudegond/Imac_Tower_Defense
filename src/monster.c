@@ -48,7 +48,7 @@ void setPosition(Monster* m, float x, float y){
 	}
 }
 
-//int getMonsterDirection(Monster* m,)
+
 void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
 	
 	//Getting previous and current node to compare coords and set monster direction
@@ -77,7 +77,6 @@ void updateCoords(Monster *m, Node* nodesArray, int nbNodes){
 	return;
 }
 
-//int getMonsterDirection(Monster* m,)
 int getDirection(Monster *m, Node* nodesArray, int nbNodes){
 	
 	//Getting previous and current node to compare coords and set monster direction
@@ -88,15 +87,15 @@ int getDirection(Monster *m, Node* nodesArray, int nbNodes){
 	
 	//Direction : down
 	if(prevNode->win_x == currentNode->win_x && prevNode->win_y < currentNode->win_y){
-		return 1;
+		return 3;
 	}
 	//Direction : up
 	else if(prevNode->win_x == currentNode->win_x && prevNode->win_y > currentNode->win_y){
-		return 2;
+		return 1;
 	}
 	//direction : right
 	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x < currentNode->win_x){
-		return 3;
+		return 2;
 	}
 	//direction : left
 	else if(prevNode->win_y == currentNode->win_y && prevNode->win_x > currentNode->win_x){
@@ -106,14 +105,16 @@ int getDirection(Monster *m, Node* nodesArray, int nbNodes){
 }
 
 void clipMonsterPosition(Monster* m, int direction, Node* currentNode){
-	if((direction == 1 && (m->win_y + m->speed) > currentNode->win_y) ||  //case direction = down & monster lower than node
-		(direction == 2 && (m->win_y - m->speed) < currentNode->win_y) || //case direction = up & monster upper than node
-		(direction == 3 && (m->win_x + m->speed) > currentNode->win_x) || //case direction = right & monster more right than node
+	if((direction == 3 && (m->win_y + m->speed) > currentNode->win_y) ||  //case direction = down & monster lower than node
+		(direction == 1 && (m->win_y - m->speed) < currentNode->win_y) || //case direction = up & monster upper than node
+		(direction == 2 && (m->win_x + m->speed) > currentNode->win_x) || //case direction = right & monster more right than node
 		(direction == 4 && (m->win_x - m->speed) < currentNode->win_x)){  //case direction = left & monster more left than node
 			m->win_x = currentNode->win_x;
 			m->win_y = currentNode->win_y; 			
 		}
 }
+
+
 
 
 void printMonster(Monster *m){

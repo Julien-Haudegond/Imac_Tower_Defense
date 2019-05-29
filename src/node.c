@@ -592,7 +592,6 @@ Node* pickFirstNonMarquedNode(Node *nodesArray, int nbNodes){
 	while(counter < nbNodes && found == 0){
 		if(nodesArray[counter].marqued == 0){
 			node = &nodesArray[counter];
-			printf("Value du node a parcourir : %d\n", nodesArray[counter].value);
 			found = 1;
 		}
 		counter++;
@@ -611,7 +610,6 @@ void shortestPath(Node *nodesArray, int nbNodes){
 	int allVisited = 1; //will be set to 0 when all nodes will be visited
 	
 	while(allVisited == 1){ // while there are still nodes to visit
-		printf("CA PASSEEEEEE noeud courant %d \n", currentNode->value);
 		markNode(currentNode); //node gets visited : mark set to 1
 
 		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed

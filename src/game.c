@@ -132,27 +132,27 @@ int playGame(const char* itdPath)
     initSurfacesArrayToNull(sprite_img, MAX_SPRITES);
     fillSprites(sprite_img, sprite_texture); // GO TO SPRITE.C TO MODIFY
 
-  	/* TEXTS */
-  		//Loading FONTS
-    	TTF_Font* fonts[MAX_FONTS];
-    	initFontsArrayToNull(fonts, MAX_FONTS);
-    	initFontsArray(fonts); // GO TO TEXT.C TO MODIFY
+    /* TEXTS */
+        //Loading FONTS
+        TTF_Font* fonts[MAX_FONTS];
+        initFontsArrayToNull(fonts, MAX_FONTS);
+        initFontsArray(fonts); // GO TO TEXT.C TO MODIFY
 
-    	//COLORS
-    	SDL_Color colors[MAX_COLORS];
-    	initColorsArray(colors); // GO TO TEXT.C TO MODIFY
+        //COLORS
+        SDL_Color colors[MAX_COLORS];
+        initColorsArray(colors); // GO TO TEXT.C TO MODIFY
 
-    	//Loading SURFACES
-		SDL_Surface* text_area[MAX_TEXTS];
-    	initSurfacesArrayToNull(text_area, MAX_TEXTS);
+        //Loading SURFACES
+        SDL_Surface* text_area[MAX_TEXTS];
+        initSurfacesArrayToNull(text_area, MAX_TEXTS);
 
-    	//Initializing TEXTURES
-	    GLuint text_texture[MAX_TEXTS];
-	    GLuint help_window_texture[MAX_TEXTS];
+        //Initializing TEXTURES
+        GLuint text_texture[MAX_TEXTS];
+        GLuint help_window_texture[MAX_TEXTS];
         GLuint properties_window_texture[MAX_TEXTS];
 
-	    //WRITING texts
-	    fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
+        //WRITING texts
+        fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
   
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
@@ -165,6 +165,9 @@ int playGame(const char* itdPath)
     /*Global variables monsters*/
     int pathIndex = 0;
     int getMonsterDirection = 0;
+    int monsterCounter = 0;
+    Uint32 currentTimeMonster = 0, previousTimeMonster = 0;
+    Monster* ptrMonster = malloc(sizeof(Monster));
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -181,32 +184,32 @@ int playGame(const char* itdPath)
         
         /* DRAWING CODE */
 
-	        glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-	        glMatrixMode(GL_MODELVIEW);
-	        glLoadIdentity();
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
 
-	        glCallList(map); //Draw the map
+            glCallList(map); //Draw the map
             
-	        //Hold a specific key to build towers or buildings
-	        if(constructStatus != -1) {
-	        	availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList, buildingList);
-	        	if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
-	        	else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
-	        }
+            //Hold a specific key to build towers or buildings
+            if(constructStatus != -1) {
+                availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList, buildingList);
+                if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
+                else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
+            }
 
-	        //TOWERS
-	        if(towerList->tower) {
-	        	TowerList* tmp = towerList;
-	        	drawTowerSprite(tmp->tower, sprite_texture);
+            //TOWERS
+            if(towerList->tower) {
+                TowerList* tmp = towerList;
+                drawTowerSprite(tmp->tower, sprite_texture);
 
-	        	while(tmp->nextTower) {
-	        		tmp = tmp->nextTower;
-	        		if(tmp->tower) {
-	        			drawTowerSprite(tmp->tower, sprite_texture);
-	        		}
-	        	}
-	        }
+                while(tmp->nextTower) {
+                    tmp = tmp->nextTower;
+                    if(tmp->tower) {
+                        drawTowerSprite(tmp->tower, sprite_texture);
+                    }
+                }
+            }
 
             //BUILDINGS
             if(buildingList->build) {
@@ -221,6 +224,16 @@ int playGame(const char* itdPath)
                 }
             }
             
+            /*
+            if(monsterCounter < WAVESIZE){
+                currentTimeMonster = SDL_GetTicks();
+                if(currentTimeMonster - previousTimeMonster >= 500){
+                     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
+                     previousTimeMonster = currentTimeMonster;
+                     monsterCounter++;
+                }
+            }*/
+
             if(wave->monster){    
                 //update on sprites and current node
                 drawMonsterSprite(wave->monster, sprite_texture);
@@ -250,10 +263,10 @@ int playGame(const char* itdPath)
                 }
             }
 
-	        //Hold 'delete key'
-	        if(deleteStatus != -1) {
-	        	drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
-	        }
+            //Hold 'delete key'
+            if(deleteStatus != -1) {
+                drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
+            }
 
             //Draw the tower properties
             if(towerPropStatus != -1) {
@@ -272,10 +285,10 @@ int playGame(const char* itdPath)
 
             //HELP
             renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
-			//Hold 'h' to make the menu appear
-	        if(help == 1) {
-	        	glCallList(help_window);
-	        }
+            //Hold 'h' to make the menu appear
+            if(help == 1) {
+                glCallList(help_window);
+            }
 
         /* Update window */
         SDL_GL_SwapBuffers();
@@ -289,39 +302,39 @@ int playGame(const char* itdPath)
                 break;
             }
 
-		    switch(e.type) 
-		    {
-		        /* Resize window */
-		        case SDL_VIDEORESIZE:
-		            reshape(&surface, e.resize.w, e.resize.h);
-		            break;
-		        
-		        /* Keyboard DOWN */
-		        case SDL_KEYDOWN:
+            switch(e.type) 
+            {
+                /* Resize window */
+                case SDL_VIDEORESIZE:
+                    reshape(&surface, e.resize.w, e.resize.h);
+                    break;
+                
+                /* Keyboard DOWN */
+                case SDL_KEYDOWN:
 
-					if(e.key.keysym.sym == SDLK_h) {
-						help = 1;
-					}
+                    if(e.key.keysym.sym == SDLK_h) {
+                        help = 1;
+                    }
 
-					if(e.key.keysym.sym == SDLK_a) {
-						constructStatus = 1;
-						towerConstructType = LASER;
-					}
+                    if(e.key.keysym.sym == SDLK_a) {
+                        constructStatus = 1;
+                        towerConstructType = LASER;
+                    }
 
-					if(e.key.keysym.sym == SDLK_z) {
-						constructStatus = 1;
-						towerConstructType = ROCKET;
-					}
+                    if(e.key.keysym.sym == SDLK_z) {
+                        constructStatus = 1;
+                        towerConstructType = ROCKET;
+                    }
 
-					if(e.key.keysym.sym == SDLK_e) {
-						constructStatus = 1;
-						towerConstructType = ELECTRIC;
-					}
+                    if(e.key.keysym.sym == SDLK_e) {
+                        constructStatus = 1;
+                        towerConstructType = ELECTRIC;
+                    }
 
-					if(e.key.keysym.sym == SDLK_r) {
-						constructStatus = 1;
-						towerConstructType = WATER;
-					}
+                    if(e.key.keysym.sym == SDLK_r) {
+                        constructStatus = 1;
+                        towerConstructType = WATER;
+                    }
 
                     if(e.key.keysym.sym == SDLK_q) {
                         constructStatus = 1;
@@ -338,91 +351,91 @@ int playGame(const char* itdPath)
                         buildingConstructType = AMMO;
                     }
 
-					if(e.key.keysym.sym == SDLK_DELETE) {
-						deleteStatus = 1;
-					}
+                    if(e.key.keysym.sym == SDLK_DELETE) {
+                        deleteStatus = 1;
+                    }
 
-		            break;
+                    break;
 
-		        /* Keyboard UP */
-		        case SDL_KEYUP:
+                /* Keyboard UP */
+                case SDL_KEYUP:
 
-					if(e.key.keysym.sym == SDLK_h) {
-						help = -1;
-					}
+                    if(e.key.keysym.sym == SDLK_h) {
+                        help = -1;
+                    }
 
-					if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
-						constructStatus = -1;
-						towerConstructType = -1;
-					}
+                    if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
+                        constructStatus = -1;
+                        towerConstructType = -1;
+                    }
 
                     if(e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_s || e.key.keysym.sym == SDLK_d) {
                         constructStatus = -1;
                         buildingConstructType = -1;
                     }
 
-					if(e.key.keysym.sym == SDLK_DELETE) {
-						deleteStatus = -1;
-					}
+                    if(e.key.keysym.sym == SDLK_DELETE) {
+                        deleteStatus = -1;
+                    }
 
-					break;
-
-
-		        case SDL_MOUSEMOTION:
-		            mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
-		            mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
-
-		            break;
+                    break;
 
 
-		        case SDL_MOUSEBUTTONDOWN:
+                case SDL_MOUSEMOTION:
+                    mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
+                    mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
+
+                    break;
+
+
+                case SDL_MOUSEBUTTONDOWN:
 
                     button_x = e.button.x * WINDOW_WIDTH / surface->w;
                     button_y = e.button.y * WINDOW_HEIGHT / surface->h;
 
-		        	//If mouse left button is down
-		        	if(e.button.button == SDL_BUTTON_LEFT) {
+                    //If mouse left button is down
+                    if(e.button.button == SDL_BUTTON_LEFT) {
 
-			        	//If the player is holding a 'construct key' and if the area is available
-			        	if(constructStatus == 1 && availableStatus == 1) {
-			        		//if it is a 'tower key'
-			        		if(towerConstructType != -1) {
+                        //If the player is holding a 'construct key' and if the area is available
+                        if(constructStatus == 1 && availableStatus == 1) {
+                            //if it is a 'tower key'
+                            if(towerConstructType != -1) {
                                 int price = checkTowerMoney(towerConstructType, global_money);
                                 if(price != 0) {
                                     addTower(towerList, towerConstructType, mouse_x, mouse_y);
                                     updateTowersBuildings(towerList, buildingList);
                                     global_money -= price;
                                 }
-							}
-			        		//else if it is a 'building key'
-			        		else if(buildingConstructType != -1) {
+                            }
+                            //else if it is a 'building key'
+                            else if(buildingConstructType != -1) {
                                 int price = checkBuildingMoney(buildingConstructType, global_money);
                                 if(price != 0) {
                                     addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
                                     updateTowersBuildings(towerList, buildingList);
                                     global_money -= price;                              
                                 }
-			        		}
-			        	}
+                            }
+                        }
 
-			        	//If the player is holding the 'delete key'
-		        		if(deleteStatus == 1) {
-		        			towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
-		        			buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
+                        //If the player is holding the 'delete key'
+                        if(deleteStatus == 1) {
+                            towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
+                            buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
                             updateTowersBuildings(towerList, buildingList);
-		        		}
-		        	}
+                        }
+                    }
 
-		        	//If mouse right button is down
-		        	if(e.button.button == SDL_BUTTON_RIGHT) {
+                    //If mouse right button is down
+                    if(e.button.button == SDL_BUTTON_RIGHT) {
 
                         //Change the tower properties status
                         if(isThereTowerHere(towerList, button_x, button_y) == 1) {
                             towerPropStatus = 1;
                         }                  
-		        	}
+                    }
 
-		            break;
+                    break;
 
 
                 case SDL_MOUSEBUTTONUP:
@@ -435,10 +448,10 @@ int playGame(const char* itdPath)
                             towerPropStatus = -1;
                         }
                     }   
-		            
-		        default:
-		            break;
-		    }
+                    
+                default:
+                    break;
+            }
         }
 
         /* Passed time */
@@ -502,32 +515,32 @@ int playGame(const char* itdPath)
 
 int main(int argc, char** argv) 
 {
-	Image imgPPM;
-	ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
-	Node nodesArray[MAX_NODES] = {0};
-	int nbOfNodes;
+    Image imgPPM;
+    ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
+    Node nodesArray[MAX_NODES] = {0};
+    int nbOfNodes;
 
     readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
     
     
 
     //Printf the five instructions' values
-	for(int i = 0; i < NUMBER_INSTRUCT; i++) {
-		printf("%s : %d %d %d\n", itdInstructions[i].name, itdInstructions[i].r, itdInstructions[i].g, itdInstructions[i].b);
-	}
+    for(int i = 0; i < NUMBER_INSTRUCT; i++) {
+        printf("%s : %d %d %d\n", itdInstructions[i].name, itdInstructions[i].r, itdInstructions[i].g, itdInstructions[i].b);
+    }
     
 
     printf("Nombre de noeuds : %d\n", nbOfNodes);
 
     for(int i = 0; i < nbOfNodes; i++) {
-    	printNodeInfo(nodesArray[i]);
+        printNodeInfo(nodesArray[i]);
     }
 
     //checkPathBetween2Nodes(nodesArray[1], nodesArray[2], &imgPPM, itdInstructions);
 
     //Faut free les linkkkksss et l'image
     for(int i = 0; i < nbOfNodes; i++) {
-    	freeAllLinks(nodesArray[i].link);
+        freeAllLinks(nodesArray[i].link);
     }
     freeImage(&imgPPM);
 

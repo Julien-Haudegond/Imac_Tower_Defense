@@ -18,9 +18,10 @@ static const char WINDOW_TITLE[] = "Test_Draw";
 static const unsigned int BIT_PER_PIXEL = 32;
 
 /* Nombre minimal de millisecondes separant le rendu de deux images */
-static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
+static const Uint32 FRAMERATE_MILLISECONDS = 1000/30; 
 
 static const unsigned int MAX_FILENAME =  70;
+static const unsigned int WAVESIZE =  10;
 
 
 #endif
