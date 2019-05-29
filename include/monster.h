@@ -34,9 +34,11 @@ typedef struct Monster{
 Monster* createMonster(MonsterType type, int resist, int* path, int nbPath);
 void setMonsterStats(Monster* m, int type, float health, int resist, float speed, int reward, int* path, int nbPath);
 void setPosition(Monster* monster, float x, float y);
-void printMonster(Monster *m);
 void updateCoords(Monster *m, struct Node* nodesArray, int nbNodes);
 int getDirection(Monster *m, Node* nodesArray, int nbNodes);
+int monsterNeedsClipping(Monster* m, int direction, Node* currentNode);
 void clipMonsterPosition(Monster* m, int direction, Node* currentNode);
+int getMonsterRotation(int currentDirection);
+void printMonster(Monster *m);
 
 #endif

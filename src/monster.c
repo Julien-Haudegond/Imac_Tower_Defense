@@ -104,6 +104,7 @@ int getDirection(Monster *m, Node* nodesArray, int nbNodes){
 	return -1;
 }
 
+
 void clipMonsterPosition(Monster* m, int direction, Node* currentNode){
 	if((direction == 3 && (m->win_y + m->speed) > currentNode->win_y) ||  //case direction = down & monster lower than node
 		(direction == 1 && (m->win_y - m->speed) < currentNode->win_y) || //case direction = up & monster upper than node
@@ -114,7 +115,25 @@ void clipMonsterPosition(Monster* m, int direction, Node* currentNode){
 		}
 }
 
-
+int getMonsterRotation(int currentDirection){
+	switch(currentDirection){
+		case 1 : 
+			return 180;
+			break;
+		case 2 :
+			return -90;
+			break;
+		case 3 :
+			return 0;
+			break;
+		case 4 : 
+			return 90;
+			break;
+		default :
+			return 0;
+			break;
+	}
+}
 
 
 void printMonster(Monster *m){
@@ -127,4 +146,3 @@ void printMonster(Monster *m){
     }
     printf("\n");
 }
-

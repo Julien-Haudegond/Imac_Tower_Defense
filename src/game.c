@@ -189,9 +189,14 @@ int playGame(const char* itdPath)
     /*Global variables monsters*/
     int pathIndex = 0;
     int getMonsterDirection = 0;
+    int monsterRotation = 0;
+    
+    //variables for waves
+    /*
     int monsterCounter = 0;
     Uint32 currentTimeMonster = 0, previousTimeMonster = 0;
     Monster* ptrMonster = malloc(sizeof(Monster));
+    */
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
@@ -257,19 +262,20 @@ int playGame(const char* itdPath)
                      monsterCounter++;
                 }
             }*/
-
+            
             if(wave->monster){    
                 //update on sprites and current node
-                drawMonsterSprite(wave->monster, sprite_texture);
+                drawMonsterSprite(wave->monster, sprite_texture, monsterRotation);
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
-                
-                //if current node is reached, clip monster on it
+
+                //clips monster position if it has trespassed the current destination node
                 if(nodesearch->value != 0){
+                    getMonsterDirection = getDirection(wave->monster, nodesArray, nbOfNodes);
+                    monsterRotation = getMonsterRotation(getMonsterDirection);
                     getMonsterDirection = getDirection(wave->monster, nodesArray, nbOfNodes);
                     clipMonsterPosition(wave->monster, getMonsterDirection, nodesearch);
                 }
 
-                //printf("direction : %d", getMonsterDirection);
                 if(nodesearch->type == 2 && nodesearch->win_x == wave->monster->win_x && nodesearch->win_y == wave->monster->win_y){
                     //free monster, and give money to the player
                 }else{
@@ -278,7 +284,7 @@ int playGame(const char* itdPath)
                         wave->monster->prevNode = wave->monster->currentNode;
                         pathIndex++;
                         wave->monster->currentNode = wave->monster->path[pathIndex];
-                        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, wave->monster->currentNode);
+                        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, wave->monster->currentNode);                        
                     }
                     //updates monster coords if the node has not been reached
                     if((wave->monster->win_x != nodesearch-> win_x || wave->monster->win_y != nodesearch->win_y)){

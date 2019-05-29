@@ -267,12 +267,13 @@ void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
 }
 
 
-void drawMonsterSprite(Monster* m, GLuint sprite_text[]) {
+void drawMonsterSprite(Monster* m, GLuint sprite_text[], int angle) {
     float x = (float) m->win_x;
     float y = (float) m->win_y;
 
     glPushMatrix();
         glTranslatef(x + 0.5, y + 0.5, 0.);
+        glRotatef(angle,0,0,1);
         switch(m->type) {
             case 0:
                 drawSprite(&sprite_text[8]);
@@ -283,6 +284,13 @@ void drawMonsterSprite(Monster* m, GLuint sprite_text[]) {
             default:
                 break;
         }
+    glPopMatrix();
+}
+    
+
+void rotateMonsterSprite(Monster *m, int angle, GLuint sprite_text[]){
+    glPushMatrix();
+         glRotatef(angle,0,0,1);
     glPopMatrix();
 }
 
