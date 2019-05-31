@@ -45,48 +45,42 @@ void drawFullScreenImg(GLuint* texture) {
     glPopMatrix();
 }
 
-GLuint createHelpList(Text helpTexts[], Sprite sprites[]) {
+GLuint createHelpList(TextStyle textCSS[], Text helpTexts[], Sprite sprites[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
 
-	    //Colors
-	    SDL_Color color = {255, 255, 255, 0};
+    	//Text 0 : SPACESHIPS
+    	loadText("SPACESHIPS", &(textCSS[1].font), textCSS[1].color, &(helpTexts[0].area), &(helpTexts[0].texture));
 
-	    //Fonts
-	    TTF_Font* font_24 = loadFont(FONT_1, 24);
+    	//Text 1 : Press 'a' to make a 'laser spaceship' !
+    	loadText("Press 'a' to make a 'laser spaceship' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[1].area), &(helpTexts[1].texture));
 
-	    	//Text 0 : SPACESHIPS
-	    	loadText("SPACESHIPS", &font_24, color, &(helpTexts[0].area), &(helpTexts[0].texture));
+    	//Text 2 : Press 'z' to make a 'rocket spaceship' !
+    	loadText("Press 'z' to make a 'rocket spaceship' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[2].area), &(helpTexts[2].texture));
 
-	    	//Text 1 : Press 'a' to make a 'laser spaceship' !
-	    	loadText("Press 'a' to make a 'laser spaceship' | 500 ", &font_24, color, &(helpTexts[1].area), &(helpTexts[1].texture));
+    	//Text 3 : Press 'e' to make a 'electric spaceship' !
+    	loadText("Press 'e' to make a 'electric spaceship' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[3].area), &(helpTexts[3].texture));
 
-	    	//Text 2 : Press 'z' to make a 'rocket spaceship' !
-	    	loadText("Press 'z' to make a 'rocket spaceship' | 500 ", &font_24, color, &(helpTexts[2].area), &(helpTexts[2].texture));
+    	//Text 4 : Press 'r' to make a 'water spaceship' !
+    	loadText("Press 'r' to make a 'water spaceship' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[4].area), &(helpTexts[4].texture));
 
-	    	//Text 3 : Press 'e' to make a 'electric spaceship' !
-	    	loadText("Press 'e' to make a 'electric spaceship' | 500 ", &font_24, color, &(helpTexts[3].area), &(helpTexts[3].texture));
+		//Text 5 : PLANETS
+    	loadText("PLANETS", &(textCSS[1].font), textCSS[1].color, &(helpTexts[5].area), &(helpTexts[5].texture));
 
-	    	//Text 4 : Press 'r' to make a 'water spaceship' !
-	    	loadText("Press 'r' to make a 'water spaceship' | 500 ", &font_24, color, &(helpTexts[4].area), &(helpTexts[4].texture));
+    	//Text 6 : Press 'q' to make a 'radar planet' !
+    	loadText("Press 'q' to make a 'radar planet' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[6].area), &(helpTexts[6].texture));
 
-			//Text 5 : PLANETS
-	    	loadText("PLANETS", &font_24, color, &(helpTexts[5].area), &(helpTexts[5].texture));
+    	//Text 7 : Press 's' to make a 'factory planet' !
+    	loadText("Press 's' to make a 'factory planet' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[7].area), &(helpTexts[7].texture));
 
-	    	//Text 6 : Press 'q' to make a 'radar planet' !
-	    	loadText("Press 'q' to make a 'radar planet' | 500 ", &font_24, color, &(helpTexts[6].area), &(helpTexts[6].texture));
+    	//Text 8 : Press 'd' to make a 'ammo planet' !
+    	loadText("Press 'd' to make a 'ammo planet' | 500 ", &(textCSS[1].font), textCSS[1].color, &(helpTexts[8].area), &(helpTexts[8].texture));
 
-	    	//Text 7 : Press 's' to make a 'factory planet' !
-	    	loadText("Press 's' to make a 'factory planet' | 500 ", &font_24, color, &(helpTexts[7].area), &(helpTexts[7].texture));
+        //Text 9 : Press 'del' to delete a construction (give you back half of its price) !
+        loadText("Press 'del' to delete a construction (give you back half of its price) !", &(textCSS[1].font), textCSS[1].color, &(helpTexts[9].area), &(helpTexts[9].texture));
 
-	    	//Text 8 : Press 'd' to make a 'ammo planet' !
-	    	loadText("Press 'd' to make a 'ammo planet' | 500 ", &font_24, color, &(helpTexts[8].area), &(helpTexts[8].texture));
-
-            //Text 9 : Press 'del' to delete a construction (give you back half of its price) !
-            loadText("Press 'del' to delete a construction (give you back half of its price) !", &font_24, color, &(helpTexts[9].area), &(helpTexts[9].texture));
-
-            //Text 10 : Press 'esc' to leave the game !
-            loadText("Press 'esc' to leave the game !", &font_24, color, &(helpTexts[10].area), &(helpTexts[10].texture));
+        //Text 10 : Press 'esc' to leave the game !
+        loadText("Press 'esc' to leave the game !", &(textCSS[1].font), textCSS[1].color, &(helpTexts[10].area), &(helpTexts[10].texture));
 
 
     ///// CODE
@@ -144,13 +138,10 @@ GLuint createHelpList(Text helpTexts[], Sprite sprites[]) {
 
     glEndList();
 
-    /* Close the font */
-    TTF_CloseFont(font_24);
-
     return id;
 }
 
-GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTexts[]) {
+GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS[], Text propTowerTexts[]) {
     if(!tl) {
         fprintf(stderr, "Error : no tower list (createPropertiesWindowList)\n");
         exit(EXIT_FAILURE);
@@ -168,62 +159,56 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTex
 
     getTowerInfosFromPosition(&t, tl, x, y); //Better than getTower directly because of the free memory at the end of the function
 
-        //Colors
-        SDL_Color color = {255, 255, 255, 0};
+        //GET POSITION DATA
+        char text1[20] = {0};
+        strcat(text1, "Position: (");
+            char int2string[20];
+            snprintf(int2string, sizeof(int2string), "%d", t->x);
+        strcat(text1, int2string);
+        strcat(text1, ",");
+            for(int i = 0; i < 10; i++) {
+                int2string[i] = 0;
+            }
+            snprintf(int2string, sizeof(int2string), "%d", t->y);
+        strcat(text1, int2string);
+        strcat(text1, ")");
+            for(int i = 0; i < 10; i++) {
+                int2string[i] = 0;
+            }                    
 
-        //Fonts
-        TTF_Font* font = loadFont(FONT_1, 16);
+        //GET RANGE DATA
+        char text2[20] = {0};
+        strcat(text2, "Range: ");
+            snprintf(int2string, sizeof(int2string), "%d", t->range);
+        strcat(text2, int2string);
+            for(int i = 0; i < 10; i++) {
+                int2string[i] = 0;
+            }
+        
+        //GET DAMAGE DATA                                   
+        char text3[20] = {0};
+        strcat(text3, "Damage: ");
+            snprintf(int2string, sizeof(int2string), "%d", t->dmg);
+        strcat(text3, int2string);
+            for(int i = 0; i < 10; i++) {
+                int2string[i] = 0;
+            }
 
-                //GET POSITION DATA
-                char text1[20] = {0};
-                strcat(text1, "Position: (");
-                    char int2string[20];
-                    snprintf(int2string, sizeof(int2string), "%d", t->x);
-                strcat(text1, int2string);
-                strcat(text1, ",");
-                    for(int i = 0; i < 10; i++) {
-                        int2string[i] = 0;
-                    }
-                    snprintf(int2string, sizeof(int2string), "%d", t->y);
-                strcat(text1, int2string);
-                strcat(text1, ")");
-                    for(int i = 0; i < 10; i++) {
-                        int2string[i] = 0;
-                    }                    
-
-                //GET RANGE DATA
-                char text2[20] = {0};
-                strcat(text2, "Range: ");
-                    snprintf(int2string, sizeof(int2string), "%d", t->range);
-                strcat(text2, int2string);
-                    for(int i = 0; i < 10; i++) {
-                        int2string[i] = 0;
-                    }
-                
-                //GET DAMAGE DATA                                   
-                char text3[20] = {0};
-                strcat(text3, "Damage: ");
-                    snprintf(int2string, sizeof(int2string), "%d", t->dmg);
-                strcat(text3, int2string);
-                    for(int i = 0; i < 10; i++) {
-                        int2string[i] = 0;
-                    }
-
-                //GET FIRESPEED DATA
-                char text4[20] = {0};
-                strcat(text4, "Firespeed: ");
-                    snprintf(int2string, sizeof(int2string), "%.2f", t->firespeed); //Actually a float and not a int but... you know
-                strcat(text4, int2string);
-                    for(int i = 0; i < 10; i++) {
-                        int2string[i] = 0;
-                    }               
+        //GET FIRESPEED DATA
+        char text4[20] = {0};
+        strcat(text4, "Firespeed: ");
+            snprintf(int2string, sizeof(int2string), "%.2f", t->firespeed); //Actually a float and not a int but... you know
+        strcat(text4, int2string);
+            for(int i = 0; i < 10; i++) {
+                int2string[i] = 0;
+            }               
 
 
         //TEXTS
-        loadText(text1, &font, color, &(propTowerTexts[0].area), &(propTowerTexts[0].texture)); // Position
-        loadText(text2, &font, color, &(propTowerTexts[1].area), &(propTowerTexts[1].texture)); // Range
-        loadText(text3, &font, color, &(propTowerTexts[2].area), &(propTowerTexts[2].texture)); // Damage
-        loadText(text4, &font, color, &(propTowerTexts[3].area), &(propTowerTexts[3].texture)); // Firespeed
+        loadText(text1, &(textCSS[2].font), textCSS[2].color, &(propTowerTexts[0].area), &(propTowerTexts[0].texture)); // Position
+        loadText(text2, &(textCSS[2].font), textCSS[2].color, &(propTowerTexts[1].area), &(propTowerTexts[1].texture)); // Range
+        loadText(text3, &(textCSS[2].font), textCSS[2].color, &(propTowerTexts[2].area), &(propTowerTexts[2].texture)); // Damage
+        loadText(text4, &(textCSS[2].font), textCSS[2].color, &(propTowerTexts[3].area), &(propTowerTexts[3].texture)); // Firespeed
 
     ///// CODE
 
@@ -237,9 +222,6 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTex
         renderLeftText(&propTowerTexts[3], 10 , 760);
 
     glEndList();
-
-    /* Close the font */
-    TTF_CloseFont(font);
 
     free(t);
 

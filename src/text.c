@@ -15,6 +15,14 @@ void initTextCSS(TextStyle textCSS[]) {
     //Style 0
     textCSS[0].font = loadFont(FONT_1, 24);
     textCSS[0].color = (SDL_Color) {255, 0, 0, 0};
+
+    //Style 1
+    textCSS[1].font = loadFont(FONT_1, 24);
+    textCSS[1].color = (SDL_Color) {255, 255, 255, 0};
+
+    //Style 2
+    textCSS[2].font = loadFont(FONT_1, 16);
+    textCSS[2].color = (SDL_Color) {255, 255, 255, 0};
 }
 
 

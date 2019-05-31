@@ -9,8 +9,8 @@
 
 void drawFullScreenImg(GLuint* texture);
 
-GLuint createHelpList(Text helpTexts[], Sprite sprites[]);
-GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTexts[]);
+GLuint createHelpList(TextStyle textCSS[], Text helpTexts[], Sprite sprites[]);
+GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS[], Text propTowerTexts[]);
 
 void drawTowerSprite(Tower* tower, Sprite sprites[]);
 void drawMonsterSprite(Monster* m, Sprite sprites[], int rotation);

@@ -172,8 +172,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
-    GLuint help_window = createHelpList(helpTexts, sprites);
-    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, propTowerTexts);
+    GLuint help_window = createHelpList(textCSS, helpTexts, sprites);
+    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
     
 
     /* MAIN LOOP */
@@ -272,7 +272,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //Draw the tower properties
             if(towerPropStatus != -1) {
-                properties_window = createPropertiesWindowList(towerList, button_x, button_y, propTowerTexts);
+                properties_window = createPropertiesWindowList(towerList, button_x, button_y, textCSS, propTowerTexts);
                 glCallList(properties_window);
             }
 
