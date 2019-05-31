@@ -6,6 +6,8 @@
 
 #define FONT_1 "Hack-Bold"
 
+#include <SDL/SDL_ttf.h>
+
 typedef struct TextStyle {
 	TTF_Font* font;
 	SDL_Color color;

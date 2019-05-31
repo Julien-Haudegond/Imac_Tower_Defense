@@ -4,6 +4,6 @@
 #include <SDL/SDL.h>
 #include <FMOD/fmod.h>
 
-int playGame(SDL_Surface* surface, const char* itdfile);
+int playGame(SDL_Surface* surface, const char* itdPath);
 
 #endif

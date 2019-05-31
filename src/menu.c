@@ -36,6 +36,13 @@ int playMenu(const char* itdPath) {
         exit(EXIT_FAILURE);
     }
 
+    /* Open a window and create the OpenGL context */
+    SDL_Surface* surface;
+    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    /* Title of the window */
+    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
+
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
     FMOD_SOUND* music;
@@ -59,27 +66,26 @@ int playMenu(const char* itdPath) {
 
         //Play the music
         FMOD_System_PlaySound(system, music, NULL, 0, &channel);
-   
-    /* Open a window and create the OpenGL context */
-    SDL_Surface* surface;
-    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    /* Title of the window */
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
     /* Surfaces and textures */
     SDL_Surface* bg_img = NULL;
+    SDL_Surface* help_img = NULL;
+
     GLuint bg_texture;
+    GLuint help_texture;
 
     loadSpriteArea(&bg_img, "Menu_Img.png");
     initSpriteTexture(&bg_img, &bg_texture);
 
+    loadSpriteArea(&help_img, "Help_Img.png");
+    initSpriteTexture(&help_img, &help_texture);
 
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
     int help = -1;
 
     /* Global variables for GL Lists */
+
 
 	/* MAIN LOOP */
     int loop = 1;
@@ -98,7 +104,7 @@ int playMenu(const char* itdPath) {
             drawFullScreenImg(&bg_texture);
 
             if(help == 1) {
-            	//glCallList(); //Print the help window
+            	drawFullScreenImg(&help_texture);
             }
 
 
@@ -141,6 +147,10 @@ int playMenu(const char* itdPath) {
                     if(e.button.button == SDL_BUTTON_LEFT) {
                     	printf("x = %d et y = %d\n", button_x, button_y);
 
+                        if(help == 1) {
+                            help = -1;
+                        }     
+
                     	//If we press "Play game"
                     	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500) {
                     		FMOD_Channel_Stop(channel); //Stop the music
@@ -150,13 +160,9 @@ int playMenu(const char* itdPath) {
                     	}
 
                     	//If we press "Help"
-                    	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500) {
+                    	if(button_x > 500 && button_x < 700 && button_y > 550 && button_y < 600) {
                     		help = 1;
-                    	}
-
-                    	if(help == 1) {
-                    		help = -1;
-                    	}                    	
+                    	}            	
 
                     }
 
@@ -189,9 +195,13 @@ int playMenu(const char* itdPath) {
         }
     }
 
+
     /* Free sprites */
     SDL_FreeSurface(bg_img);
     glDeleteTextures(1, &bg_texture);
+
+    SDL_FreeSurface(help_img);
+    glDeleteTextures(1, &help_texture);
 
     /* Free FMOD */
     FMOD_Sound_Release(music);

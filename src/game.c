@@ -124,7 +124,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         //Play the music
         FMOD_System_PlaySound(system, music, NULL, 0, NULL);
 
-
     /* SPRITES: Loading surfaces and initializing textures */
     Sprite sprites[MAX_SPRITES];
 
@@ -140,11 +139,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
         //Loading TEXTS
         Text generalTexts[MAX_TEXTS]; //General Texts
-        Text helpTexts[MAX_TEXTS]; //Help Texts
         Text propTowerTexts[MAX_TEXTS]; //Properties Tower Texts
 
         initTextsToNull(generalTexts);
-        initTextsToNull(helpTexts);
         initTextsToNull(propTowerTexts);
 
         //WRITING General texts
@@ -172,7 +169,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
-    GLuint help_window = createHelpList(textCSS, helpTexts, sprites);
     GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
     
 
@@ -289,7 +285,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             renderCenterText(&generalTexts[0], 610, 700); //Press 'h' to get some help
             //Hold 'h' to make the menu appear
             if(help == 1) {
-                glCallList(help_window);
+                drawFullScreenImg(&(sprites[15].texture));
             }
 
         /* Update window */
@@ -479,15 +475,14 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(wave->monster);
     free(wave);
 
-    /* Close fonts */
-    freeTextCSS(textCSS);
-
     /* Free sprites */
     freeSprites(sprites);
 
+    /* Close fonts */
+    freeTextCSS(textCSS);
+
     /* Free texts */
     freeTexts(generalTexts);
-    freeTexts(helpTexts);
     freeTexts(propTowerTexts);
 
     /* Free links of all nodes and the PPM */

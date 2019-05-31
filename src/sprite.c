@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <GL/gl.h>
@@ -86,6 +87,10 @@ void fillSprites(Sprite sprites[]) {
     //Texture 14 : MONEY
     loadSpriteArea(&(sprites[14].area), "money_RGBA.png");
     initSpriteTexture(&(sprites[14].area), &(sprites[14].texture));
+
+    //Texture 15 : HELP
+    loadSpriteArea(&(sprites[15].area), "Help_Img.png");
+    initSpriteTexture(&(sprites[15].area), &(sprites[15].texture));
 }
 
 
