@@ -128,11 +128,10 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
 
     /* SPRITES: Loading surfaces and initializing textures */
-    SDL_Surface* sprite_img[MAX_SPRITES];
-    GLuint sprite_texture[MAX_SPRITES];
+    Sprite sprites[MAX_SPRITES];
 
-    initSurfacesArrayToNull(sprite_img, MAX_SPRITES);
-    fillSprites(sprite_img, sprite_texture); // GO TO SPRITE.C TO MODIFY
+    initSpritesToNull(sprites);
+    fillSprites(sprites); // GO TO SPRITE.C TO MODIFY
 
     /* TEXTS */
         //Loading FONTS
@@ -177,8 +176,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     */
 
     /* Global variables for GL Lists */
-    GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
-    GLuint help_window = createHelpList(help_window_texture, sprite_texture);
+    GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
+    GLuint help_window = createHelpList(help_window_texture, sprites);
     GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, properties_window_texture);
     
 
@@ -200,20 +199,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             
             //Hold a specific key to build towers or buildings
             if(constructStatus != -1) {
-                availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList, buildingList);
-                if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
-                else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
+                availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprites, towerList, buildingList);
+                if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprites);
+                else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprites);
             }
 
             //TOWERS
             if(towerList->tower) {
                 TowerList* tmp = towerList;
-                drawTowerSprite(tmp->tower, sprite_texture);
+                drawTowerSprite(tmp->tower, sprites);
 
                 while(tmp->nextTower) {
                     tmp = tmp->nextTower;
                     if(tmp->tower) {
-                        drawTowerSprite(tmp->tower, sprite_texture);
+                        drawTowerSprite(tmp->tower, sprites);
                     }
                 }
             }
@@ -221,12 +220,12 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             //BUILDINGS
             if(buildingList->build) {
                 BuildingList* tmp = buildingList;
-                drawBuildingSprite(tmp->build, sprite_texture);
+                drawBuildingSprite(tmp->build, sprites);
 
                 while(tmp->nextBuild) {
                     tmp = tmp->nextBuild;
                     if(tmp->build) {
-                        drawBuildingSprite(tmp->build, sprite_texture);
+                        drawBuildingSprite(tmp->build, sprites);
                     }
                 }
             }
@@ -243,7 +242,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             
             if(wave->monster){    
                 //update on sprites and current node
-                drawMonsterSprite(wave->monster, sprite_texture, monsterRotation);
+                drawMonsterSprite(wave->monster, sprites, monsterRotation);
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
 
                 //clips monster position if it has trespassed the current destination node
@@ -273,7 +272,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //Hold 'delete key'
             if(deleteStatus != -1) {
-                drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
+                drawSpriteHere(&(sprites[10].texture), mouse_x, mouse_y);
             }
 
             //Draw the tower properties
@@ -288,7 +287,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             glPushMatrix();
                 glTranslatef(1190, 30, 0);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
 
             //HELP
@@ -489,8 +488,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     closeAllFonts(fonts, MAX_FONTS);
 
     /* Free sprites */
-    freeSurfacesArray(sprite_img, MAX_SPRITES);
-    freeTexturesArray(sprite_texture, MAX_SPRITES);
+    freeSprites(sprites);
 
     /* Free texts */
     freeSurfacesArray(text_area, MAX_TEXTS);

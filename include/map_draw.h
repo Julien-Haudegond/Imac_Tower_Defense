@@ -6,6 +6,7 @@
 #include "../include/node.h"
 #include "../include/tower.h"
 #include "../include/building.h"
+#include "../include/sprite.h"
 
 
 void drawGridSquare(int filled);
@@ -24,18 +25,18 @@ void debug_startArea();
 void debug_endArea();
 
 //DRAW MAP
-GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint sprite_text[]);
+GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], Sprite sprites[]);
 void nonConstructibleArea();
 
 
 //CHECK MAP EVOLUTION
-void availableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
-void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]);
+void availableArea(int mouse_x, int mouse_y, Sprite sprites[]);
+void nonAvailableArea(int mouse_x, int mouse_y, Sprite sprites[]);
 
 int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], TowerList* tl, BuildingList* bl);
-int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl, BuildingList* bl);
+int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], Sprite sprites[], TowerList* tl, BuildingList* bl);
 
-void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]);
-void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]);
+void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[]);
+void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, Sprite sprites[]);
 
 #endif

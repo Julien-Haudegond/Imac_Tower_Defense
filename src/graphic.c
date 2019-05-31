@@ -45,7 +45,7 @@ void drawFullScreenImg(GLuint* texture) {
     glPopMatrix();
 }
 
-GLuint createHelpList(GLuint help_window_texture[], GLuint sprite_texture[]) {
+GLuint createHelpList(GLuint help_window_texture[], Sprite sprites[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
 
@@ -106,44 +106,44 @@ GLuint createHelpList(GLuint help_window_texture[], GLuint sprite_texture[]) {
             glPushMatrix();
                 glTranslatef(720, 112, 0);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[2], &help_window_texture[2], 100 , 150);
             glPushMatrix();
                 glTranslatef(737, 162, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[3], &help_window_texture[3], 100 , 200);
             glPushMatrix();
                 glTranslatef(762, 212, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[4], &help_window_texture[4], 100 , 250);
             glPushMatrix();
                 glTranslatef(720, 262, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[5], &help_window_texture[5], 100 , 400);
     	renderLeftText(&text_area[6], &help_window_texture[6], 100 , 450);
             glPushMatrix();
                 glTranslatef(680, 462, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[7], &help_window_texture[7], 100 , 500);
             glPushMatrix();
                 glTranslatef(705, 512, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
     	renderLeftText(&text_area[8], &help_window_texture[8], 100 , 550);
             glPushMatrix();
                 glTranslatef(665, 562, 0.);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
         renderLeftText(&text_area[9], &help_window_texture[9], 100 , 650);
         renderLeftText(&text_area[10], &help_window_texture[10], 100 , 725);        
@@ -272,7 +272,7 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties
 
 
 
-void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
+void drawTowerSprite(Tower* tower, Sprite sprites[]) {
     float x = (float) tower->win_x;
     float y = (float) tower->win_y;
 
@@ -281,16 +281,16 @@ void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
 
         switch(tower->type) {
             case LASER:
-                drawSprite(&sprite_text[4]);
+                drawSprite(&(sprites[4].texture));
                 break;
             case ROCKET:
-                drawSprite(&sprite_text[5]);
+                drawSprite(&(sprites[5].texture));
                 break;
             case ELECTRIC:
-                drawSprite(&sprite_text[6]);
+                drawSprite(&(sprites[6].texture));
                 break;
             case WATER:
-                drawSprite(&sprite_text[7]);
+                drawSprite(&(sprites[7].texture));
                 break;
             default:
                 break;
@@ -299,7 +299,7 @@ void drawTowerSprite(Tower* tower, GLuint sprite_text[]) {
 }
 
 
-void drawMonsterSprite(Monster* m, GLuint sprite_text[], int angle) {
+void drawMonsterSprite(Monster* m, Sprite sprites[], int angle) {
     float x = (float) m->win_x;
     float y = (float) m->win_y;
 
@@ -308,10 +308,10 @@ void drawMonsterSprite(Monster* m, GLuint sprite_text[], int angle) {
         glRotatef(angle,0,0,1);
         switch(m->type) {
             case 0:
-                drawSprite(&sprite_text[8]);
+                drawSprite(&(sprites[8].texture));
                 break;
             case 1:
-                drawSprite(&sprite_text[9]);
+                drawSprite(&(sprites[9].texture));
                 break;
             default:
                 break;
@@ -320,13 +320,13 @@ void drawMonsterSprite(Monster* m, GLuint sprite_text[], int angle) {
 }
     
 
-void rotateMonsterSprite(Monster *m, int angle, GLuint sprite_text[]){
+void rotateMonsterSprite(Monster *m, int angle, Sprite sprites[]){
     glPushMatrix();
          glRotatef(angle,0,0,1);
     glPopMatrix();
 }
 
-void drawBuildingSprite(Building* build, GLuint sprite_text[]) {
+void drawBuildingSprite(Building* build, Sprite sprites[]) {
     float x = (float) build->win_x;
     float y = (float) build->win_y;
 
@@ -335,13 +335,13 @@ void drawBuildingSprite(Building* build, GLuint sprite_text[]) {
 
         switch(build->type) {
             case RADAR:
-                drawSprite(&sprite_text[11]);
+                drawSprite(&(sprites[11].texture));
                 break;
             case FACTORY:
-                drawSprite(&sprite_text[12]);
+                drawSprite(&(sprites[12].texture));
                 break;
             case AMMO:
-                drawSprite(&sprite_text[13]);
+                drawSprite(&(sprites[13].texture));
                 break;
             default:
                 break;
