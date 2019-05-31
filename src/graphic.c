@@ -8,10 +8,42 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include "../include/const.h"
 #include "../include/graphic.h"
 #include "../include/text.h"
 #include "../include/map_draw.h"
 #include "../include/sprite.h"
+
+void drawFullScreenImg(GLuint* texture) {
+    glPushMatrix();
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBindTexture(GL_TEXTURE_2D, *texture);
+
+        glBegin(GL_QUADS);
+
+        glTexCoord2f(0,0);
+        glVertex2f(0., 0.);
+
+        glTexCoord2f(1,0);
+        glVertex2f( WINDOW_WIDTH , 0.);
+
+        glTexCoord2f(1,1);
+        glVertex2f( WINDOW_WIDTH , WINDOW_HEIGHT);
+
+        glTexCoord2f(0,1);
+        glVertex2f(0., WINDOW_HEIGHT);            
+
+        glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_BLEND);
+    glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
+}
 
 GLuint createHelpList(GLuint help_window_texture[], GLuint sprite_texture[]) {
     ///// VARIABLES

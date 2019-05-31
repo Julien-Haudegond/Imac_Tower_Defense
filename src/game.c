@@ -45,7 +45,7 @@
 #ifdef READTHIS1
 
 
-int playGame(const char* itdPath) 
+int playGame(SDL_Surface* surface, const char* itdPath)
 {
     int global_money = 10000;
 
@@ -102,22 +102,6 @@ int playGame(const char* itdPath)
     setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
 
     printWave(wave);
-    
-    /* Initializing SDL */
-    if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
-    {
-        fprintf(
-            stderr, 
-            "Impossible d'initialiser la SDL. Fin du programme.\n");
-        return EXIT_FAILURE;
-    }
-
-    /*Initializing TTF */
-    if(TTF_Init() == -1)
-    {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
 
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
@@ -141,13 +125,7 @@ int playGame(const char* itdPath)
 
         //Play the music
         FMOD_System_PlaySound(system, music, NULL, 0, NULL);
-   
-    /* Open a window and create the OpenGL context */
-    SDL_Surface* surface;
-    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    /* Title of the window */
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
     /* SPRITES: Loading surfaces and initializing textures */
     SDL_Surface* sprite_img[MAX_SPRITES];
@@ -530,12 +508,6 @@ int playGame(const char* itdPath)
     FMOD_Sound_Release(music);
     FMOD_System_Close(system);
     FMOD_System_Release(system);
-
-    /* Free TTF */
-    TTF_Quit();
-
-    /* Free SDL */ 
-    SDL_Quit();
     
     return EXIT_SUCCESS;
 }

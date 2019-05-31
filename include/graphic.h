@@ -5,6 +5,8 @@
 #include "../include/monster.h"
 #include "../include/building.h"
 
+void drawFullScreenImg(GLuint* texture);
+
 GLuint createHelpList(GLuint help_window_texture[], GLuint sprite_texture[]);
 GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties_window_texture[]);
 
