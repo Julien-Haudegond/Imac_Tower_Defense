@@ -149,6 +149,7 @@ int playMenu(const char* itdPath) {
 
                         if(help == 1) {
                             help = -1;
+                            break;
                         }     
 
                     	//If we press "Play game"
@@ -162,7 +163,12 @@ int playMenu(const char* itdPath) {
                     	//If we press "Help"
                     	if(button_x > 500 && button_x < 700 && button_y > 550 && button_y < 600) {
                     		help = 1;
-                    	}            	
+                    	}     
+
+                    	//If we press "Exit"
+                    	if(button_x > 525 && button_x < 700 && button_y > 650 && button_y < 700) {
+                    		loop = 0;
+                    	}        	
 
                     }
 
