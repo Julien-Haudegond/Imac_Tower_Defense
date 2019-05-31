@@ -45,15 +45,9 @@ void drawFullScreenImg(GLuint* texture) {
     glPopMatrix();
 }
 
-GLuint createHelpList(GLuint help_window_texture[], Sprite sprites[]) {
+GLuint createHelpList(Text helpTexts[], Sprite sprites[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
-
-    SDL_Surface* text_area[MAX_TEXTS];
-
-    for(int i =  0; i < MAX_TEXTS; i++) {
-        text_area[i] = NULL;
-    }
 
 	    //Colors
 	    SDL_Color color = {255, 255, 255, 0};
@@ -62,37 +56,37 @@ GLuint createHelpList(GLuint help_window_texture[], Sprite sprites[]) {
 	    TTF_Font* font_24 = loadFont(FONT_1, 24);
 
 	    	//Text 0 : SPACESHIPS
-	    	loadText("SPACESHIPS", &font_24, color, &text_area[0], &help_window_texture[0]);
+	    	loadText("SPACESHIPS", &font_24, color, &(helpTexts[0].area), &(helpTexts[0].texture));
 
 	    	//Text 1 : Press 'a' to make a 'laser spaceship' !
-	    	loadText("Press 'a' to make a 'laser spaceship' | 500 ", &font_24, color, &text_area[1], &help_window_texture[1]);
+	    	loadText("Press 'a' to make a 'laser spaceship' | 500 ", &font_24, color, &(helpTexts[1].area), &(helpTexts[1].texture));
 
 	    	//Text 2 : Press 'z' to make a 'rocket spaceship' !
-	    	loadText("Press 'z' to make a 'rocket spaceship' | 500 ", &font_24, color, &text_area[2], &help_window_texture[2]);
+	    	loadText("Press 'z' to make a 'rocket spaceship' | 500 ", &font_24, color, &(helpTexts[2].area), &(helpTexts[2].texture));
 
 	    	//Text 3 : Press 'e' to make a 'electric spaceship' !
-	    	loadText("Press 'e' to make a 'electric spaceship' | 500 ", &font_24, color, &text_area[3], &help_window_texture[3]);
+	    	loadText("Press 'e' to make a 'electric spaceship' | 500 ", &font_24, color, &(helpTexts[3].area), &(helpTexts[3].texture));
 
 	    	//Text 4 : Press 'r' to make a 'water spaceship' !
-	    	loadText("Press 'r' to make a 'water spaceship' | 500 ", &font_24, color, &text_area[4], &help_window_texture[4]);
+	    	loadText("Press 'r' to make a 'water spaceship' | 500 ", &font_24, color, &(helpTexts[4].area), &(helpTexts[4].texture));
 
 			//Text 5 : PLANETS
-	    	loadText("PLANETS", &font_24, color, &text_area[5], &help_window_texture[5]);
+	    	loadText("PLANETS", &font_24, color, &(helpTexts[5].area), &(helpTexts[5].texture));
 
 	    	//Text 6 : Press 'q' to make a 'radar planet' !
-	    	loadText("Press 'q' to make a 'radar planet' | 500 ", &font_24, color, &text_area[6], &help_window_texture[6]);
+	    	loadText("Press 'q' to make a 'radar planet' | 500 ", &font_24, color, &(helpTexts[6].area), &(helpTexts[6].texture));
 
 	    	//Text 7 : Press 's' to make a 'factory planet' !
-	    	loadText("Press 's' to make a 'factory planet' | 500 ", &font_24, color, &text_area[7], &help_window_texture[7]);
+	    	loadText("Press 's' to make a 'factory planet' | 500 ", &font_24, color, &(helpTexts[7].area), &(helpTexts[7].texture));
 
 	    	//Text 8 : Press 'd' to make a 'ammo planet' !
-	    	loadText("Press 'd' to make a 'ammo planet' | 500 ", &font_24, color, &text_area[8], &help_window_texture[8]);
+	    	loadText("Press 'd' to make a 'ammo planet' | 500 ", &font_24, color, &(helpTexts[8].area), &(helpTexts[8].texture));
 
             //Text 9 : Press 'del' to delete a construction (give you back half of its price) !
-            loadText("Press 'del' to delete a construction (give you back half of its price) !", &font_24, color, &text_area[9], &help_window_texture[9]);
+            loadText("Press 'del' to delete a construction (give you back half of its price) !", &font_24, color, &(helpTexts[9].area), &(helpTexts[9].texture));
 
             //Text 10 : Press 'esc' to leave the game !
-            loadText("Press 'esc' to leave the game !", &font_24, color, &text_area[10], &help_window_texture[10]);
+            loadText("Press 'esc' to leave the game !", &font_24, color, &(helpTexts[10].area), &(helpTexts[10].texture));
 
 
     ///// CODE
@@ -101,67 +95,62 @@ GLuint createHelpList(GLuint help_window_texture[], Sprite sprites[]) {
 
     	drawFullScreen(0, 0, 0, 200);
 
-    	renderLeftText(&text_area[0], &help_window_texture[0], 100 , 50);
-    	renderLeftText(&text_area[1], &help_window_texture[1], 100 , 100);
+    	renderLeftText(&helpTexts[0], 100 , 50);
+    	renderLeftText(&helpTexts[1], 100 , 100);
             glPushMatrix();
                 glTranslatef(720, 112, 0);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[2], &help_window_texture[2], 100 , 150);
+    	renderLeftText(&helpTexts[2], 100 , 150);
             glPushMatrix();
                 glTranslatef(737, 162, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[3], &help_window_texture[3], 100 , 200);
+    	renderLeftText(&helpTexts[3], 100 , 200);
             glPushMatrix();
                 glTranslatef(762, 212, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[4], &help_window_texture[4], 100 , 250);
+    	renderLeftText(&helpTexts[4], 100 , 250);
             glPushMatrix();
                 glTranslatef(720, 262, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[5], &help_window_texture[5], 100 , 400);
-    	renderLeftText(&text_area[6], &help_window_texture[6], 100 , 450);
+    	renderLeftText(&helpTexts[5], 100 , 400);
+    	renderLeftText(&helpTexts[6], 100 , 450);
             glPushMatrix();
                 glTranslatef(680, 462, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[7], &help_window_texture[7], 100 , 500);
+    	renderLeftText(&helpTexts[7], 100 , 500);
             glPushMatrix();
                 glTranslatef(705, 512, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-    	renderLeftText(&text_area[8], &help_window_texture[8], 100 , 550);
+    	renderLeftText(&helpTexts[8], 100 , 550);
             glPushMatrix();
                 glTranslatef(665, 562, 0.);
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
-        renderLeftText(&text_area[9], &help_window_texture[9], 100 , 650);
-        renderLeftText(&text_area[10], &help_window_texture[10], 100 , 725);        
+        renderLeftText(&helpTexts[9], 100 , 650);
+        renderLeftText(&helpTexts[10], 100 , 725);        
 
     glEndList();
 
     /* Close the font */
     TTF_CloseFont(font_24);
 
-    /* Free text surfaces */
-    for(int i = 0; i < MAX_TEXTS; i++) {
-        SDL_FreeSurface(text_area[i]);
-    }
-
     return id;
 }
 
-GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties_window_texture[]) {
+GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTexts[]) {
     if(!tl) {
         fprintf(stderr, "Error : no tower list (createPropertiesWindowList)\n");
         exit(EXIT_FAILURE);
@@ -178,12 +167,6 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties
     }
 
     getTowerInfosFromPosition(&t, tl, x, y); //Better than getTower directly because of the free memory at the end of the function
-
-    SDL_Surface* text_area[MAX_TEXTS];
-
-    for(int i =  0; i < MAX_TEXTS; i++) {
-        text_area[i] = NULL;
-    }
 
         //Colors
         SDL_Color color = {255, 255, 255, 0};
@@ -237,10 +220,10 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties
 
 
         //TEXTS
-        loadText(text1, &font, color, &text_area[0], &properties_window_texture[0]); // Position
-        loadText(text2, &font, color, &text_area[1], &properties_window_texture[1]); // Range
-        loadText(text3, &font, color, &text_area[2], &properties_window_texture[2]); // Damage
-        loadText(text4, &font, color, &text_area[3], &properties_window_texture[3]); // Firespeed
+        loadText(text1, &font, color, &(propTowerTexts[0].area), &(propTowerTexts[0].texture)); // Position
+        loadText(text2, &font, color, &(propTowerTexts[1].area), &(propTowerTexts[1].texture)); // Range
+        loadText(text3, &font, color, &(propTowerTexts[2].area), &(propTowerTexts[2].texture)); // Damage
+        loadText(text4, &font, color, &(propTowerTexts[3].area), &(propTowerTexts[3].texture)); // Firespeed
 
     ///// CODE
 
@@ -248,20 +231,15 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties
 
         drawPropertiesScreen(0, 0, 0, 200);
 
-        renderLeftText(&text_area[0], &properties_window_texture[0], 10 , 700);
-        renderLeftText(&text_area[1], &properties_window_texture[1], 10 , 720);
-        renderLeftText(&text_area[2], &properties_window_texture[2], 10 , 740);
-        renderLeftText(&text_area[3], &properties_window_texture[3], 10 , 760);
+        renderLeftText(&propTowerTexts[0], 10 , 700);
+        renderLeftText(&propTowerTexts[1], 10 , 720);
+        renderLeftText(&propTowerTexts[2], 10 , 740);
+        renderLeftText(&propTowerTexts[3], 10 , 760);
 
     glEndList();
 
     /* Close the font */
     TTF_CloseFont(font);
-
-    /* Free text surfaces */
-    for(int i = 0; i < MAX_TEXTS; i++) {
-        SDL_FreeSurface(text_area[i]);
-    }
 
     free(t);
 

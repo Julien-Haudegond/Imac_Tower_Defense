@@ -5,11 +5,12 @@
 #include "../include/monster.h"
 #include "../include/building.h"
 #include "../include/sprite.h"
+#include "../include/text.h"
 
 void drawFullScreenImg(GLuint* texture);
 
-GLuint createHelpList(GLuint help_window_texture[], Sprite sprites[]);
-GLuint createPropertiesWindowList(TowerList* tl, int x, int y, GLuint properties_window_texture[]);
+GLuint createHelpList(Text helpTexts[], Sprite sprites[]);
+GLuint createPropertiesWindowList(TowerList* tl, int x, int y, Text propTowerTexts[]);
 
 void drawTowerSprite(Tower* tower, Sprite sprites[]);
 void drawMonsterSprite(Monster* m, Sprite sprites[], int rotation);

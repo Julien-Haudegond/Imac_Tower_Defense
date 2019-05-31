@@ -17,6 +17,13 @@ void initSpritesToNull(Sprite sprites[]) {
     }
 }
 
+void freeSprites(Sprite sprites[]) {
+    for(int i = 0; i < MAX_SPRITES; i++) {
+        SDL_FreeSurface(sprites[i].area);
+        glDeleteTextures(1, &(sprites[i].texture));   
+    }
+}
+
 //HERE TO CHANGE THE SPRITES (PLEASE DO NOT MODIFY ORDER)
 void fillSprites(Sprite sprites[]) {
 
@@ -79,13 +86,6 @@ void fillSprites(Sprite sprites[]) {
     //Texture 14 : MONEY
     loadSpriteArea(&(sprites[14].area), "money_RGBA.png");
     initSpriteTexture(&(sprites[14].area), &(sprites[14].texture));
-}
-
-void freeSprites(Sprite sprites[]) {
-    for(int i = 0; i < MAX_SPRITES; i++) {
-        SDL_FreeSurface(sprites[i].area);
-        glDeleteTextures(1, &(sprites[i].texture));   
-    }
 }
 
 

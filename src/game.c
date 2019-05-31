@@ -31,8 +31,6 @@
 
 #include "../include/args.h"
 
-#include "../include/sdl_array.h"
-
 
 /***************
 *   define : 
@@ -134,26 +132,23 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     fillSprites(sprites); // GO TO SPRITE.C TO MODIFY
 
     /* TEXTS */
-        //Loading FONTS
-        TTF_Font* fonts[MAX_FONTS];
-        initFontsArrayToNull(fonts, MAX_FONTS);
-        initFontsArray(fonts); // GO TO TEXT.C TO MODIFY
+        //Text styles
+        TextStyle textCSS[MAX_CSS];
 
-        //COLORS
-        SDL_Color colors[MAX_COLORS];
-        initColorsArray(colors); // GO TO TEXT.C TO MODIFY
+        initTextCSSToNull(textCSS);
+        initTextCSS(textCSS); // GO TO TEXT.C TO MODIFY
 
-        //Loading SURFACES
-        SDL_Surface* text_area[MAX_TEXTS];
-        initSurfacesArrayToNull(text_area, MAX_TEXTS);
+        //Loading TEXTS
+        Text generalTexts[MAX_TEXTS]; //General Texts
+        Text helpTexts[MAX_TEXTS]; //Help Texts
+        Text propTowerTexts[MAX_TEXTS]; //Properties Tower Texts
 
-        //Initializing TEXTURES
-        GLuint text_texture[MAX_TEXTS];
-        GLuint help_window_texture[MAX_TEXTS];
-        GLuint properties_window_texture[MAX_TEXTS];
+        initTextsToNull(generalTexts);
+        initTextsToNull(helpTexts);
+        initTextsToNull(propTowerTexts);
 
-        //WRITING texts
-        fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
+        //WRITING General texts
+        fillTextsArrays(textCSS, generalTexts); // GO TO TEXT.C TO MODIFY
   
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
@@ -177,8 +172,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
-    GLuint help_window = createHelpList(help_window_texture, sprites);
-    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, properties_window_texture);
+    GLuint help_window = createHelpList(helpTexts, sprites);
+    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, propTowerTexts);
     
 
     /* MAIN LOOP */
@@ -277,13 +272,13 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //Draw the tower properties
             if(towerPropStatus != -1) {
-                properties_window = createPropertiesWindowList(towerList, button_x, button_y, properties_window_texture);
+                properties_window = createPropertiesWindowList(towerList, button_x, button_y, propTowerTexts);
                 glCallList(properties_window);
             }
 
             //MONEY
-            loadIntegerText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
-            renderRightText(&text_area[1], &text_texture[1], 1170, 30); //Money text
+            loadIntegerText(global_money, &textCSS[0], &generalTexts[1]); //Reload each time the money text
+            renderRightText(&generalTexts[1], 1170, 30); //Money text
             glPushMatrix();
                 glTranslatef(1190, 30, 0);
                 glScalef(0.7, 0.7, 1.);
@@ -291,7 +286,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             glPopMatrix();
 
             //HELP
-            renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
+            renderCenterText(&generalTexts[0], 610, 700); //Press 'h' to get some help
             //Hold 'h' to make the menu appear
             if(help == 1) {
                 glCallList(help_window);
@@ -485,16 +480,15 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(wave);
 
     /* Close fonts */
-    closeAllFonts(fonts, MAX_FONTS);
+    freeTextCSS(textCSS);
 
     /* Free sprites */
     freeSprites(sprites);
 
     /* Free texts */
-    freeSurfacesArray(text_area, MAX_TEXTS);
-    freeTexturesArray(text_texture, MAX_TEXTS);
-    freeTexturesArray(help_window_texture, MAX_TEXTS);
-    freeTexturesArray(properties_window_texture, MAX_TEXTS);
+    freeTexts(generalTexts);
+    freeTexts(helpTexts);
+    freeTexts(propTowerTexts);
 
     /* Free links of all nodes and the PPM */
     for(int i = 0; i < nbOfNodes; i++) {

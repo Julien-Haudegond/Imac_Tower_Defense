@@ -9,34 +9,53 @@
 
 #include "../include/text.h"
 
-//HERE TO CHANGE THE FONTS (PLEASE DO NOT MODIFY ORDER)
-void initFontsArray(TTF_Font* fonts[]) {
+//HERE TO CHANGE THE TEXT STYLES (PLEASE DO NOT MODIFY ORDER)
+void initTextCSS(TextStyle textCSS[]) {
 
-    //Font 0
-    fonts[0] = loadFont(FONT_1, 24);
-
+    //Style 0
+    textCSS[0].font = loadFont(FONT_1, 24);
+    textCSS[0].color = (SDL_Color) {255, 0, 0, 0};
 }
 
-//HERE TO CHANGE THE COLORS (PLEASE DO NOT MODIFY ORDER)
-void initColorsArray(SDL_Color colors[]) {
-
-    //Color 0 : Red color
-    colors[0] = (SDL_Color) {255, 0, 0, 0};
-
-}
 
 //HERE TO CHANGE THE STATIC TEXTS (PLEASE DO NOT MODIFY ORDER)
-void fillTextsArrays(TTF_Font* fonts[], SDL_Color colors[], SDL_Surface* text_area[], GLuint text_texture[]) {
+void fillTextsArrays(TextStyle textCSS[], Text texts[]) {
 
     //Text 0 : Press 'h' to get help !
-    loadText("Press 'h' to get some help !", &fonts[0], colors[0], &text_area[0], &text_texture[0]);
+    loadText("Press 'h' to get some help !", &(textCSS[0].font), textCSS[0].color, &(texts[0].area), &(texts[0].texture));
 
     //Text 1 : Money (need to be reload each time, so in another function)
     
 }
 
 
+/************************************************************************/
 
+
+void initTextCSSToNull(TextStyle textCSS[]) {
+    for(int i = 0; i < MAX_CSS; i++) {
+        textCSS[i].font = NULL;
+    }
+}
+
+void freeTextCSS(TextStyle textCSS[]) {
+    for(int i = 0; i < MAX_CSS; i++) {
+        TTF_CloseFont(textCSS[i].font);
+    }
+}
+
+void initTextsToNull(Text texts[]) {
+    for(int i = 0; i < MAX_TEXTS; i++) {
+        texts[i].area = NULL;
+    }
+}
+
+void freeTexts(Text texts[]) {
+    for(int i = 0; i < MAX_TEXTS; i++) {
+        SDL_FreeSurface(texts[i].area);
+        glDeleteTextures(1, &(texts[i].texture));
+    }
+}
 
 
 //Don't forget to close the font at the end
@@ -76,70 +95,58 @@ void loadText(const char* text, TTF_Font** font, SDL_Color color, SDL_Surface** 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (*sFont)->w, (*sFont)->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, (*sFont)->pixels);
 }
 
-void renderCenterText(SDL_Surface** sFont, GLuint* texture, int x , int y) {
-    if(!*sFont) {
-        fprintf(stderr, "Error during rendering the text area\n");
-        exit (EXIT_FAILURE);
-    }
+void renderCenterText(Text* text, int x , int y) {
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindTexture(GL_TEXTURE_2D, *texture);
+    glBindTexture(GL_TEXTURE_2D, text->texture);
 
-    x = x-((*sFont)->w)/2;
-    y = y-((*sFont)->h)/2;
+    x = x-((text->area)->w)/2;
+    y = y-((text->area)->h)/2;
     glBegin(GL_QUADS);
         glTexCoord2f(0,0); glVertex2f(x, y);
-        glTexCoord2f(1,0); glVertex2f(x + (*sFont)->w, y);
-        glTexCoord2f(1,1); glVertex2f(x + (*sFont)->w, y + (*sFont)->h);
-        glTexCoord2f(0,1); glVertex2f(x, y + (*sFont)->h);
+        glTexCoord2f(1,0); glVertex2f(x + (text->area)->w, y);
+        glTexCoord2f(1,1); glVertex2f(x + (text->area)->w, y + (text->area)->h);
+        glTexCoord2f(0,1); glVertex2f(x, y + (text->area)->h);
     glEnd();
     
     glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
 }
 
-void renderLeftText(SDL_Surface** sFont, GLuint* texture, int x , int y) {
-    if(!*sFont) {
-        fprintf(stderr, "Error during rendering the text area\n");
-        exit (EXIT_FAILURE);
-    }
+void renderLeftText(Text* text, int x , int y) {
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindTexture(GL_TEXTURE_2D, *texture);
+    glBindTexture(GL_TEXTURE_2D, text->texture);
 
     glBegin(GL_QUADS);
         glTexCoord2f(0,0); glVertex2f(x, y);
-        glTexCoord2f(1,0); glVertex2f(x + (*sFont)->w, y);
-        glTexCoord2f(1,1); glVertex2f(x + (*sFont)->w, y + (*sFont)->h);
-        glTexCoord2f(0,1); glVertex2f(x, y + (*sFont)->h);
+        glTexCoord2f(1,0); glVertex2f(x + (text->area)->w, y);
+        glTexCoord2f(1,1); glVertex2f(x + (text->area)->w, y + (text->area)->h);
+        glTexCoord2f(0,1); glVertex2f(x, y + (text->area)->h);
     glEnd();
     
     glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
 }
 
-void renderRightText(SDL_Surface** sFont, GLuint* texture, int x , int y) {
-    if(!*sFont) {
-        fprintf(stderr, "Error during rendering the text area\n");
-        exit (EXIT_FAILURE);
-    }
+void renderRightText(Text* text, int x , int y) {
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindTexture(GL_TEXTURE_2D, *texture);
+    glBindTexture(GL_TEXTURE_2D, text->texture);
 
-    x = x-((*sFont)->w);
-    y = y-((*sFont)->h)/2;
+    x = x-((text->area)->w);
+    y = y-((text->area)->h)/2;
     glBegin(GL_QUADS);
         glTexCoord2f(0,0); glVertex2f(x, y);
-        glTexCoord2f(1,0); glVertex2f(x + (*sFont)->w, y);
-        glTexCoord2f(1,1); glVertex2f(x + (*sFont)->w, y + (*sFont)->h);
-        glTexCoord2f(0,1); glVertex2f(x, y + (*sFont)->h);
+        glTexCoord2f(1,0); glVertex2f(x + (text->area)->w, y);
+        glTexCoord2f(1,1); glVertex2f(x + (text->area)->w, y + (text->area)->h);
+        glTexCoord2f(0,1); glVertex2f(x, y + (text->area)->h);
     glEnd();
     
     glDisable(GL_BLEND);
@@ -148,26 +155,21 @@ void renderRightText(SDL_Surface** sFont, GLuint* texture, int x , int y) {
 
 
 
-void loadIntegerText(int integer, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture) {
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, *texture);
+void loadIntegerText(int integer, TextStyle* textCSS, Text* text) {
+    glGenTextures(1, &(text->texture));
+    glBindTexture(GL_TEXTURE_2D, text->texture);
 
-    if(!*font) {
-        fprintf(stderr, "Error: no font available to load money text");
-        exit (EXIT_FAILURE);
-    }
+    char txt[10];
+    snprintf(txt, sizeof(txt), "%d", integer);
 
-    char text[10];
-    snprintf(text, sizeof(text), "%d", integer);
+    text->area = TTF_RenderText_Blended(textCSS->font, txt, textCSS->color);
 
-    *sFont = TTF_RenderText_Blended(*font, text, color);
-
-    if(!*sFont) {
+    if(!(text->area)) {
         fprintf(stderr, "Error during loading the text area\n");
         exit (EXIT_FAILURE);
     }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (*sFont)->w, (*sFont)->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, (*sFont)->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (text->area)->w, (text->area)->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, (text->area)->pixels);
 }
