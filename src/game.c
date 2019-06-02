@@ -222,7 +222,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
             
             /*
-            if(monsterCounter < WAVESIZE){
+            if(monsterCounter < 2){
                 currentTimeMonster = SDL_GetTicks();
                 if(currentTimeMonster - previousTimeMonster >= 500){
                      addMonster(wave, GIANT, 0, nodesPath, nbShortest);
