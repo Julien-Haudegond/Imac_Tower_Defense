@@ -61,9 +61,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     BuildingList* buildingList = createEmptyBuildingList();
 
 
-    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+    updateAllValarcLinks(nodesArray, nbOfNodes, towerList); 
 
-
+    //filling nodesPath array
     //test valarc et init Dijkstra
       
     for(int i = 0; i < nbOfNodes; i++) {
@@ -73,6 +73,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     //Setting minValarc values for shortest path
     shortestPath(nodesArray, nbOfNodes);
+
 
     printf("\n \n ******* Test résultats Dijkstra ***** \n \n");
     for (int j = 0; j < nbOfNodes; j++){
@@ -89,31 +90,13 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         printf("Noeud %d : %d \n", k, nodesPath[k]);
     }
 
-
     //Test on monsters - waves
     Wave* wave = createEmptyWave();
     Node* nodesearch = malloc(sizeof(Node));
 
-    /*
-    addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-    wave->monster->currentNode = wave->monster->path[0];
-    
-    
-    */
     Monster* ptrMonster = malloc(sizeof(Monster));
     Wave* ptrWave = malloc(sizeof(Wave));
-    /*
-    for(int i = 0; i < 10; i++){
-        addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
-        ptrWave = getLastMonster(wave);
-        printf("First node : %d",ptrWave->monster->path[0]);
-        ptrWave->monster->currentNode = ptrWave->monster->path[0];
-        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
-        setPosition( ptrWave->monster, nodesearch->win_x, nodesearch->win_y);
-    }
-    ptrWave = wave;
-   */
-    //initializing monster position
+   
     
    
 
@@ -240,7 +223,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
             }
             
-            
+            //MONSTERS
+
+            //adding monsters to the wave
             if(monsterCounter < WAVESIZE){
                 currentTimeMonster = SDL_GetTicks();
                 if(currentTimeMonster - previousTimeMonster >= 1000){
@@ -440,6 +425,17 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                                     addTower(towerList, towerConstructType, mouse_x, mouse_y);
                                     updateTowersBuildings(towerList, buildingList);
                                     global_money -= price;
+
+                                    //update Dijkstra links
+                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                                    for(int i = 0; i < nbOfNodes; i++) {
+                                        initializeDijkstra(&nodesArray[i]);
+                                    }
+                                    shortestPath(nodesArray, nbOfNodes);
+                                    nbShortest = countNodesShortestPath(nodesArray);
+                                    nodesPath = malloc(nbShortest*sizeof(int));
+                                    fillShortestPath(nodesPath, nbShortest, nodesArray);
+
                                 }
                             }
                             //else if it is a 'building key'
