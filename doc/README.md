@@ -6,18 +6,18 @@ A 2D Tower Defense game : C, SDL 1.2, OpenGL (old version).
 
 ## Table of contents
 
-[**How to**](#how-to)
-	* [**Install libraries**](#install-libraries)
-	* [**Run the program**](#run-the-program)
-	* [**Inside the program**](#inside-the-program)
+* [**How to**](#how-to)
+	- [**Install libraries**](#install-libraries)
+	- [**Run the program**](#run-the-program)
+	- [**Inside the program**](#inside-the-program)
 		- [**Start game**](#start-game)
 		- [**Help window**](#help-window)
 
-[**More informations**](#more-informations)
-	* [**Structure**](#structure)
-	* [**Artworks**](#artworks)
-	* [**Audio**](#audio)
-	* [**Game developpers**](#game-developpers)
+* [**More informations**](#more-informations)
+	- [**Structure**](#structure)
+	- [**Artworks**](#artworks)
+	- [**Audio**](#audio)
+	- [**Game developpers**](#game-developpers)
 
 ## How to
 
