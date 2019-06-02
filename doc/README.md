@@ -10,7 +10,7 @@ A 2D Tower Defense game : C, SDL 1.2, OpenGL (old version).
 	- [**Install libraries**](#install-libraries)
 	- [**Run the program**](#run-the-program)
 	- [**Inside the program**](#inside-the-program)
-		- [**Start game**](#start-game)
+		- [**Play game**](#play-game)
 		- [**Help window**](#help-window)
 
 * [**More informations**](#more-informations)
@@ -48,9 +48,9 @@ export LD_LIBRARY_PATH=lib/lib
 
 ### Inside the program
 
-#### Start game
+#### Play game
 
-When you click on **Start Game**, a new window will appear to make you choose the map you want to play with. You will just need to pick one map and the game will start.
+When you click on **Play Game**, a new window will appear to make you choose the map you want to play with. You will just need to pick one map and the game will start.
 
 If you want to come back to the menu, just click on the **Back** button.
 
