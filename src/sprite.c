@@ -89,7 +89,7 @@ void fillSprites(Sprite sprites[]) {
     initSpriteTexture(&(sprites[14].area), &(sprites[14].texture));
 
     //Texture 15 : HELP
-    loadSpriteArea(&(sprites[15].area), "Help_Img.png");
+    loadSpriteArea(&(sprites[15].area), "whole_screens/Help_Img.png");
     initSpriteTexture(&(sprites[15].area), &(sprites[15].texture));
 }
 

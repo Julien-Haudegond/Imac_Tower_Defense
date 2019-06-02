@@ -18,7 +18,7 @@
 
 
 
-int playMenu(const char* itdPath) {
+int playMenu() {
 
     /* Initializing SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
@@ -53,7 +53,7 @@ int playMenu(const char* itdPath) {
     FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
 
         //Opening the music
-        result = FMOD_System_CreateSound(system, "sounds/test.mp3", FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &music);
+        result = FMOD_System_CreateSound(system, "sounds/menu.mp3", FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &music);
 
         //Check if it well opened
         if(result != FMOD_OK) {
@@ -70,19 +70,26 @@ int playMenu(const char* itdPath) {
     /* Surfaces and textures */
     SDL_Surface* bg_img = NULL;
     SDL_Surface* help_img = NULL;
+    SDL_Surface* choice_img = NULL;
 
     GLuint bg_texture;
     GLuint help_texture;
+    GLuint choice_texture;
 
-    loadSpriteArea(&bg_img, "Menu_Img.png");
+    loadSpriteArea(&bg_img, "whole_screens/Menu_Img.png");
     initSpriteTexture(&bg_img, &bg_texture);
 
-    loadSpriteArea(&help_img, "Help_Img.png");
+    loadSpriteArea(&help_img, "whole_screens/Help_Img.png");
     initSpriteTexture(&help_img, &help_texture);
+
+    loadSpriteArea(&choice_img, "whole_screens/Choice_Img.png");
+    initSpriteTexture(&choice_img, &choice_texture);
 
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
-    int help = -1;
+    int help = -1; //Help window
+    int choice = -1; //Choice window
+    int map = -1; //Chosen map
 
     /* Global variables for GL Lists */
 
@@ -105,6 +112,10 @@ int playMenu(const char* itdPath) {
 
             if(help == 1) {
             	drawFullScreenImg(&help_texture);
+            }
+
+            if(choice == 1) {
+            	drawFullScreenImg(&choice_texture);
             }
 
 
@@ -147,29 +158,83 @@ int playMenu(const char* itdPath) {
                     if(e.button.button == SDL_BUTTON_LEFT) {
                     	printf("x = %d et y = %d\n", button_x, button_y);
 
+                    	//If help window is visible : become hidden
                         if(help == 1) {
                             help = -1;
                             break;
-                        }     
+                        }
 
-                    	//If we press "Play game"
-                    	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500) {
-                    		FMOD_Channel_Stop(channel); //Stop the music
-                    		playGame(surface, itdPath); //Play the game
-                    		initSpriteTexture(&bg_img, &bg_texture); //Reload the menu texture
-                    		FMOD_System_PlaySound(system, music, NULL, 0, &channel); //Play the music
-                    	}
+                        //If choice window is visible
+                        if(choice == 1) {
+                        	//Map 1
+                        	if(button_x > 60 && button_x < 370 && button_y > 185 && button_y < 390) {
+	                    		map = 1;
+	                    	}
+	                    	//Map 2
+	                    	else if(button_x > 455 && button_x < 765 && button_y > 185 && button_y < 390) {
+	                    		map = 2;
+	                    	}
+	                    	//Map 3
+	                    	else if(button_x > 845 && button_x < 1150 && button_y > 185 && button_y < 390) {
+	                    		map = 3;
+	                    	}
+	                    	//Map 4
+	                    	else if(button_x > 260 && button_x < 570 && button_y > 445 && button_y < 650) {
+	                    		map = 4;
+	                    	}
+	                    	//Map 5
+	                    	else if(button_x > 650 && button_x < 930 && button_y > 445 && button_y < 650) {
+	                    		map = 5;
+	                    	}
+	                    	//Back
+	                    	else if(button_x > 60 && button_x < 180 && button_y > 725 && button_y < 755) {
+	                    		choice = -1;
+	                    	}
 
-                    	//If we press "Help"
-                    	if(button_x > 500 && button_x < 700 && button_y > 550 && button_y < 600) {
-                    		help = 1;
-                    	}     
+	                    	if(map != -1) {
+						        //GET ITD relative path
+						        char itdMap[20] = {0};
+						        char int2string[2] = {0};
+						        strcat(itdMap, "data/Map_0");
+						            snprintf(int2string, sizeof(int2string), "%d", map);
+						        strcat(itdMap, int2string);
+						        strcat(itdMap, ".itd");
 
-                    	//If we press "Exit"
-                    	if(button_x > 525 && button_x < 700 && button_y > 650 && button_y < 700) {
-                    		loop = 0;
-                    	}        	
+						        printf("Path = %s\n", itdMap);
 
+						        //Play the game
+	                    		FMOD_Channel_Stop(channel); //Stop the music
+	                    		playGame(surface, itdMap); //Play the game
+
+	                    		//Go back to the menu
+	                    		initSpriteTexture(&bg_img, &bg_texture); //Reload the menu texture
+	                    		initSpriteTexture(&help_img, &help_texture); //Reload the help texture
+	                    		initSpriteTexture(&choice_img, &choice_texture); //Reload the choice texture
+
+	                    		FMOD_System_PlaySound(system, music, NULL, 0, &channel); //Play the music
+
+	                    		map = -1; //Reset map
+	                    		choice = -1; //Hide the choice window
+
+	                    	}                    	
+                        }
+
+                        if(help == -1 && choice == -1) {
+	                    	//If we press "Play game"
+	                    	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500 && choice == -1) {
+	                    		choice = 1;
+	                    	}
+
+	                    	//If we press "Help"
+	                    	if(button_x > 500 && button_x < 700 && button_y > 550 && button_y < 600) {
+	                    		help = 1;
+	                    	}     
+
+	                    	//If we press "Exit"
+	                    	if(button_x > 525 && button_x < 700 && button_y > 650 && button_y < 700) {
+	                    		loop = 0;
+	                    	}                          	
+                        }  
                     }
 
 
@@ -208,6 +273,9 @@ int playMenu(const char* itdPath) {
 
     SDL_FreeSurface(help_img);
     glDeleteTextures(1, &help_texture);
+
+    SDL_FreeSurface(choice_img);
+    glDeleteTextures(1, &choice_texture);
 
     /* Free FMOD */
     FMOD_Sound_Release(music);

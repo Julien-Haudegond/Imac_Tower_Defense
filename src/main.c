@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    playMenu(itdPath);
-    //playGame(itdPath);
+    playMenu();
+
 	return EXIT_SUCCESS;
 }
