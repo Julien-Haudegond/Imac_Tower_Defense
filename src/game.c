@@ -122,7 +122,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
 
         //Opening the music
-        result = FMOD_System_CreateSound(system, "sounds/test.mp3", FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &music);
+        result = FMOD_System_CreateSound(system, "sounds/game.mp3", FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &music);
 
         //Check if it well opened
         if(result != FMOD_OK) {
