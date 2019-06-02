@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <GL/gl.h>
@@ -11,71 +12,86 @@
 
 /***** SPRITES ARRAY *****/
 
-//HERE TO CHANGE THE SPRITES (PLEASE DO NOT MODIFY ORDER)
-void fillSprites(SDL_Surface* sprite_img[], GLuint sprite_texture[]) {
-
-    //Texture 0 : Constructible area
-    loadSpriteArea(&sprite_img[0], "construct_area_RGBA.png");
-    initSpriteTexture(&sprite_img[0], &sprite_texture[0]);
-
-    //Texture 1 : Path area
-    loadSpriteArea(&sprite_img[1], "path_area_RGBA.png");
-    initSpriteTexture(&sprite_img[1], &sprite_texture[1]);
-
-    //Texture 2 : Available area
-    loadSpriteArea(&sprite_img[2], "available_area_RGBA.png");
-    initSpriteTexture(&sprite_img[2], &sprite_texture[2]);
-
-    //Texture 3 : Non available area
-    loadSpriteArea(&sprite_img[3], "nonAvailable_area_RGBA.png");
-    initSpriteTexture(&sprite_img[3], &sprite_texture[3]);
-
-    //Texture 4 : TOWER Laser
-    loadSpriteArea(&sprite_img[4], "Tower_Laser_RGBA.png");
-    initSpriteTexture(&sprite_img[4], &sprite_texture[4]);
-
-    //Texture 5 : TOWER Rocket
-    loadSpriteArea(&sprite_img[5], "Tower_Rocket_RGBA.png");
-    initSpriteTexture(&sprite_img[5], &sprite_texture[5]);
-
-    //Texture 6 : TOWER Electric
-    loadSpriteArea(&sprite_img[6], "Tower_Electric_RGBA.png");
-    initSpriteTexture(&sprite_img[6], &sprite_texture[6]);
-
-    //Texture 7 : TOWER Water
-    loadSpriteArea(&sprite_img[7], "Tower_Water_RGBA.png");
-    initSpriteTexture(&sprite_img[7], &sprite_texture[7]);
-
-    //Texture 8 : MONSTER Giant
-    loadSpriteArea(&sprite_img[8], "Monster_Giant_RGBA.png");
-    initSpriteTexture(&sprite_img[8], &sprite_texture[8]);
-
-    //Texture 9 : MONSTER Swarmling
-    loadSpriteArea(&sprite_img[9], "Monster_swarmling_RGBA.png");
-    initSpriteTexture(&sprite_img[9], &sprite_texture[9]);
-
-    //Texture 10 : Delete Sprite
-    loadSpriteArea(&sprite_img[10], "delete_area_RGBA.png");
-    initSpriteTexture(&sprite_img[10], &sprite_texture[10]);
-
-    //Texture 11 : BUILDING Radar
-    loadSpriteArea(&sprite_img[11], "Building_Radar_RGBA.png");
-    initSpriteTexture(&sprite_img[11], &sprite_texture[11]);
-
-    //Texture 12 : BUILDING Factory
-    loadSpriteArea(&sprite_img[12], "Building_Factory_RGBA.png");
-    initSpriteTexture(&sprite_img[12], &sprite_texture[12]);
-
-    //Texture 13 : BUILDING Ammo
-    loadSpriteArea(&sprite_img[13], "Building_Ammo_RGBA.png");
-    initSpriteTexture(&sprite_img[13], &sprite_texture[13]);
-
-    //Texture 14 : MONEY
-    loadSpriteArea(&sprite_img[14], "money_RGBA.png");
-    initSpriteTexture(&sprite_img[14], &sprite_texture[14]);
+void initSpritesToNull(Sprite sprites[]) {
+    for(int i =  0; i < MAX_SPRITES; i++) {
+        sprites[i].area = NULL;
+    }
 }
 
+void freeSprites(Sprite sprites[]) {
+    for(int i = 0; i < MAX_SPRITES; i++) {
+        SDL_FreeSurface(sprites[i].area);
+        glDeleteTextures(1, &(sprites[i].texture));   
+    }
+}
 
+//HERE TO CHANGE THE SPRITES (PLEASE DO NOT MODIFY ORDER)
+void fillSprites(Sprite sprites[]) {
+
+    //Texture 0 : Constructible area
+    loadSpriteArea(&(sprites[0].area), "construct_area_RGBA.png");
+    initSpriteTexture(&(sprites[0].area), &(sprites[0].texture));
+
+    //Texture 1 : Path area
+    loadSpriteArea(&(sprites[1].area), "path_area_RGBA.png");
+    initSpriteTexture(&(sprites[1].area), &(sprites[1].texture));
+
+    //Texture 2 : Available area
+    loadSpriteArea(&(sprites[2].area), "available_area_RGBA.png");
+    initSpriteTexture(&(sprites[2].area), &(sprites[2].texture));
+
+    //Texture 3 : Non available area
+    loadSpriteArea(&(sprites[3].area), "nonAvailable_area_RGBA.png");
+    initSpriteTexture(&(sprites[3].area), &(sprites[3].texture));
+
+    //Texture 4 : TOWER Laser
+    loadSpriteArea(&(sprites[4].area), "Tower_Laser_RGBA.png");
+    initSpriteTexture(&(sprites[4].area), &(sprites[4].texture));
+
+    //Texture 5 : TOWER Rocket
+    loadSpriteArea(&(sprites[5].area), "Tower_Rocket_RGBA.png");
+    initSpriteTexture(&(sprites[5].area), &(sprites[5].texture));
+
+    //Texture 6 : TOWER Electric
+    loadSpriteArea(&(sprites[6].area), "Tower_Electric_RGBA.png");
+    initSpriteTexture(&(sprites[6].area), &(sprites[6].texture));
+
+    //Texture 7 : TOWER Water
+    loadSpriteArea(&(sprites[7].area), "Tower_Water_RGBA.png");
+    initSpriteTexture(&(sprites[7].area), &(sprites[7].texture));
+
+    //Texture 8 : MONSTER Giant
+    loadSpriteArea(&(sprites[8].area), "Monster_Giant_RGBA.png");
+    initSpriteTexture(&(sprites[8].area), &(sprites[8].texture));
+
+    //Texture 9 : MONSTER Swarmling
+    loadSpriteArea(&(sprites[9].area), "Monster_swarmling_RGBA.png");
+    initSpriteTexture(&(sprites[9].area), &(sprites[9].texture));
+
+    //Texture 10 : Delete Sprite
+    loadSpriteArea(&(sprites[10].area), "delete_area_RGBA.png");
+    initSpriteTexture(&(sprites[10].area), &(sprites[10].texture));
+
+    //Texture 11 : BUILDING Radar
+    loadSpriteArea(&(sprites[11].area), "Building_Radar_RGBA.png");
+    initSpriteTexture(&(sprites[11].area), &(sprites[11].texture));
+
+    //Texture 12 : BUILDING Factory
+    loadSpriteArea(&(sprites[12].area), "Building_Factory_RGBA.png");
+    initSpriteTexture(&(sprites[12].area), &(sprites[12].texture));
+
+    //Texture 13 : BUILDING Ammo
+    loadSpriteArea(&(sprites[13].area), "Building_Ammo_RGBA.png");
+    initSpriteTexture(&(sprites[13].area), &(sprites[13].texture));
+
+    //Texture 14 : MONEY
+    loadSpriteArea(&(sprites[14].area), "money_RGBA.png");
+    initSpriteTexture(&(sprites[14].area), &(sprites[14].texture));
+
+    //Texture 15 : HELP
+    loadSpriteArea(&(sprites[15].area), "Help_Img.png");
+    initSpriteTexture(&(sprites[15].area), &(sprites[15].texture));
+}
 
 
 /***** ONE SPRITE *****/

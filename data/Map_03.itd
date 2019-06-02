@@ -1,6 +1,6 @@
 @ITD 1
 #Test du chemin le plus court wsh
-Test_PPM_03.ppm
+Map_03.ppm
 chemin 255 255 255
 noeud 0 0 0
 construct 255 200 80

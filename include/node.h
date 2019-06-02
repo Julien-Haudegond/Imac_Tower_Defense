@@ -4,7 +4,7 @@
 #include "../include/link.h"
 #include "../include/tower_list.h"
 
-#define MAX_NODES 20 //Max number of nodes will be 20-1 = 19
+#define MAX_NODES 25 //Max number of nodes will be 25
 
 typedef enum {
 	IN = 1, OUT = 2, BEND = 3, INTERSECT = 4

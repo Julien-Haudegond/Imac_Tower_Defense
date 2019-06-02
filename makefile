@@ -12,6 +12,8 @@ OBJDIR	= obj/
 
 MAIN_O = obj/main.o
 
+MENU_O = obj/menu.o
+
 GAME_O = obj/game.o
 IMAGE_O = obj/image.o
 ITD_O = obj/itd.o
@@ -34,9 +36,8 @@ GRAPHIC_O = obj/graphic.o
 
 ARGS_O = obj/args.o
 
-SDL_ARRAY_O = obj/sdl_array.o
 
-OBJ = $(MAIN_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(BUILDING_O) $(BUILDING_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O) $(SDL_ARRAY_O)
+OBJ = $(MAIN_O) $(MENU_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(BUILDING_O) $(BUILDING_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O)
 
 PROG = bin/program.out
 
@@ -51,13 +52,18 @@ all : $(OBJ)
 	@echo "*** then, type       : ./bin/program.out Map_xx.itd    ***"
 	@echo "**********************************************************"
 
-$(MAIN_O) : src/main.c include/game.h include/args.h
+$(MAIN_O) : src/main.c include/menu.h include/game.h include/args.h
 	mkdir -p obj
 	@echo "compile program"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "done!"
 
-$(GAME_O) : src/game.c include/game.h include/itd.h include/node.h include/link.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h include/tower_list.h include/building.h include/building_list.h include/sprite.h include/args.h include/text.h include/graphic.h include/sdl_array.h
+$(MENU_O) : src/menu.c include/menu.h include/const.h include/window.h
+	@echo "compile menu"
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "done!"
+
+$(GAME_O) : src/game.c include/game.h include/itd.h include/node.h include/link.h include/image.h include/monster.h include/wave.h include/tower.h include/const.h include/map_draw.h include/window.h include/tower_list.h include/building.h include/building_list.h include/sprite.h include/args.h include/text.h include/graphic.h
 	@echo "compile game"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "done!"
@@ -129,10 +135,6 @@ $(TEXT_O) : src/text.c include/text.h
 $(GRAPHIC_O) : src/graphic.c include/graphic.h include/text.h include/map_draw.h include/sprite.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "Graphic : done !"
-
-$(SDL_ARRAY_O) : src/sdl_array.c include/sdl_array.h
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-	@echo "SDL Arrays : done !"
 
 clean :
 	rm -rf $(OBJDIR)*.o

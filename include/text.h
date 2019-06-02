@@ -2,24 +2,40 @@
 #define TEXT_H__
 
 #define MAX_TEXTS 50 //Max number of texts
-#define MAX_FONTS 5 //Max number of fonts
-#define MAX_COLORS 10 //Max number of colors
+#define MAX_CSS 5 //Max number of text styles
 
 #define FONT_1 "Hack-Bold"
 
+#include <SDL/SDL_ttf.h>
+
+typedef struct TextStyle {
+	TTF_Font* font;
+	SDL_Color color;
+} TextStyle;
+
+typedef struct Text {
+	SDL_Surface* area;
+	GLuint texture;
+} Text;
+
+//Init and free
+void initTextCSSToNull(TextStyle textCSS[]);
+void freeTextCSS(TextStyle textCSS[]);
+void initTextsToNull(Text texts[]);
+void freeTexts(Text texts[]);
+
 //Functions to fill
-void initFontsArray(TTF_Font* fonts[]);
-void initColorsArray(SDL_Color colors[]);
-void fillTextsArrays(TTF_Font* fonts[], SDL_Color colors[], SDL_Surface* text_area[], GLuint text_texture[]);
+void initTextCSS(TextStyle textCSS[]);
+void fillTextsArrays(TextStyle textCSS[], Text texts[]);
 
 
 //Basic functions
 TTF_Font* loadFont(const char* fontName, int size);
 void loadText(const char* text, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture);
-void renderCenterText(SDL_Surface** sFont, GLuint* texture, int x , int y);
-void renderLeftText(SDL_Surface** sFont, GLuint* texture, int x , int y);
-void renderRightText(SDL_Surface** sFont, GLuint* texture, int x , int y);
+void renderCenterText(Text* text, int x , int y);
+void renderLeftText(Text* text, int x , int y);
+void renderRightText(Text* text, int x , int y);
 
-void loadIntegerText(int integer, TTF_Font** font, SDL_Color color, SDL_Surface** sFont, GLuint* texture);
+void loadIntegerText(int integer, TextStyle* textCSS, Text* text);
 
 #endif

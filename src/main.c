@@ -4,6 +4,7 @@
 
 #include "../include/args.h"
 #include "../include/game.h"
+#include "../include/menu.h"
 
 int main(int argc, char const *argv[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    playGame(itdPath);
+    playMenu(itdPath);
+    //playGame(itdPath);
 	return EXIT_SUCCESS;
 }

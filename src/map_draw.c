@@ -174,7 +174,7 @@ void debug_endArea() {
 
 ///// DRAW MAP
 
-GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLuint sprite_text[]) {
+GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], Sprite sprites[]) {
     ///// VARIABLES
     GLuint id = glGenLists(1);
     Image I = *imgPPM;
@@ -228,11 +228,11 @@ GLuint createMapIDList(Image* imgPPM, ItdColorInstruction itdInstructions[], GLu
             for (int j = 0; j < I.w; j++) {
                 glPushMatrix();
                     glTranslatef(GL_SPRITE_SIZE*j + offset, GL_SPRITE_SIZE*i + offset, 0.);
-                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(&sprite_text[0]); //Construct
-                        else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) drawSprite(&sprite_text[1]); //Path
-                        else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) drawSprite(&sprite_text[1]); //Node
-                        else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) drawSprite(&sprite_text[1]); //In
-                        else if (I.pixel[j+i*I.w].r == out.r && I.pixel[j+i*I.w].g == out.g && I.pixel[j+i*I.w].b == out.b) drawSprite(&sprite_text[1]); //Out
+                        if (I.pixel[j+i*I.w].r == construct.r && I.pixel[j+i*I.w].g == construct.g && I.pixel[j+i*I.w].b == construct.b) drawSprite(&(sprites[0].texture)); //Construct
+                        else if (I.pixel[j+i*I.w].r == path.r && I.pixel[j+i*I.w].g == path.g && I.pixel[j+i*I.w].b == path.b) drawSprite(&(sprites[1].texture)); //Path
+                        else if (I.pixel[j+i*I.w].r == node.r && I.pixel[j+i*I.w].g == node.g && I.pixel[j+i*I.w].b == node.b) drawSprite(&(sprites[1].texture)); //Node
+                        else if (I.pixel[j+i*I.w].r == in.r && I.pixel[j+i*I.w].g == in.g && I.pixel[j+i*I.w].b == in.b) drawSprite(&(sprites[1].texture)); //In
+                        else if (I.pixel[j+i*I.w].r == out.r && I.pixel[j+i*I.w].g == out.g && I.pixel[j+i*I.w].b == out.b) drawSprite(&(sprites[1].texture)); //Out
                         else nonConstructibleArea();
                 glPopMatrix();
             }
@@ -252,23 +252,23 @@ void nonConstructibleArea() {
 
 ///// CHECK MAP EVOLUTION
 
-void availableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
+void availableArea(int mouse_x, int mouse_y, Sprite sprites[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 
     glPushMatrix();
         glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-        drawSprite(&sprite_text[2]);
+        drawSprite(&(sprites[2].texture));
     glPopMatrix();
 }
 
-void nonAvailableArea(int mouse_x, int mouse_y, GLuint sprite_text[]) {
+void nonAvailableArea(int mouse_x, int mouse_y, Sprite sprites[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 
     glPushMatrix();
         glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-        drawSprite(&sprite_text[3]);
+        drawSprite(&(sprites[3].texture));
     glPopMatrix();
 }
 
@@ -337,7 +337,7 @@ int isItAvailableArea(int x, int y, Image* ppm, ItdColorInstruction itdInstructi
     }
 }
 
-int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], GLuint sprite_text[], TowerList* tl, BuildingList* bl) {
+int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstructions[], Sprite sprites[], TowerList* tl, BuildingList* bl) {
     int value = isItAvailableArea(x, y, ppm, itdInstructions, tl, bl);
 
     if(value != 1 && value != 0) {
@@ -346,17 +346,17 @@ int constructionGuides(int x, int y, Image* ppm, ItdColorInstruction itdInstruct
     }
 
     if(value == 1) {
-        availableArea(x, y, sprite_text);
+        availableArea(x, y, sprites);
         return 1;
     }
     else if(value == 0) {
-        nonAvailableArea(x, y, sprite_text);
+        nonAvailableArea(x, y, sprites);
     }
 
     return 0;
 }
 
-void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_text[]) {
+void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 
@@ -365,7 +365,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
         case LASER:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[4]);
+                drawSprite(&(sprites[4].texture));
             glPopMatrix();
 
             break;
@@ -373,7 +373,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
         case ROCKET:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[5]);
+                drawSprite(&(sprites[5].texture));
             glPopMatrix();
 
             break;
@@ -381,7 +381,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
         case ELECTRIC:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[6]);
+                drawSprite(&(sprites[6].texture));
             glPopMatrix();
 
             break;
@@ -389,7 +389,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
         case WATER:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[7]);
+                drawSprite(&(sprites[7].texture));
             glPopMatrix();
 
             break;
@@ -397,7 +397,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, GLuint sprite_tex
 }
 
 
-void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint sprite_text[]) {
+void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, Sprite sprites[]) {
     int center_x = windowCoordToBlocCenter(mouse_x);
     int center_y = windowCoordToBlocCenter(mouse_y);
 
@@ -406,7 +406,7 @@ void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint spri
         case RADAR:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[11]);
+                drawSprite(&(sprites[11].texture));
             glPopMatrix();
 
             break;
@@ -414,7 +414,7 @@ void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint spri
         case FACTORY:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[12]);
+                drawSprite(&(sprites[12].texture));
             glPopMatrix();
 
             break;
@@ -422,7 +422,7 @@ void drawBuildingGuides(int mouse_x, int mouse_y, BuildingType type, GLuint spri
         case AMMO:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
-                drawSprite(&sprite_text[13]);
+                drawSprite(&(sprites[13].texture));
             glPopMatrix();
 
             break;

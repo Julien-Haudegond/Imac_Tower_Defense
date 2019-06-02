@@ -31,8 +31,6 @@
 
 #include "../include/args.h"
 
-#include "../include/sdl_array.h"
-
 
 /***************
 *   define : 
@@ -45,7 +43,7 @@
 #ifdef READTHIS1
 
 
-int playGame(const char* itdPath) 
+int playGame(SDL_Surface* surface, const char* itdPath)
 {
     int global_money = 10000;
 
@@ -102,22 +100,6 @@ int playGame(const char* itdPath)
     setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
 
     printWave(wave);
-    
-    /* Initializing SDL */
-    if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
-    {
-        fprintf(
-            stderr, 
-            "Impossible d'initialiser la SDL. Fin du programme.\n");
-        return EXIT_FAILURE;
-    }
-
-    /*Initializing TTF */
-    if(TTF_Init() == -1)
-    {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
 
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
@@ -141,42 +123,29 @@ int playGame(const char* itdPath)
 
         //Play the music
         FMOD_System_PlaySound(system, music, NULL, 0, NULL);
-   
-    /* Open a window and create the OpenGL context */
-    SDL_Surface* surface;
-    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    /* Title of the window */
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
     /* SPRITES: Loading surfaces and initializing textures */
-    SDL_Surface* sprite_img[MAX_SPRITES];
-    GLuint sprite_texture[MAX_SPRITES];
+    Sprite sprites[MAX_SPRITES];
 
-    initSurfacesArrayToNull(sprite_img, MAX_SPRITES);
-    fillSprites(sprite_img, sprite_texture); // GO TO SPRITE.C TO MODIFY
+    initSpritesToNull(sprites);
+    fillSprites(sprites); // GO TO SPRITE.C TO MODIFY
 
     /* TEXTS */
-        //Loading FONTS
-        TTF_Font* fonts[MAX_FONTS];
-        initFontsArrayToNull(fonts, MAX_FONTS);
-        initFontsArray(fonts); // GO TO TEXT.C TO MODIFY
+        //Text styles
+        TextStyle textCSS[MAX_CSS];
 
-        //COLORS
-        SDL_Color colors[MAX_COLORS];
-        initColorsArray(colors); // GO TO TEXT.C TO MODIFY
+        initTextCSSToNull(textCSS);
+        initTextCSS(textCSS); // GO TO TEXT.C TO MODIFY
 
-        //Loading SURFACES
-        SDL_Surface* text_area[MAX_TEXTS];
-        initSurfacesArrayToNull(text_area, MAX_TEXTS);
+        //Loading TEXTS
+        Text generalTexts[MAX_TEXTS]; //General Texts
+        Text propTowerTexts[MAX_TEXTS]; //Properties Tower Texts
 
-        //Initializing TEXTURES
-        GLuint text_texture[MAX_TEXTS];
-        GLuint help_window_texture[MAX_TEXTS];
-        GLuint properties_window_texture[MAX_TEXTS];
+        initTextsToNull(generalTexts);
+        initTextsToNull(propTowerTexts);
 
-        //WRITING texts
-        fillTextsArrays(fonts, colors, text_area, text_texture); // GO TO TEXT.C TO MODIFY
+        //WRITING General texts
+        fillTextsArrays(textCSS, generalTexts); // GO TO TEXT.C TO MODIFY
   
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
@@ -199,9 +168,8 @@ int playGame(const char* itdPath)
     */
 
     /* Global variables for GL Lists */
-    GLuint map = createMapIDList(&imgPPM, itdInstructions, sprite_texture);
-    GLuint help_window = createHelpList(help_window_texture, sprite_texture);
-    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, properties_window_texture);
+    GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
+    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
     
 
     /* MAIN LOOP */
@@ -222,20 +190,20 @@ int playGame(const char* itdPath)
             
             //Hold a specific key to build towers or buildings
             if(constructStatus != -1) {
-                availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprite_texture, towerList, buildingList);
-                if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprite_texture);
-                else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprite_texture);
+                availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprites, towerList, buildingList);
+                if(towerConstructType != -1 && availableStatus == 1) drawTowerGuides(mouse_x, mouse_y, towerConstructType, sprites);
+                else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprites);
             }
 
             //TOWERS
             if(towerList->tower) {
                 TowerList* tmp = towerList;
-                drawTowerSprite(tmp->tower, sprite_texture);
+                drawTowerSprite(tmp->tower, sprites);
 
                 while(tmp->nextTower) {
                     tmp = tmp->nextTower;
                     if(tmp->tower) {
-                        drawTowerSprite(tmp->tower, sprite_texture);
+                        drawTowerSprite(tmp->tower, sprites);
                     }
                 }
             }
@@ -243,12 +211,12 @@ int playGame(const char* itdPath)
             //BUILDINGS
             if(buildingList->build) {
                 BuildingList* tmp = buildingList;
-                drawBuildingSprite(tmp->build, sprite_texture);
+                drawBuildingSprite(tmp->build, sprites);
 
                 while(tmp->nextBuild) {
                     tmp = tmp->nextBuild;
                     if(tmp->build) {
-                        drawBuildingSprite(tmp->build, sprite_texture);
+                        drawBuildingSprite(tmp->build, sprites);
                     }
                 }
             }
@@ -265,7 +233,7 @@ int playGame(const char* itdPath)
             
             if(wave->monster){    
                 //update on sprites and current node
-                drawMonsterSprite(wave->monster, sprite_texture, monsterRotation);
+                drawMonsterSprite(wave->monster, sprites, monsterRotation);
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
 
                 //clips monster position if it has trespassed the current destination node
@@ -295,29 +263,29 @@ int playGame(const char* itdPath)
 
             //Hold 'delete key'
             if(deleteStatus != -1) {
-                drawSpriteHere(&sprite_texture[10], mouse_x, mouse_y);
+                drawSpriteHere(&(sprites[10].texture), mouse_x, mouse_y);
             }
 
             //Draw the tower properties
             if(towerPropStatus != -1) {
-                properties_window = createPropertiesWindowList(towerList, button_x, button_y, properties_window_texture);
+                properties_window = createPropertiesWindowList(towerList, button_x, button_y, textCSS, propTowerTexts);
                 glCallList(properties_window);
             }
 
             //MONEY
-            loadIntegerText(global_money, &fonts[0], colors[0], &text_area[1], &text_texture[1]); //Reload each time the money text
-            renderRightText(&text_area[1], &text_texture[1], 1170, 30); //Money text
+            loadIntegerText(global_money, &textCSS[0], &generalTexts[1]); //Reload each time the money text
+            renderRightText(&generalTexts[1], 1170, 30); //Money text
             glPushMatrix();
                 glTranslatef(1190, 30, 0);
                 glScalef(0.7, 0.7, 1.);
-                drawSprite(&sprite_texture[14]);
+                drawSprite(&(sprites[14].texture));
             glPopMatrix();
 
             //HELP
-            renderCenterText(&text_area[0], &text_texture[0], 610, 700); //Press 'h' to get some help
+            renderCenterText(&generalTexts[0], 610, 700); //Press 'h' to get some help
             //Hold 'h' to make the menu appear
             if(help == 1) {
-                glCallList(help_window);
+                drawFullScreenImg(&(sprites[15].texture));
             }
 
         /* Update window */
@@ -507,18 +475,15 @@ int playGame(const char* itdPath)
     free(wave->monster);
     free(wave);
 
-    /* Close fonts */
-    closeAllFonts(fonts, MAX_FONTS);
-
     /* Free sprites */
-    freeSurfacesArray(sprite_img, MAX_SPRITES);
-    freeTexturesArray(sprite_texture, MAX_SPRITES);
+    freeSprites(sprites);
+
+    /* Close fonts */
+    freeTextCSS(textCSS);
 
     /* Free texts */
-    freeSurfacesArray(text_area, MAX_TEXTS);
-    freeTexturesArray(text_texture, MAX_TEXTS);
-    freeTexturesArray(help_window_texture, MAX_TEXTS);
-    freeTexturesArray(properties_window_texture, MAX_TEXTS);
+    freeTexts(generalTexts);
+    freeTexts(propTowerTexts);
 
     /* Free links of all nodes and the PPM */
     for(int i = 0; i < nbOfNodes; i++) {
@@ -530,12 +495,6 @@ int playGame(const char* itdPath)
     FMOD_Sound_Release(music);
     FMOD_System_Close(system);
     FMOD_System_Release(system);
-
-    /* Free TTF */
-    TTF_Quit();
-
-    /* Free SDL */ 
-    SDL_Quit();
     
     return EXIT_SUCCESS;
 }
