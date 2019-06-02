@@ -273,8 +273,14 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     if((ptrWave->monster->win_x != nodesearch-> win_x || ptrWave->monster->win_y != nodesearch->win_y)){
                         updateCoords(ptrWave->monster,nodesArray,nbOfNodes);
                     }
+
+                    if(ptrWave->monster->health > 0){
+                        ptrWave->monster->health -= 0.1;
+                    }
+
                     drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
-                    
+                    drawHealthBar(ptrWave->monster, sprites);
+                   
                 }
                 
 

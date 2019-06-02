@@ -15,5 +15,6 @@ void drawTowerSprite(Tower* tower, Sprite sprites[]);
 void drawMonsterSprite(Monster* m, Sprite sprites[], int rotation);
 void drawBuildingSprite(Building* build, Sprite sprites[]);
 void rotateMonsterSprite(Monster *m, int angle, Sprite sprites[]);
+void drawHealthBar(Monster* m, Sprite sprites[]);
 
 #endif

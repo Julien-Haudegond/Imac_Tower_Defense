@@ -183,6 +183,18 @@ void drawMonsterSprite(Monster* m, Sprite sprites[], int angle) {
     glPopMatrix();
 }
     
+void drawHealthBar(Monster* m, Sprite sprites[]){
+    
+    float x = (float) m->win_x;
+    float y = (float) m->win_y;
+    float health = m->health/m->healthMax;
+
+    glPushMatrix();
+        glTranslatef(x + 0.5, y - 15.5, 0.);
+        glScalef(health,1.0,1.0);
+        drawSprite(&(sprites[16].texture));
+    glPopMatrix();
+}
 
 void rotateMonsterSprite(Monster *m, int angle, Sprite sprites[]){
     glPushMatrix();
