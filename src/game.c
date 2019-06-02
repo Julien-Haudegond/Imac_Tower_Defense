@@ -94,7 +94,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     Wave* wave = createEmptyWave();
     Node* nodesearch = malloc(sizeof(Node));
 
-    Monster* ptrMonster = malloc(sizeof(Monster));
+    //Monster* ptrMonster = malloc(sizeof(Monster));
     Wave* ptrWave = malloc(sizeof(Wave));
    
     
@@ -240,9 +240,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
 
             }
-            
-            ptrWave = wave;
-            while(ptrWave){    
+            if(wave !=NULL)
+                ptrWave = wave;
+            while(ptrWave && wave->monster!=NULL){    
                 
                 //Getting current node stats
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
@@ -276,17 +276,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
                     if(ptrWave->monster->health > 0){
                         ptrWave->monster->health -= 0.1;
-                    }
-
-                    drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
-                    drawHealthBar(ptrWave->monster, sprites);
-                   
+                        drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
+                        drawHealthBar(ptrWave->monster, sprites);
+                    }else{
+                        global_money += ptrWave->monster->reward;
+                        wave = deleteMonster(wave);
+                        printWave(wave);
+                    }  
                 }
-                
-
-                /*ptrWave->monster->win_y++;
-                drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);*/
                 ptrWave = ptrWave->nextMonster;
+            }
+
+            if(wave->monster == NULL && monsterCounter >= WAVESIZE){
+                //Passer a la wave suivante ou gagner le jeu si y'a pas de wave suivante
+                printf("GG WP!! \n");
             }
 
             //Hold 'delete key'
