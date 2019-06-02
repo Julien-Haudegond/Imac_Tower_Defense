@@ -7,17 +7,17 @@ A 2D Tower Defense game : C, SDL 1.2, OpenGL (old version).
 ## Table of contents
 
 [**How to**](#how-to)
-	* [**Install libraries**](#libraries)
-	* [**Run the program**](#run-program)
-	* [**Inside the program**](#inside-program)
-		* [**Start game**](#start-game)
-		* [**Help window**](#help-win)
+	* [**Install libraries**](#install-libraries)
+	* [**Run the program**](#run-the-program)
+	* [**Inside the program**](#inside-the-program)
+		- [**Start game**](#start-game)
+		- [**Help window**](#help-window)
 
-[**More informations**](#more-info)
+[**More informations**](#more-informations)
 	* [**Structure**](#structure)
 	* [**Artworks**](#artworks)
 	* [**Audio**](#audio)
-	* [**Game developpers**](#developpers)
+	* [**Game developpers**](#game-developpers)
 
 ## How to
 
@@ -34,7 +34,7 @@ If you can't access to the root rights, no matter, they are precompiled in the r
 Moreover, you will need to have **FMOD** library, which is also precompiled in the repository.
 
 
-### Run the program (on Linux)
+### Run the program
 
 You will need to have a gcc compiler (from build-esssential, for instance).
 
