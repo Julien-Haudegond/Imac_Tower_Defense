@@ -21,6 +21,7 @@ typedef struct Monster{
 	int prevNode;
 	//current destination node
 	int currentNode;
+	int currentIndex;
 	//nb of nodes in the path
 	int nbPath;
 	int x,y;

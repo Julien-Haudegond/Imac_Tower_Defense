@@ -94,11 +94,12 @@ Wave* deleteMonster(Wave* head){
 	return head;
 }
 
-void getLastMonster(Wave* wave, Monster* m){
+Wave* getLastMonster(Wave* wave){
 	while (wave->nextMonster != NULL){
 		wave = wave->nextMonster;
 	}
-	m = wave->monster;
+	Wave* current = wave;
+	return current;
 }
 
 void printWave(Wave* wave){

@@ -11,6 +11,6 @@ void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath)
 Wave* deleteMonster(Wave* wave);
 void printWave(Wave* wave);
 Wave* createEmptyWave();
-void getLastMonster(Wave* wave, Monster* m);
+Wave* getLastMonster(Wave* wave);
 
 #endif

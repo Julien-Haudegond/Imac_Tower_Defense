@@ -92,26 +92,30 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     //Test on monsters - waves
     Wave* wave = createEmptyWave();
+    Node* nodesearch = malloc(sizeof(Node));
+
+    /*
     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
     wave->monster->currentNode = wave->monster->path[0];
-    Node* nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  wave->monster->currentNode);
-    setPosition(wave->monster, nodesearch->win_x, nodesearch->win_y);
     
-    //Monster* ptrMonster;
     
+    */
+    Monster* ptrMonster = malloc(sizeof(Monster));
+    Wave* ptrWave = malloc(sizeof(Wave));
     /*
     for(int i = 0; i < 10; i++){
-        printf("ok!\n");
-        addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-        getLastMonster(wave, ptrMonster);
-        wave->monster->currentNode = wave->monster->path[0];
-        
-    }*/
-    
-   
+        addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
+        ptrWave = getLastMonster(wave);
+        printf("First node : %d",ptrWave->monster->path[0]);
+        ptrWave->monster->currentNode = ptrWave->monster->path[0];
+        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
+        setPosition( ptrWave->monster, nodesearch->win_x, nodesearch->win_y);
+    }
+    ptrWave = wave;
+   */
     //initializing monster position
     
-    printWave(wave);
+   
 
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
@@ -173,16 +177,19 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     int monsterRotation = 0;
     
     //variables for waves
-    /*
+    
     int monsterCounter = 0;
+
     Uint32 currentTimeMonster = 0, previousTimeMonster = 0;
-    */
-    Wave* ptrWave = malloc(sizeof(Wave));
+    
+   
 
     /* Global variables for GL Lists */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
     GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
     
+     
+            //int mstrCounter = 0;
 
     /* MAIN LOOP */
     int loop = 1;
@@ -233,46 +240,61 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
             }
             
-            /*
-            if(monsterCounter < 2){
+            
+            if(monsterCounter < WAVESIZE){
                 currentTimeMonster = SDL_GetTicks();
-                if(currentTimeMonster - previousTimeMonster >= 500){
-                     addMonster(wave, GIANT, 0, nodesPath, nbShortest);
-                     wave->monster->currentNode = wave->monster->path[0];
+                if(currentTimeMonster - previousTimeMonster >= 1000){
+                    addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
+                    ptrWave = getLastMonster(wave);
+                    ptrWave->monster->currentNode = ptrWave->monster->path[0];
+                    nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
+                    setPosition(ptrWave->monster, nodesearch->win_x, nodesearch->win_y);
+                    
                      previousTimeMonster = currentTimeMonster;
                      monsterCounter++;
                 }
-            }*/
-            ptrWave = wave;
-            
-            while(ptrWave){    
-                //update on sprites and current node
-                drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
-                nodesearch = getNodeFromValue(nodesArray, nbOfNodes,  ptrWave->monster->currentNode);
 
+            }
+            
+            ptrWave = wave;
+            while(ptrWave){    
+                
+                //Getting current node stats
+                nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
+          
                 //clips monster position if it has trespassed the current destination node
                 if(nodesearch->value != 0){
                     getMonsterDirection = getDirection(ptrWave->monster, nodesArray, nbOfNodes);
                     monsterRotation = getMonsterRotation(getMonsterDirection);
-                    getMonsterDirection = getDirection(ptrWave->monster, nodesArray, nbOfNodes);
+
+                    //getMonsterDirection = getDirection(ptrWave->monster, nodesArray, nbOfNodes);
                     clipMonsterPosition(ptrWave->monster, getMonsterDirection, nodesearch);
                 }
 
                 if(nodesearch->type == 2 && nodesearch->win_x == ptrWave->monster->win_x && nodesearch->win_y == ptrWave->monster->win_y){
                     //free monster, and give money to the player
                 }else{
+                    pathIndex = ptrWave->monster->currentIndex;
                     //updates current node if it's been reached
                     if(ptrWave->monster->path[pathIndex+1] && (ptrWave->monster->win_x == nodesearch-> win_x && ptrWave->monster->win_y == nodesearch->win_y)){
                         ptrWave->monster->prevNode = ptrWave->monster->currentNode;
-                        pathIndex++;
-                        ptrWave->monster->currentNode = ptrWave->monster->path[pathIndex];
-                        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);                        
+                        ptrWave->monster->currentIndex++;
+                        ptrWave->monster->currentNode = ptrWave->monster->path[pathIndex+1];
+                        //updating nodesearch if needed
+                        nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
+
                     }
                     //updates monster coords if the node has not been reached
                     if((ptrWave->monster->win_x != nodesearch-> win_x || ptrWave->monster->win_y != nodesearch->win_y)){
                         updateCoords(ptrWave->monster,nodesArray,nbOfNodes);
                     }
+                    drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
+                    
                 }
+                
+
+                /*ptrWave->monster->win_y++;
+                drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);*/
                 ptrWave = ptrWave->nextMonster;
             }
 

@@ -33,6 +33,7 @@ void setMonsterStats(Monster* m, int type, float health, float healthMax, int re
 	m->nbPath = nbPath;
 	m->prevNode= -1;
 	m->currentNode = 0;
+	m->currentIndex = 0;
 
 	for(int i = 0; i < nbPath; i++) {
 		m->path[i] = path[i];
