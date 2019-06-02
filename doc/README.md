@@ -1,6 +1,6 @@
 # Imac_Tower_Defense
 
-*IMAC semester 2:* Coding project (educationnal).
+*IMAC semester 2:* Coding project (educational).
 
 A 2D Tower Defense game : C, SDL 1.2, OpenGL (old version).
 
