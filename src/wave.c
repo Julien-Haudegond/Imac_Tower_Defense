@@ -96,7 +96,6 @@ Wave* deleteMonster(Wave* head){
 
 void getLastMonster(Wave* wave, Monster* m){
 	while (wave->nextMonster != NULL){
-		printf("Hey");
 		wave = wave->nextMonster;
 	}
 	m = wave->monster;
