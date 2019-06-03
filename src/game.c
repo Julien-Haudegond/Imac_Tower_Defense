@@ -30,6 +30,7 @@
 #include "../include/graphic.h"
 
 #include "../include/args.h"
+#include "../include/explosion.h"
 
 
 /***************
@@ -95,9 +96,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     Node* nodesearch = malloc(sizeof(Node));
 
     //Monster* ptrMonster = malloc(sizeof(Monster));
-    Wave* ptrWave = malloc(sizeof(Wave));
-   
-    
+    Wave* ptrWave = malloc(sizeof(Wave));   
+    ExplosionList* explosionList = createEmptyExplosionList();
    
 
     /* Initializing FMOD */
@@ -198,6 +198,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 else if(buildingConstructType != -1 && availableStatus == 1) drawBuildingGuides(mouse_x, mouse_y, buildingConstructType, sprites);
             }
 
+            //EXPLOSIONS
+            if(explosionList->explosion) {
+                ExplosionList* tmp = explosionList;
+                explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
+
+                while(tmp->nextExplosion) {
+                    tmp = tmp->nextExplosion;
+                    if(tmp->explosion) {
+                        explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
+                    }
+                }
+            }
+            explosionList = deleteExplosion(explosionList); //Update the explosions
+
             //TOWERS
             if(towerList->tower) {
                 TowerList* tmp = towerList;
@@ -281,6 +295,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                         drawHealthBar(ptrWave->monster, sprites);
                     }else{
                         global_money += ptrWave->monster->reward;
+                        addExplosion(explosionList, ptrWave->monster->win_x, ptrWave->monster->win_y); //Create an explosion at the position of the death
                         wave = deleteMonster(wave);
                         printWave(wave);
                     }  
@@ -524,6 +539,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     printTowerList(towerList);
     printBuildingList(buildingList);
+    printExplosionList(explosionList);
 
     /* Free Tower List and Free buildings */
     freeTowerList(towerList);
@@ -536,6 +552,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(wave->monster->path);
     free(wave->monster);
     free(wave);
+
+    freeExplosionList(explosionList);
 
     /* Free sprites */
     freeSprites(sprites);
