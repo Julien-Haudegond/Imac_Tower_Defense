@@ -227,7 +227,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
             if(wave !=NULL)
                 ptrWave = wave;
-            while(ptrWave && wave->monster!=NULL){    
+            while(ptrWave && wave->monster!=NULL && ptrWave->monster !=NULL){    
                 
                 //Getting current node stats
                 nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
@@ -267,7 +267,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                         global_money += ptrWave->monster->reward;
                         addExplosion(explosionList, ptrWave->monster->win_x, ptrWave->monster->win_y); //Create an explosion at the position of the death
                         wave = deleteMonster(wave);
-                        printWave(wave);
                     }  
                 }
                 ptrWave = ptrWave->nextMonster;
@@ -507,6 +506,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         }
     }
 
+    printWave(wave);
     printTowerList(towerList);
     printBuildingList(buildingList);
     printExplosionList(explosionList);
@@ -519,8 +519,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(nodesPath);
 
     /* Free wave */
-    free(wave->monster->path);
-    free(wave->monster);
+    //free(wave->monster->path);
+    //free(wave->monster);
     free(wave);
 
     freeExplosionList(explosionList);
