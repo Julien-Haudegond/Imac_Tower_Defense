@@ -3,6 +3,10 @@
 
 #define MAX_SPRITES 20
 
+#include <SDL/SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 typedef struct Sprite {
 	SDL_Surface* area;
 	GLuint texture;

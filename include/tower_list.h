@@ -29,4 +29,5 @@ void getTowerInfosFromPosition(Tower** t, TowerList* tl, int x, int y);
 int getSquareDistanceTowerBuilding(Tower* t, Building* b);
 void updateTowersBuildings(TowerList* tl, BuildingList* bl);
 
+
 #endif

@@ -224,3 +224,47 @@ void drawBuildingSprite(Building* build, Sprite sprites[]) {
         }
     glPopMatrix();    
 }
+
+
+
+void globalDrawTowers(TowerList* tl, Sprite sprites[]) {
+    if(tl->tower) {
+        TowerList* tmp = tl;
+        drawTowerSprite(tmp->tower, sprites);
+
+        while(tmp->nextTower) {
+            tmp = tmp->nextTower;
+            if(tmp->tower) {
+                drawTowerSprite(tmp->tower, sprites);
+            }
+        }
+    }
+}
+
+void globalDrawBuildings(BuildingList* bl, Sprite sprites[]) {
+    if(bl->build) {
+        BuildingList* tmp = bl;
+        drawBuildingSprite(tmp->build, sprites);
+
+        while(tmp->nextBuild) {
+            tmp = tmp->nextBuild;
+            if(tmp->build) {
+                drawBuildingSprite(tmp->build, sprites);
+            }
+        }
+    }
+}
+
+void globalDrawExplosions(ExplosionList* el, Sprite sprites[]) {
+    if(el->explosion) {
+        ExplosionList* tmp = el;
+        explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
+
+        while(tmp->nextExplosion) {
+            tmp = tmp->nextExplosion;
+            if(tmp->explosion) {
+                explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
+            }
+        }
+    }    
+}

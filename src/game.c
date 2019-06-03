@@ -185,11 +185,11 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         /* DRAWING CODE */
 
             glClear(GL_COLOR_BUFFER_BIT);
-
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
-            glCallList(map); //Draw the map
+            //MAP
+            glCallList(map);
             
             //Hold a specific key to build towers or buildings
             if(constructStatus != -1) {
@@ -199,44 +199,14 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
 
             //EXPLOSIONS
-            if(explosionList->explosion) {
-                ExplosionList* tmp = explosionList;
-                explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
-
-                while(tmp->nextExplosion) {
-                    tmp = tmp->nextExplosion;
-                    if(tmp->explosion) {
-                        explodeSpriteSheet(&(sprites[17].texture), tmp->explosion);
-                    }
-                }
-            }
-            explosionList = deleteExplosion(explosionList); //Update the explosions
+            globalDrawExplosions(explosionList, sprites);
+            explosionList = deleteExplosion(explosionList); //Update the explosions each frame
 
             //TOWERS
-            if(towerList->tower) {
-                TowerList* tmp = towerList;
-                drawTowerSprite(tmp->tower, sprites);
-
-                while(tmp->nextTower) {
-                    tmp = tmp->nextTower;
-                    if(tmp->tower) {
-                        drawTowerSprite(tmp->tower, sprites);
-                    }
-                }
-            }
+            globalDrawTowers(towerList, sprites);
 
             //BUILDINGS
-            if(buildingList->build) {
-                BuildingList* tmp = buildingList;
-                drawBuildingSprite(tmp->build, sprites);
-
-                while(tmp->nextBuild) {
-                    tmp = tmp->nextBuild;
-                    if(tmp->build) {
-                        drawBuildingSprite(tmp->build, sprites);
-                    }
-                }
-            }
+            globalDrawBuildings(buildingList, sprites);
             
             //MONSTERS
 
