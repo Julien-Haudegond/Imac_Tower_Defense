@@ -4,7 +4,7 @@
 #define MAX_TEXTS 50 //Max number of texts
 #define MAX_CSS 5 //Max number of text styles
 
-#define FONT_1 "Hack-Bold"
+#define FONT_1 "Starjedi"
 
 #include <SDL/SDL_ttf.h>
 
