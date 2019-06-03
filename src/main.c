@@ -5,6 +5,7 @@
 #include "../include/args.h"
 #include "../include/game.h"
 #include "../include/menu.h"
+#include "../include/intro.h"
 
 int main(int argc, char const *argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    playMenu();
+    playIntro();
 
 	return EXIT_SUCCESS;
 }

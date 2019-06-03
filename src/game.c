@@ -146,6 +146,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         //WRITING General texts
         fillTextsArrays(textCSS, generalTexts); // GO TO TEXT.C TO MODIFY
   
+
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
     int help = -1; //To print the 'help' popup
@@ -444,7 +445,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                                     nbShortest = countNodesShortestPath(nodesArray);
                                     nodesPath = malloc(nbShortest*sizeof(int));
                                     fillShortestPath(nodesPath, nbShortest, nodesArray);
-
                                 }
                             }
                             //else if it is a 'building key'
@@ -453,7 +453,17 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                                 if(price != 0) {
                                     addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
                                     updateTowersBuildings(towerList, buildingList);
-                                    global_money -= price;                              
+                                    global_money -= price;
+
+                                    //update Dijkstra links
+                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                                    for(int i = 0; i < nbOfNodes; i++) {
+                                        initializeDijkstra(&nodesArray[i]);
+                                    }
+                                    shortestPath(nodesArray, nbOfNodes);
+                                    nbShortest = countNodesShortestPath(nodesArray);
+                                    nodesPath = malloc(nbShortest*sizeof(int));
+                                    fillShortestPath(nodesPath, nbShortest, nodesArray);                              
                                 }
                             }
                         }
@@ -463,6 +473,16 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                             towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
                             buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
                             updateTowersBuildings(towerList, buildingList);
+
+                            //update Dijkstra links
+                            updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                            for(int i = 0; i < nbOfNodes; i++) {
+                                initializeDijkstra(&nodesArray[i]);
+                            }
+                            shortestPath(nodesArray, nbOfNodes);
+                            nbShortest = countNodesShortestPath(nodesArray);
+                            nodesPath = malloc(nbShortest*sizeof(int));
+                            fillShortestPath(nodesPath, nbShortest, nodesArray);
                         }
                     }
 

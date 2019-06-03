@@ -16,32 +16,14 @@
 #include "../include/graphic.h"
 
 
-
-
-int playMenu() {
-
-    /* Initializing SDL */
-    if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
-    {
-        fprintf(
-            stderr, 
-            "Impossible d'initialiser la SDL. Fin du programme.\n");
-        return EXIT_FAILURE;
-    }
+int playMenu(SDL_Surface* surface) {
 
     /*Initializing TTF */
     if(TTF_Init() == -1)
     {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+        fprintf(stderr, "Error: during TTF_Init : %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
     }
-
-    /* Open a window and create the OpenGL context */
-    SDL_Surface* surface;
-    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    /* Title of the window */
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
 
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
@@ -86,7 +68,7 @@ int playMenu() {
     initSpriteTexture(&choice_img, &choice_texture);
 
     /* Global variables */
-    int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
+    int button_x = 0, button_y = 0;
     int help = -1; //Help window
     int choice = -1; //Choice window
     int map = -1; //Chosen map
@@ -237,21 +219,7 @@ int playMenu() {
                         }  
                     }
 
-
-                    //If mouse right button is down
-                    if(e.button.button == SDL_BUTTON_RIGHT) {
-
-                    }
-
                     break;
-
-
-                case SDL_MOUSEBUTTONUP:
-
-                    //If mouse right button is up
-                    if(e.button.button == SDL_BUTTON_RIGHT) {
-
-                    }   
                     
                 default:
                     break;
@@ -284,9 +252,6 @@ int playMenu() {
 
     /* Free TTF */
     TTF_Quit();
-
-    /* Free SDL */ 
-    SDL_Quit();
     
     return EXIT_SUCCESS;
 

@@ -14,6 +14,8 @@ MAIN_O = obj/main.o
 
 MENU_O = obj/menu.o
 
+INTRO_O = obj/intro.o
+
 GAME_O = obj/game.o
 IMAGE_O = obj/image.o
 ITD_O = obj/itd.o
@@ -37,7 +39,7 @@ GRAPHIC_O = obj/graphic.o
 ARGS_O = obj/args.o
 
 
-OBJ = $(MAIN_O) $(MENU_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(BUILDING_O) $(BUILDING_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O)
+OBJ = $(MAIN_O) $(INTRO_O) $(MENU_O) $(GAME_O) $(IMAGE_O) $(ITD_O) $(NODE_O) $(LINK_O) $(MONSTER_O) $(WAVE_O) $(TOWER_O) $(MAP_DRAW_O) $(WINDOW_O) $(TOWER_LIST_O) $(BUILDING_O) $(BUILDING_LIST_O) $(SPRITE_O) $(ARGS_O) $(TEXT_O) $(GRAPHIC_O)
 
 PROG = bin/program.out
 
@@ -55,6 +57,11 @@ all : $(OBJ)
 $(MAIN_O) : src/main.c include/menu.h include/game.h include/args.h
 	mkdir -p obj
 	@echo "compile program"
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "done!"
+
+$(INTRO_O) : src/intro.c include/intro.h include/const.h include/window.h
+	@echo "compile intro"
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "done!"
 
