@@ -178,6 +178,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     /* MAIN LOOP */
     int loop = 1;
 
+    //pause
+    int pause = 0; int keydown = 0;
 
     while(loop)
     {
@@ -192,7 +194,209 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //MAP
             glCallList(map);
-            
+
+
+             /* Event loop */
+        SDL_Event e;
+        while(SDL_PollEvent(&e)) {
+
+            if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
+                loop = 0;
+                break;
+            }
+
+            switch(e.type) 
+            {
+                /* Resize window */
+                case SDL_VIDEORESIZE:
+                    reshape(&surface, e.resize.w, e.resize.h);
+                    break;
+                
+                /* Keyboard DOWN */
+                case SDL_KEYDOWN:
+
+                    if(e.key.keysym.sym == SDLK_h) {
+                        help = 1;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_a) {
+                        constructStatus = 1;
+                        towerConstructType = LASER;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_z) {
+                        constructStatus = 1;
+                        towerConstructType = ROCKET;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_e) {
+                        constructStatus = 1;
+                        towerConstructType = ELECTRIC;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_r) {
+                        constructStatus = 1;
+                        towerConstructType = WATER;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_q) {
+                        constructStatus = 1;
+                        buildingConstructType = RADAR;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_s) {
+                        constructStatus = 1;
+                        buildingConstructType = FACTORY;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_d) {
+                        constructStatus = 1;
+                        buildingConstructType = AMMO;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_DELETE) {
+                        deleteStatus = 1;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_p){
+                        keydown = 1;
+                    }
+                    break;
+
+                /* Keyboard UP */
+                case SDL_KEYUP:
+
+                    if(e.key.keysym.sym == SDLK_h) {
+                        help = -1;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
+                        constructStatus = -1;
+                        towerConstructType = -1;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_s || e.key.keysym.sym == SDLK_d) {
+                        constructStatus = -1;
+                        buildingConstructType = -1;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_DELETE) {
+                        deleteStatus = -1;
+                    }
+
+                    if(e.key.keysym.sym==SDLK_p && keydown){
+                        pause=!pause; 
+                        keydown=0;
+                       
+                    }
+
+                    break;
+
+
+                case SDL_MOUSEMOTION:
+                    mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
+                    mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
+
+                    break;
+
+
+                case SDL_MOUSEBUTTONDOWN:
+
+                    button_x = e.button.x * WINDOW_WIDTH / surface->w;
+                    button_y = e.button.y * WINDOW_HEIGHT / surface->h;
+
+                    //If mouse left button is down
+                    if(e.button.button == SDL_BUTTON_LEFT) {
+
+                        //If the player is holding a 'construct key' and if the area is available
+                        if(constructStatus == 1 && availableStatus == 1) {
+                            //if it is a 'tower key'
+                            if(towerConstructType != -1) {
+                                int price = checkTowerMoney(towerConstructType, global_money);
+                                if(price != 0) {
+                                    addTower(towerList, towerConstructType, mouse_x, mouse_y);
+                                    updateTowersBuildings(towerList, buildingList);
+                                    global_money -= price;
+
+                                    //update Dijkstra links
+                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                                    for(int i = 0; i < nbOfNodes; i++) {
+                                        initializeDijkstra(&nodesArray[i]);
+                                    }
+                                    shortestPath(nodesArray, nbOfNodes);
+                                    nbShortest = countNodesShortestPath(nodesArray);
+                                    nodesPath = malloc(nbShortest*sizeof(int));
+                                    fillShortestPath(nodesPath, nbShortest, nodesArray);
+                                }
+                            }
+                            //else if it is a 'building key'
+                            else if(buildingConstructType != -1) {
+                                int price = checkBuildingMoney(buildingConstructType, global_money);
+                                if(price != 0) {
+                                    addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
+                                    updateTowersBuildings(towerList, buildingList);
+                                    global_money -= price;
+
+                                    //update Dijkstra links
+                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                                    for(int i = 0; i < nbOfNodes; i++) {
+                                        initializeDijkstra(&nodesArray[i]);
+                                    }
+                                    shortestPath(nodesArray, nbOfNodes);
+                                    nbShortest = countNodesShortestPath(nodesArray);
+                                    nodesPath = malloc(nbShortest*sizeof(int));
+                                    fillShortestPath(nodesPath, nbShortest, nodesArray);                              
+                                }
+                            }
+                        }
+
+                        //If the player is holding the 'delete key'
+                        if(deleteStatus == 1) {
+                            towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
+                            buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
+                            updateTowersBuildings(towerList, buildingList);
+
+                            //update Dijkstra links
+                            updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
+                            for(int i = 0; i < nbOfNodes; i++) {
+                                initializeDijkstra(&nodesArray[i]);
+                            }
+                            shortestPath(nodesArray, nbOfNodes);
+                            nbShortest = countNodesShortestPath(nodesArray);
+                            nodesPath = malloc(nbShortest*sizeof(int));
+                            fillShortestPath(nodesPath, nbShortest, nodesArray);
+                        }
+                    }
+
+                    //If mouse right button is down
+                    if(e.button.button == SDL_BUTTON_RIGHT) {
+
+                        //Change the tower properties status
+                        if(isThereTowerHere(towerList, button_x, button_y) == 1) {
+                            towerPropStatus = 1;
+                        }                  
+                    }
+
+                    break;
+
+
+                case SDL_MOUSEBUTTONUP:
+
+                    //If mouse right button is up
+                    if(e.button.button == SDL_BUTTON_RIGHT) {
+
+                        //Change the tower properties status
+                        if(towerPropStatus != -1) {
+                            towerPropStatus = -1;
+                        }
+                    }   
+                    
+                default:
+                    break;
+            }
+        }
+
+        if(!pause){            
             //Hold a specific key to build towers or buildings
             if(constructStatus != -1) {
                 availableStatus = constructionGuides(mouse_x, mouse_y, &imgPPM, itdInstructions, sprites, towerList, buildingList);
@@ -306,200 +510,11 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 drawFullScreenImg(&(sprites[15].texture));
             }
 
-        /* Update window */
-        SDL_GL_SwapBuffers();
-        
-        /* Event loop */
-        SDL_Event e;
-        while(SDL_PollEvent(&e)) {
+             /* Update window */
+            SDL_GL_SwapBuffers();
+        }else{
 
-            if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
-                loop = 0;
-                break;
-            }
-
-            switch(e.type) 
-            {
-                /* Resize window */
-                case SDL_VIDEORESIZE:
-                    reshape(&surface, e.resize.w, e.resize.h);
-                    break;
-                
-                /* Keyboard DOWN */
-                case SDL_KEYDOWN:
-
-                    if(e.key.keysym.sym == SDLK_h) {
-                        help = 1;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_a) {
-                        constructStatus = 1;
-                        towerConstructType = LASER;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_z) {
-                        constructStatus = 1;
-                        towerConstructType = ROCKET;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_e) {
-                        constructStatus = 1;
-                        towerConstructType = ELECTRIC;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_r) {
-                        constructStatus = 1;
-                        towerConstructType = WATER;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_q) {
-                        constructStatus = 1;
-                        buildingConstructType = RADAR;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_s) {
-                        constructStatus = 1;
-                        buildingConstructType = FACTORY;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_d) {
-                        constructStatus = 1;
-                        buildingConstructType = AMMO;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_DELETE) {
-                        deleteStatus = 1;
-                    }
-
-                    break;
-
-                /* Keyboard UP */
-                case SDL_KEYUP:
-
-                    if(e.key.keysym.sym == SDLK_h) {
-                        help = -1;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_e || e.key.keysym.sym == SDLK_r) {
-                        constructStatus = -1;
-                        towerConstructType = -1;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_s || e.key.keysym.sym == SDLK_d) {
-                        constructStatus = -1;
-                        buildingConstructType = -1;
-                    }
-
-                    if(e.key.keysym.sym == SDLK_DELETE) {
-                        deleteStatus = -1;
-                    }
-
-                    break;
-
-
-                case SDL_MOUSEMOTION:
-                    mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
-                    mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
-
-                    break;
-
-
-                case SDL_MOUSEBUTTONDOWN:
-
-                    button_x = e.button.x * WINDOW_WIDTH / surface->w;
-                    button_y = e.button.y * WINDOW_HEIGHT / surface->h;
-
-                    //If mouse left button is down
-                    if(e.button.button == SDL_BUTTON_LEFT) {
-
-                        //If the player is holding a 'construct key' and if the area is available
-                        if(constructStatus == 1 && availableStatus == 1) {
-                            //if it is a 'tower key'
-                            if(towerConstructType != -1) {
-                                int price = checkTowerMoney(towerConstructType, global_money);
-                                if(price != 0) {
-                                    addTower(towerList, towerConstructType, mouse_x, mouse_y);
-                                    updateTowersBuildings(towerList, buildingList);
-                                    global_money -= price;
-
-                                    //update Dijkstra links
-                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
-                                    for(int i = 0; i < nbOfNodes; i++) {
-                                        initializeDijkstra(&nodesArray[i]);
-                                    }
-                                    shortestPath(nodesArray, nbOfNodes);
-                                    nbShortest = countNodesShortestPath(nodesArray);
-                                    nodesPath = malloc(nbShortest*sizeof(int));
-                                    fillShortestPath(nodesPath, nbShortest, nodesArray);
-                                }
-                            }
-                            //else if it is a 'building key'
-                            else if(buildingConstructType != -1) {
-                                int price = checkBuildingMoney(buildingConstructType, global_money);
-                                if(price != 0) {
-                                    addBuilding(buildingList, buildingConstructType, mouse_x, mouse_y);
-                                    updateTowersBuildings(towerList, buildingList);
-                                    global_money -= price;
-
-                                    //update Dijkstra links
-                                    updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
-                                    for(int i = 0; i < nbOfNodes; i++) {
-                                        initializeDijkstra(&nodesArray[i]);
-                                    }
-                                    shortestPath(nodesArray, nbOfNodes);
-                                    nbShortest = countNodesShortestPath(nodesArray);
-                                    nodesPath = malloc(nbShortest*sizeof(int));
-                                    fillShortestPath(nodesPath, nbShortest, nodesArray);                              
-                                }
-                            }
-                        }
-
-                        //If the player is holding the 'delete key'
-                        if(deleteStatus == 1) {
-                            towerList = deleteTower(towerList, mouse_x, mouse_y, &global_money);
-                            buildingList = deleteBuilding(buildingList, mouse_x, mouse_y, &global_money);
-                            updateTowersBuildings(towerList, buildingList);
-
-                            //update Dijkstra links
-                            updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
-                            for(int i = 0; i < nbOfNodes; i++) {
-                                initializeDijkstra(&nodesArray[i]);
-                            }
-                            shortestPath(nodesArray, nbOfNodes);
-                            nbShortest = countNodesShortestPath(nodesArray);
-                            nodesPath = malloc(nbShortest*sizeof(int));
-                            fillShortestPath(nodesPath, nbShortest, nodesArray);
-                        }
-                    }
-
-                    //If mouse right button is down
-                    if(e.button.button == SDL_BUTTON_RIGHT) {
-
-                        //Change the tower properties status
-                        if(isThereTowerHere(towerList, button_x, button_y) == 1) {
-                            towerPropStatus = 1;
-                        }                  
-                    }
-
-                    break;
-
-
-                case SDL_MOUSEBUTTONUP:
-
-                    //If mouse right button is up
-                    if(e.button.button == SDL_BUTTON_RIGHT) {
-
-                        //Change the tower properties status
-                        if(towerPropStatus != -1) {
-                            towerPropStatus = -1;
-                        }
-                    }   
-                    
-                default:
-                    break;
-            }
         }
-
     
         /* Passed time */
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
