@@ -31,6 +31,8 @@ void initTextCSS(TextStyle textCSS[]) {
     //Style 4
     textCSS[4].font = loadFont(FONT_1, 46);
     textCSS[4].color = (SDL_Color) {255, 0, 0, 0};
+
+    textCSS[5].font = loadFont(FONT_1, 70);
 }
 
 
@@ -47,6 +49,9 @@ void fillTextsArrays(TextStyle textCSS[], Text texts[]) {
 
     //Text 3 : You failed !
     loadText("You failed !", &(textCSS[4].font), textCSS[4].color, &(texts[3].area), &(texts[3].texture));
+
+    //Text 4 
+    loadText("Game paused", &(textCSS[5].font), textCSS[3].color, &(texts[4].area), &(texts[4].texture));
 }
 
 

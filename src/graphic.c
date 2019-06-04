@@ -133,9 +133,6 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
 }
 
 
-
-
-
 void drawTowerSprite(Tower* tower, Sprite sprites[]) {
     float x = (float) tower->win_x;
     float y = (float) tower->win_y;

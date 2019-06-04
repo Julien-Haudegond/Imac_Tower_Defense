@@ -30,7 +30,6 @@
 #include "../include/text.h"
 #include "../include/graphic.h"
 
-#include "../include/args.h"
 #include "../include/explosion.h"
 
 
@@ -185,6 +184,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     //pause
     int pause = 0; int keydown = 0;
 
+
     while(loop)
     {
         /* Time at the beginning of the loop */
@@ -192,15 +192,14 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         
         /* DRAWING CODE */
 
-            glClear(GL_COLOR_BUFFER_BIT);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
+        glClear(GL_COLOR_BUFFER_BIT);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-            //MAP
-            glCallList(map);
+        //MAP
+        glCallList(map);
 
-
-             /* Event loop */
+        /* Event loop */
         SDL_Event e;
         while(SDL_PollEvent(&e)) {
 
@@ -296,13 +295,10 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
                     break;
 
-
                 case SDL_MOUSEMOTION:
                     mouse_x = e.button.x * WINDOW_WIDTH / surface->w;
                     mouse_y = e.button.y * WINDOW_HEIGHT / surface->h;
-
                     break;
-
 
                 case SDL_MOUSEBUTTONDOWN:
 
@@ -383,7 +379,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
                     break;
 
-
                 case SDL_MOUSEBUTTONUP:
 
                     //If mouse right button is up
@@ -429,9 +424,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     ptrWave->monster->currentNode = ptrWave->monster->path[0];
                     nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
                     setPosition(ptrWave->monster, nodesearch->win_x, nodesearch->win_y);
-                    
-                     previousTimeMonster = currentTimeMonster;
-                     monsterCounter++;
+                    previousTimeMonster = currentTimeMonster;
+                    monsterCounter++;
                 }
 
             }
@@ -462,8 +456,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                         ptrWave->monster->currentNode = ptrWave->monster->path[pathIndex+1];
                         //updating nodesearch if needed
                         nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
-
                     }
+
                     //updates monster coords if the node has not been reached
                     if((ptrWave->monster->win_x != nodesearch-> win_x || ptrWave->monster->win_y != nodesearch->win_y)){
                         updateCoords(ptrWave->monster,nodesArray,nbOfNodes);
@@ -515,11 +509,18 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
 
              /* Update window */
-            SDL_GL_SwapBuffers();
+            
         }else{
+            /*Game paused*/
+            drawFullScreenImg(&(sprites[20].texture));
+          
+            renderCenterText(&generalTexts[4], WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
 
         }
     
+         
+        SDL_GL_SwapBuffers();       
+
         /* Passed time */
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
         /* If too few time, the program is paused */
@@ -571,11 +572,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     return EXIT_SUCCESS;
 }
 
-
-
 #endif
-
-
 
 #ifdef READTHIS2
 

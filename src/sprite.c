@@ -107,6 +107,10 @@ void fillSprites(Sprite sprites[]) {
     //Texture 19 : Skull
     loadSpriteArea(&(sprites[19].area), "whole_screens/Skull.png");
     initSpriteTexture(&(sprites[19].area), &(sprites[19].texture));
+
+    //Texture 20 : Skull
+    loadSpriteArea(&(sprites[20].area), "whole_screens/pause.png");
+    initSpriteTexture(&(sprites[20].area), &(sprites[20].texture));
 }
 
 
