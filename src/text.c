@@ -23,6 +23,14 @@ void initTextCSS(TextStyle textCSS[]) {
     //Style 2
     textCSS[2].font = loadFont(FONT_1, 16);
     textCSS[2].color = (SDL_Color) {255, 255, 255, 0};
+
+    //Style 3
+    textCSS[3].font = loadFont(FONT_1, 46);
+    textCSS[3].color = (SDL_Color) {255, 255, 0, 0};
+
+    //Style 4
+    textCSS[4].font = loadFont(FONT_1, 46);
+    textCSS[4].color = (SDL_Color) {255, 0, 0, 0};
 }
 
 
@@ -33,7 +41,12 @@ void fillTextsArrays(TextStyle textCSS[], Text texts[]) {
     loadText("Press 'h' to get some help !", &(textCSS[0].font), textCSS[0].color, &(texts[0].area), &(texts[0].texture));
 
     //Text 1 : Money (need to be reload each time, so in another function)
-    
+
+    //Text 2 : GUARDIAN OF THE GALAXY !
+    loadText("Guardian of the Galaxy", &(textCSS[3].font), textCSS[3].color, &(texts[2].area), &(texts[2].texture));
+
+    //Text 3 : You failed !
+    loadText("You failed !", &(textCSS[4].font), textCSS[4].color, &(texts[3].area), &(texts[3].texture));
 }
 
 

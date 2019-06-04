@@ -99,6 +99,14 @@ void fillSprites(Sprite sprites[]) {
     //Texture 17 : EXPLOSION Sheet
     loadSpriteArea(&(sprites[17].area), "Explosion_SpriteSheet.png");
     initSpriteTexture(&(sprites[17].area), &(sprites[17].texture));
+
+    //Texture 18 : Medal
+    loadSpriteArea(&(sprites[18].area), "whole_screens/Medal.png");
+    initSpriteTexture(&(sprites[18].area), &(sprites[18].texture));
+
+    //Texture 19 : Skull
+    loadSpriteArea(&(sprites[19].area), "whole_screens/Skull.png");
+    initSpriteTexture(&(sprites[19].area), &(sprites[19].texture));
 }
 
 

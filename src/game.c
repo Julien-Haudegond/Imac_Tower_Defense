@@ -25,6 +25,7 @@
 #include "../include/map_draw.h"
 #include "../include/window.h"
 #include "../include/sprite.h"
+#include "../include/end_game.h"
 
 #include "../include/text.h"
 #include "../include/graphic.h"
@@ -98,6 +99,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     //Monster* ptrMonster = malloc(sizeof(Monster));
     Wave* ptrWave = malloc(sizeof(Wave));   
     ExplosionList* explosionList = createEmptyExplosionList();
+
    
 
     /* Initializing FMOD */
@@ -168,9 +170,11 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     
    
 
-    /* Global variables for GL Lists */
+    /* Global variables for GL Lists / Drawing */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
     GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
+
+    EndScreen endScreen = createEndScreen();
     
      
             //int mstrCounter = 0;
@@ -303,6 +307,13 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             if(help == 1) {
                 drawFullScreenImg(&(sprites[15].texture));
             }
+
+
+            //drawEndScreen(&endScreen, sprites, generalTexts);
+
+
+
+
 
         /* Update window */
         SDL_GL_SwapBuffers();

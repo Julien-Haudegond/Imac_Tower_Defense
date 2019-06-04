@@ -1,7 +1,7 @@
 #ifndef SPRITE_H__
 #define SPRITE_H__
 
-#define MAX_SPRITES 20
+#define MAX_SPRITES 30
 
 #include <SDL/SDL.h>
 #include <GL/gl.h>
