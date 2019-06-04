@@ -168,9 +168,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     //variables for waves
     
     int monsterCounter = 0;
-
+    int waveType = rand() % 2;
     Uint32 currentTimeMonster = 0, previousTimeMonster = 0;
-    
    
 
     /* Global variables for GL Lists / Drawing */
@@ -178,16 +177,12 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
 
     EndScreen endScreen = createEndScreen();
-    
-     
-            //int mstrCounter = 0;
 
     /* MAIN LOOP */
     int loop = 1;
 
     //pause
     int pause = 0; int keydown = 0;
-
 
     while(loop)
     {
@@ -420,10 +415,18 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             //MONSTERS
 
             //adding monsters to the wave
-            if(monsterCounter < WAVESIZE){
+            if(monsterCounter < WAVESIZE && waveNumber < AMOUNT_WAVES){
                 currentTimeMonster = SDL_GetTicks();
                 if(currentTimeMonster - previousTimeMonster >= 1000){
-                    addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
+                    switch(waveType){
+                        case 0 :
+                            addMonster(wave, SWARMLING, 0, nodesPath, nbShortest);
+                            break;
+                        case 1:
+                            addMonster(wave, GIANT, 0, nodesPath, nbShortest);
+                            break;
+
+                    }
                     ptrWave = getLastMonster(wave);
                     ptrWave->monster->currentNode = ptrWave->monster->path[0];
                     nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
@@ -432,7 +435,15 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     monsterCounter++;
                 }
 
+            }else if(monsterCounter >= WAVESIZE){
+                //setting type monster for the next Wave
+                waveType = rand() % 2;
+                monsterCounter = 0;
+                waveNumber ++;
+            }else if(waveNumber == AMOUNT_WAVES && wave->monster == NULL){
+                endScreen.status = 1;
             }
+
             if(wave !=NULL)
                 ptrWave = wave;
             while(ptrWave && wave->monster!=NULL && ptrWave->monster !=NULL){    
@@ -469,7 +480,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     }
 
                     if(ptrWave->monster->health > 0){
-                        ptrWave->monster->health -= 0;
+                        ptrWave->monster->health -= 2;
                         drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
                         drawHealthBar(ptrWave->monster, sprites);
                     }else{
@@ -480,11 +491,11 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
                 ptrWave = ptrWave->nextMonster;
             }
-
+            /*
             if(wave->monster == NULL && monsterCounter >= WAVESIZE){
                 //Passer a la wave suivante ou gagner le jeu si y'a pas de wave suivante
                 printf("GG WP!! \n");
-            }
+            }*/
 
             //Hold 'delete key'
             if(deleteStatus != -1) {
@@ -521,14 +532,12 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
         /*End screens*/
     
-        //Defeat screen
-        if(endScreen.status == 0){
+        //Defeat and victory screen
+        if(endScreen.status == 0 || endScreen.status == 1){
             drawEndScreen(&endScreen, sprites, generalTexts);
             if(endScreen.frame == 150){
                 loop = 0;
             }
-        }else if(endScreen.status == 1){
-
         }
          
         SDL_GL_SwapBuffers();       
