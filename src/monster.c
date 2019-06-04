@@ -40,6 +40,12 @@ void setMonsterStats(Monster* m, int type, float health, float healthMax, int re
 	}
 }
 
+void setInGameStats(Monster *m, float healthMax, int reward){
+	m->healthMax = healthMax;
+	m->health = healthMax;
+	m->reward = reward;
+}
+
 
 void setPosition(Monster* m, float x, float y){
 	if(m != NULL){

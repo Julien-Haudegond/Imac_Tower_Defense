@@ -428,6 +428,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
                     }
                     ptrWave = getLastMonster(wave);
+                    setInGameStats(ptrWave->monster, (ptrWave->monster->health)+(waveNumber+1)*1.5, (ptrWave->monster->reward)+waveNumber*5);
                     ptrWave->monster->currentNode = ptrWave->monster->path[0];
                     nodesearch = getNodeFromValue(nodesArray, nbOfNodes, ptrWave->monster->currentNode);
                     setPosition(ptrWave->monster, nodesearch->win_x, nodesearch->win_y);
@@ -480,7 +481,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     }
 
                     if(ptrWave->monster->health > 0){
-                        ptrWave->monster->health -= 2;
+                        ptrWave->monster->health -= 0.1;
                         drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
                         drawHealthBar(ptrWave->monster, sprites);
                     }else{
@@ -491,12 +492,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
                 ptrWave = ptrWave->nextMonster;
             }
-            /*
-            if(wave->monster == NULL && monsterCounter >= WAVESIZE){
-                //Passer a la wave suivante ou gagner le jeu si y'a pas de wave suivante
-                printf("GG WP!! \n");
-            }*/
-
+           
             //Hold 'delete key'
             if(deleteStatus != -1) {
                 drawSpriteHere(&(sprites[10].texture), mouse_x, mouse_y);
@@ -519,7 +515,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //HELP
             renderCenterText(&generalTexts[0], 610, 700); //Press 'h' to get some help
-            //Hold 'h' to make the menu appear
             if(help == 1) {
                 drawFullScreenImg(&(sprites[15].texture));
             }
@@ -530,9 +525,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             renderCenterText(&generalTexts[4], WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
         }
 
-        /*End screens*/
-    
-        //Defeat and victory screen
+        /*End screens - Defeat and victory*/
+
         if(endScreen.status == 0 || endScreen.status == 1){
             drawEndScreen(&endScreen, sprites, generalTexts);
             if(endScreen.frame == 150){
@@ -566,8 +560,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(nodesPath);
 
     /* Free wave */
-    //free(wave->monster->path);
-    //free(wave->monster);
+
     free(wave);
 
     freeExplosionList(explosionList);
@@ -596,115 +589,13 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     return EXIT_SUCCESS;
 }
 
+void displayMoney(){
+
+}
+
 #endif
 
 #ifdef READTHIS2
-
-int main(int argc, char** argv) 
-{
-    Image imgPPM;
-    ItdColorInstruction itdInstructions[NUMBER_INSTRUCT] = {0};
-    Node nodesArray[MAX_NODES] = {0};
-    int nbOfNodes;
-
-    readITD("data/Map_01.itd", &imgPPM, itdInstructions, nodesArray, &nbOfNodes);
-    
-    
-
-    //Printf the five instructions' values
-    for(int i = 0; i < NUMBER_INSTRUCT; i++) {
-        printf("%s : %d %d %d\n", itdInstructions[i].name, itdInstructions[i].r, itdInstructions[i].g, itdInstructions[i].b);
-    }
-    
-
-    printf("Nombre de noeuds : %d\n", nbOfNodes);
-
-    for(int i = 0; i < nbOfNodes; i++) {
-        printNodeInfo(nodesArray[i]);
-    }
-
-    //checkPathBetween2Nodes(nodesArray[1], nodesArray[2], &imgPPM, itdInstructions);
-
-    //Faut free les linkkkksss et l'image
-    for(int i = 0; i < nbOfNodes; i++) {
-        freeAllLinks(nodesArray[i].link);
-    }
-    freeImage(&imgPPM);
-
-    /***************
-    *   INITIALISATION SDL
-    ***************/
-
-    if(-1 == SDL_Init(SDL_INIT_VIDEO)) 
-    {
-        fprintf(
-            stderr, 
-            "Impossible d'initialiser la SDL. Fin du programme.\n");
-        return EXIT_FAILURE;
-    }
-  
-    /* Ouverture d'une fenetre et creation d'un contexte OpenGL */
-    SDL_Surface* surface;
-    reshape(&surface, WINDOW_WIDTH, WINDOW_HEIGHT);
-  
-    /* Initialisation du titre de la fenetre */
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
-    /* Boucle principale */
-    int loop = 1;
-
-    while(loop){
-        glClear(GL_COLOR_BUFFER_BIT);
-        /*Refreshing*/
-        SDL_GL_SwapBuffers();
-        SDL_Event e;
-        /* Recuperation du temps au debut de la boucle */
-        Uint32 startTime = SDL_GetTicks();
-        /* Boucle traitant les evenements */
-        while(SDL_PollEvent(&e)) 
-        {
-            /* L'utilisateur ferme la fenetre : */
-            if(e.type == SDL_QUIT) 
-            {
-                loop = 0;
-                break;
-            }
-        
-            if( e.type == SDL_KEYDOWN 
-                && (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE))
-            {
-                loop = 0; 
-                break;
-            }
-        
-            /* Quelques exemples de traitement d'evenements : */
-            switch(e.type) 
-            {
-                /* Redimensionnement fenetre */
-                case SDL_VIDEORESIZE:
-                    reshape(&surface, e.resize.w, e.resize.h);
-                    break; 
-            
-                /* Clic souris */
-                case SDL_MOUSEBUTTONUP:
-                    printf("clic en (%d, %d)\n", e.button.x, e.button.y);
-                    break;
-                
-                /* Touche clavier */
-                case SDL_KEYDOWN:
-                    printf("touche pressee (code = %d)\n", e.key.keysym.sym);        
-                    break;                
-                default:
-                    break;
-            }
-        }
-    }
-    return EXIT_SUCCESS;
-}
-
-
-#endif
-
-#ifdef READTHIS3
 
 //Main pour tests
 int main(int argc, char** argv){
