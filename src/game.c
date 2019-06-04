@@ -177,7 +177,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* MAIN LOOP */
     int loop = 1;
-    while(loop) 
+
+
+    while(loop)
     {
         /* Time at the beginning of the loop */
         Uint32 startTime = SDL_GetTicks();
@@ -498,6 +500,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
         }
 
+    
         /* Passed time */
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
         /* If too few time, the program is paused */
