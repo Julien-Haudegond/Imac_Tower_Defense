@@ -104,7 +104,7 @@ $(WAVE_O) : src/wave.c include/monster.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "monster waves : done !"
 
-$(TOWER_O) : src/tower.c include/tower.h include/wave.h include/window.h
+$(TOWER_O) : src/tower.c include/tower.h include/window.h include/monster.h
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "towers : done !"
 

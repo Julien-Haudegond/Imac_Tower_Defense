@@ -446,7 +446,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 }
 
                 if(nodesearch->type == 2 && nodesearch->win_x == ptrWave->monster->win_x && nodesearch->win_y == ptrWave->monster->win_y){
-                    //free monster, and give money to the player
+                   //Game is lost
+                    endScreen.status = 0;
                 }else{
                     pathIndex = ptrWave->monster->currentIndex;
                     //updates current node if it's been reached
@@ -464,7 +465,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                     }
 
                     if(ptrWave->monster->health > 0){
-                        ptrWave->monster->health -= 0.1;
+                        ptrWave->monster->health -= 0;
                         drawMonsterSprite(ptrWave->monster, sprites, monsterRotation);
                         drawHealthBar(ptrWave->monster, sprites);
                     }else{
@@ -508,16 +509,23 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 drawFullScreenImg(&(sprites[15].texture));
             }
 
-             /* Update window */
-            
         }else{
             /*Game paused*/
             drawFullScreenImg(&(sprites[20].texture));
-          
             renderCenterText(&generalTexts[4], WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+        }
+
+        /*End screens*/
+    
+        //Defeat screen
+        if(endScreen.status == 0){
+            drawEndScreen(&endScreen, sprites, generalTexts);
+            if(endScreen.frame == 150){
+                loop = 0;
+            }
+        }else if(endScreen.status == 1){
 
         }
-    
          
         SDL_GL_SwapBuffers();       
 

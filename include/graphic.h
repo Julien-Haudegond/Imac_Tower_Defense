@@ -1,8 +1,9 @@
 #ifndef GRAPHIC_H__
 #define GRAPHIC_H__
 
-#include "../include/tower.h"
 #include "../include/tower_list.h"
+#include "../include/tower.h"
+
 #include "../include/monster.h"
 #include "../include/building.h"
 #include "../include/building_list.h"

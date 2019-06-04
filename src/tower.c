@@ -1,13 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "../include/tower.h"
-#include "../include/wave.h"
 #include "../include/window.h"
-
-
-//TO DO
-//void fire(Tower t);
-
 
 //Check money for tower construct (0 is not OK, everything else is price)
 int checkTowerMoney(TowerType type, int money_cost) {
@@ -94,3 +89,20 @@ void printTower(Tower *t){
 	printf("Range : %d \n", t->range);
 	printf("Cost: %d $ \n\n", t->money_cost);
 }
+
+
+/*
+int isMonsterInTheRange(Tower* t, Monster* m){
+	float distance = sqrt(pow(t->win_x - m->win_x,2)+pow(t->win_y - m->win_y,2));
+	printf("Distance : %f", distance);
+	if(distance <= t->range){
+		return 1;
+	}
+	return 0;
+}
+
+void fire(Tower* t, Monster *m){
+	int monsterInRange = isMonsterInTheRange(t,m);
+}
+
+*/
