@@ -10,6 +10,7 @@
 #include "../include/const.h"
 #include "../include/menu.h"
 #include "../include/game.h"
+#include "../include/save.h"
 
 #include "../include/window.h"
 #include "../include/sprite.h"
@@ -17,6 +18,8 @@
 
 
 int playMenu(SDL_Surface* surface) {
+
+    char itdMap[25] = {0};
 
     /*Initializing TTF */
     if(TTF_Init() == -1)
@@ -53,10 +56,12 @@ int playMenu(SDL_Surface* surface) {
     SDL_Surface* bg_img = NULL;
     SDL_Surface* help_img = NULL;
     SDL_Surface* choice_img = NULL;
+    SDL_Surface* savedGame_img = NULL;
 
     GLuint bg_texture;
     GLuint help_texture;
     GLuint choice_texture;
+    GLuint savedGame_texture;
 
     loadSpriteArea(&bg_img, "whole_screens/Menu_Img.png");
     initSpriteTexture(&bg_img, &bg_texture);
@@ -67,10 +72,14 @@ int playMenu(SDL_Surface* surface) {
     loadSpriteArea(&choice_img, "whole_screens/Choice_Img.png");
     initSpriteTexture(&choice_img, &choice_texture);
 
+    loadSpriteArea(&savedGame_img, "whole_screens/Saved_Game_Img.png");
+    initSpriteTexture(&savedGame_img, &savedGame_texture);
+
     /* Global variables */
     int button_x = 0, button_y = 0;
     int help = -1; //Help window
     int choice = -1; //Choice window
+    int savedGame = -1; //Saved Game Window
     int map = -1; //Chosen map
 
     /* Global variables for GL Lists */
@@ -98,6 +107,10 @@ int playMenu(SDL_Surface* surface) {
 
             if(choice == 1) {
             	drawFullScreenImg(&choice_texture);
+            }
+
+            if(savedGame == 1) {
+                drawFullScreenImg(&savedGame_texture);
             }
 
 
@@ -146,6 +159,48 @@ int playMenu(SDL_Surface* surface) {
                             break;
                         }
 
+                        //If savedGame window is visible
+                        if(savedGame == 1) {
+                            //YES
+                            if(button_x > 280 && button_x < 590 && button_y > 365 && button_y < 540) {
+                                //Get the path of the map
+                                pathSavedGame(itdMap);
+                                
+                                //Play the game
+                                FMOD_Channel_Stop(channel); //Stop the music
+                                playGame(surface, itdMap); //Play the game
+
+                                //Reset itdMap
+                                for(int i = 0; i < 25; i++) {
+                                    itdMap[i] = 0;
+                                }
+
+                                //Go back to the menu
+                                initSpriteTexture(&bg_img, &bg_texture); //Reload the menu texture
+                                initSpriteTexture(&help_img, &help_texture); //Reload the help texture
+                                initSpriteTexture(&choice_img, &choice_texture); //Reload the choice texture
+                                initSpriteTexture(&savedGame_img, &savedGame_texture); //Reload the savedGame texture
+
+                                FMOD_System_PlaySound(system, music, NULL, 0, &channel); //Play the music
+
+                                map = -1; //Reset map
+                                savedGame = -1; //Hide the savedGame window
+
+                                //Reset buttons
+                                button_x = button_y = 0;                                
+                            }
+                            //NO
+                            else if(button_x > 625 && button_x < 935 && button_y > 365 && button_y < 540) {
+                                deleteSavedData(); //Delete the last game data
+                                savedGame = -1; //Hide the savedGame window
+                                choice = 1; //Draw the choice window
+                                map = -1; //Reset map
+
+                                //Reset buttons
+                                button_x = button_y = 0;
+                            }
+                        }
+
                         //If choice window is visible
                         if(choice == 1) {
                         	//Map 1
@@ -175,12 +230,16 @@ int playMenu(SDL_Surface* surface) {
 
 	                    	if(map != -1) {
 						        //GET ITD relative path
-						        char itdMap[20] = {0};
 						        char int2string[2] = {0};
 						        strcat(itdMap, "data/Map_0");
 						            snprintf(int2string, sizeof(int2string), "%d", map);
 						        strcat(itdMap, int2string);
 						        strcat(itdMap, ".itd");
+
+                                //Reset int2string
+                                for(int i = 0; i < 2; i++) {
+                                    int2string[i] = 0;
+                                }
 
 						        printf("Path = %s\n", itdMap);
 
@@ -188,10 +247,16 @@ int playMenu(SDL_Surface* surface) {
 	                    		FMOD_Channel_Stop(channel); //Stop the music
 	                    		playGame(surface, itdMap); //Play the game
 
+                                //Reset itdMap
+                                for(int i = 0; i < 25; i++) {
+                                    itdMap[i] = 0;
+                                }
+
 	                    		//Go back to the menu
 	                    		initSpriteTexture(&bg_img, &bg_texture); //Reload the menu texture
 	                    		initSpriteTexture(&help_img, &help_texture); //Reload the help texture
 	                    		initSpriteTexture(&choice_img, &choice_texture); //Reload the choice texture
+                                initSpriteTexture(&savedGame_img, &savedGame_texture); //Reload the savedGame texture
 
 	                    		FMOD_System_PlaySound(system, music, NULL, 0, &channel); //Play the music
 
@@ -201,10 +266,15 @@ int playMenu(SDL_Surface* surface) {
 	                    	}                    	
                         }
 
-                        if(help == -1 && choice == -1) {
+                        if(help == -1 && choice == -1 && savedGame == -1) {
 	                    	//If we press "Play game"
-	                    	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500 && choice == -1) {
-	                    		choice = 1;
+	                    	if(button_x > 375 && button_x < 845 && button_y > 450 && button_y < 500) {
+                                if(isThereASave() == 1) {
+                                    savedGame = 1;
+                                }
+                                else {
+                                   choice = 1; 
+                                }
 	                    	}
 
 	                    	//If we press "Help"
@@ -244,6 +314,9 @@ int playMenu(SDL_Surface* surface) {
 
     SDL_FreeSurface(choice_img);
     glDeleteTextures(1, &choice_texture);
+
+    SDL_FreeSurface(savedGame_img);
+    glDeleteTextures(1, &savedGame_texture);
 
     /* Free FMOD */
     FMOD_Sound_Release(music);

@@ -31,6 +31,7 @@
 #include "../include/graphic.h"
 
 #include "../include/explosion.h"
+#include "../include/save.h"
 
 
 /***************
@@ -47,6 +48,7 @@
 int playGame(SDL_Surface* surface, const char* itdPath)
 {
     int global_money = 10000;
+    int waveNumber = 0;
 
     //Loading ITD File
     Image imgPPM;
@@ -60,6 +62,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     //Initialize a list of towers and buildings 
     TowerList* towerList = createEmptyTowerList();
     BuildingList* buildingList = createEmptyBuildingList();
+
+    loadSavedGame(&global_money, &waveNumber, towerList, buildingList);
 
 
     updateAllValarcLinks(nodesArray, nbOfNodes, towerList); 
@@ -536,6 +540,9 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+
+    //endScreen.status = 1;
+    saveGame(itdPath, global_money, waveNumber, towerList, buildingList, endScreen.status);
 
     printWave(wave);
     printTowerList(towerList);
