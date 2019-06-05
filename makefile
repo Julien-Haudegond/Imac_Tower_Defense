@@ -83,7 +83,7 @@ all : $(OBJ)
 	@echo ""
 	@echo "**********************************************************"
 	@echo "*** to execute, type : export LD_LIBRARY_PATH=lib/lib  ***"
-	@echo "*** then, type       : ./bin/program.out Map_xx.itd    ***"
+	@echo "*** then, type       : ./bin/program.out               ***"
 	@echo "**********************************************************"
 
 
