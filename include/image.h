@@ -1,14 +1,7 @@
 #ifndef IMAGE_H__
 #define IMAGE_H__
 
-#include "pixel.h"
-
-typedef struct Image
-{
-	unsigned int w,h;
-	Pixel* pixel;
-} Image;
-
+#include "structures/str_image.h"
 
 void newImage(Image* I, unsigned int w, unsigned int h);
 void freeImage(Image* I);

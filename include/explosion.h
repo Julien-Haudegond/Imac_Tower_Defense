@@ -1,17 +1,7 @@
 #ifndef EXPLOSION_H__
 #define EXPLOSION_H__
 
-typedef struct Explosion {
-	int x, y;
-	int win_x, win_y;
-	int frame;
-} Explosion;
-
-typedef struct ExplosionList {
-	struct Explosion* explosion;
-	struct ExplosionList* nextExplosion;
-} ExplosionList;
-
+#include "structures/str_explosion.h"
 
 /***** EXPLOSION *****/
 Explosion* createExplosion(int x, int y);

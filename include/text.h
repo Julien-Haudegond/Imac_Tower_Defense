@@ -6,17 +6,10 @@
 
 #define FONT_1 "Starjedi"
 
+#include "structures/str_text.h"
+
 #include <SDL/SDL_ttf.h>
 
-typedef struct TextStyle {
-	TTF_Font* font;
-	SDL_Color color;
-} TextStyle;
-
-typedef struct Text {
-	SDL_Surface* area;
-	GLuint texture;
-} Text;
 
 //Init and free
 void initTextCSSToNull(TextStyle textCSS[]);

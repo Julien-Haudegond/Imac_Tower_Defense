@@ -1,15 +1,10 @@
 #ifndef LINK_H__
 #define LINK_H__
 
+#include "structures/str_link.h"
+
 #include "../include/node.h"
 #include "../include/tower_list.h"
-
-typedef struct Link
-{
-	struct Node* node;
-	long valarc;
-	struct Link* next;
-} Link;
 
 
 void addLink(Link* link, struct Node* child);

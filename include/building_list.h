@@ -1,12 +1,9 @@
 #ifndef BUILDING_LIST_H__
 #define BUILDING_LIST_H__
 
-#include "../include/building.h"
+#include "structures/str_building_list.h"
 
-typedef struct BuildingList {
-	struct Building* build;
-	struct BuildingList * nextBuild;
-} BuildingList;
+#include "../include/building.h"
 
 BuildingList* createEmptyBuildingList();
 void freeBuildingList(BuildingList* bl);

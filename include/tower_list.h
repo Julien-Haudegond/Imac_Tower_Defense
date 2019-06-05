@@ -4,14 +4,11 @@
 #ifndef TOWER_LIST_H__
 #define TOWER_LIST_H__
 
+#include "structures/str_tower_list.h"
+
 #include "../include/tower.h"
 #include "../include/building_list.h"
 #include "../include/building.h"
-
-typedef struct TowerList{
-	Tower* tower;
-	struct TowerList * nextTower;
-}TowerList;
 
 
 TowerList* createEmptyTowerList();

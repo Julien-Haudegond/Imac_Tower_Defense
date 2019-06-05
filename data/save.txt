@@ -1,7 +1,0 @@
-# MAP
-data/Map_01.itd
-# MONEY
-10010
-# WAVE
-1
-# TOWERS & BUILDINGS

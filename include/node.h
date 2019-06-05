@@ -1,25 +1,12 @@
 #ifndef NODE_H__
 #define NODE_H__
 
+#include "structures/str_node.h"
+
 #include "../include/link.h"
 #include "../include/tower_list.h"
 
 #define MAX_NODES 25 //Max number of nodes will be 25
-
-typedef enum {
-	IN = 1, OUT = 2, BEND = 3, INTERSECT = 4
-} NodeType;
-
-typedef struct Node {
-	int minValarc;
-	struct Node* previousPath; //Previous node for shortest path
-	int value;
-	int type;
-	int x, y; //Grid coords
-	int win_x, win_y; //Window coords
-	int marqued;
-	struct Link* link;
-} Node;
 
 //Create / get info from Nodes
 Node createNode(int value, int type, int x, int y);

@@ -3,14 +3,12 @@
 
 #define MAX_SPRITES 30
 
+#include "structures/str_sprite.h"
+
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-typedef struct Sprite {
-	SDL_Surface* area;
-	GLuint texture;
-} Sprite;
 
 //Sprites array
 void initSpritesToNull(Sprite sprites[]);
