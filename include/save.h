@@ -1,7 +1,7 @@
 #ifndef SAVE_H__
 #define SAVE_H__
 
-#define MAX_TOWERS_BUILDINGS 100
+#define MAX_TOWERS_BUILDINGS 260
 
 #include "constructions/tower_list.h"
 #include "constructions/building_list.h"

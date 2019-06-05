@@ -11,7 +11,6 @@
 #define BASE_TOWER_RANGE 100 //Range in pixels
 
 
-//void fire(Tower t);
 int checkTowerMoney(TowerType type, int money_cost);
 Tower* createTower(TowerType type, int x, int y);
 Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range);
