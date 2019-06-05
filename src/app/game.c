@@ -102,8 +102,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     Node* nodesearch = malloc(sizeof(Node));
 
     //Monster* ptrMonster = malloc(sizeof(Monster));
-    Wave* ptrWave = malloc(sizeof(Wave));
-    TowerList* ptrTower = malloc(sizeof(TowerList));   
+    Wave* ptrWave = NULL;
+    TowerList* ptrTower = NULL;   
 
     ExplosionList* explosionList = createEmptyExplosionList();
 
@@ -502,20 +502,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
            /*TOWERS FIREEEEEEE*/
             if(towerList != NULL){
-            	ptrTower = towerList;
+                ptrTower = towerList;
             }
             int twr = 0;
             //each tower checks if it can fire on each monster
             while(ptrTower && towerList->tower && ptrTower->tower){
-            	if(wave != NULL){
-               		ptrWave = wave;
-            	}
-            	while(ptrWave && wave->monster!=NULL && ptrWave->monster != NULL){
-            		fire(ptrTower->tower, ptrWave->monster);
-            		ptrWave = ptrWave->nextMonster;
-            		printf("ok !\n");
-            	}
-            	ptrTower = ptrTower->nextTower;
+                if(wave != NULL){
+                    ptrWave = wave;
+                }
+                while(ptrWave && wave->monster!=NULL && ptrWave->monster != NULL){
+                    fire(ptrTower->tower, ptrWave->monster);
+                    ptrWave = ptrWave->nextMonster;
+                    printf("ok !\n");
+                }
+                ptrTower = ptrTower->nextTower;
             }
            
             //Hold 'delete key'
@@ -586,9 +586,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* Free wave */
     free(wave);
-
-    /*Free tower pointer*/
-    free(ptrTower);
 
     freeExplosionList(explosionList);
 
