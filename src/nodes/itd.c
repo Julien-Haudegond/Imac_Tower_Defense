@@ -183,9 +183,9 @@ int readITD(const char* fichier, Image* imgPPM, ItdColorInstruction itdInstructi
 
 	//Check if there is a path between every neighboor nodes
 	for(int i = 0; i < *nbOfNodes; i++) {
-		printf("Node n° %d : \n", i);
+		//printf("Node n° %d : \n", i);
 		checkAllPathsAroundANode(nodesArray[i], imgPPM, itdInstructions);
-		printf("\n");
+		//printf("\n");
 	}
 
 	//Check if there is a path from the INs to the OUT
@@ -267,7 +267,7 @@ int checkNodesDescriptions(Node nodesArray[], int* nbOfNodes, Image* imgPPM, Itd
 }
 
 
-//Path are only vertical or horizontal. They are never diagonal. VERSION 1
+//Path are only vertical or horizontal. They are never diagonal. BRESENHAM based algorithm.
 int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstruction itdInstructions[]) {
 	///// VARIABLES
 
@@ -290,10 +290,6 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 			path_blueComponent = itdInstructions[i].b;
 		}
 	}
-
-			/*
-			printf("path values : %d %d %d\n", path_redComponent, path_greenComponent, path_blueComponent);
-			*/
 
 
 	//Check if the nodes have the same spot
@@ -324,8 +320,7 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 				exit(EXIT_FAILURE);
 			}
 			else {
-				printf("There is a vertical path between those 2 nodes.\n");
-				break;
+				//printf("There is a vertical path between those 2 nodes.\n");
 			}
 		}
 	}
@@ -351,8 +346,7 @@ int checkPathBetween2Nodes(Node node1, Node node2, Image* imgPPM, ItdColorInstru
 				exit(EXIT_FAILURE);
 			}
 			else {
-				printf("There is a horizontal path between those 2 nodes.\n");
-				break;
+				//printf("There is a horizontal path between those 2 nodes.\n");
 			}
 		}
 	}

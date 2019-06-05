@@ -1,9 +1,8 @@
 # MAP
-data/Map_01.itd
+data/Map_03.itd
 # MONEY
-8405
+9500
 # WAVE
-2
+0
 # TOWERS & BUILDINGS
-1 1 335 91
-1 1 335 213
+1 0 396 213
