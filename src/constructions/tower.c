@@ -92,11 +92,9 @@ void printTower(Tower *t){
 	printf("Cost: %d $ \n\n", t->money_cost);
 }
 
-
-/*
 int isMonsterInTheRange(Tower* t, Monster* m){
 	float distance = sqrt(pow(t->win_x - m->win_x,2)+pow(t->win_y - m->win_y,2));
-	printf("Distance : %f", distance);
+	//printf("Distance : %f // Range : %d \n", distance, t->range);
 	if(distance <= t->range){
 		return 1;
 	}
@@ -105,6 +103,9 @@ int isMonsterInTheRange(Tower* t, Monster* m){
 
 void fire(Tower* t, Monster *m){
 	int monsterInRange = isMonsterInTheRange(t,m);
+	if(monsterInRange == 1){
+		m->health -= t->dmg;
+	}
 }
 
-*/
+

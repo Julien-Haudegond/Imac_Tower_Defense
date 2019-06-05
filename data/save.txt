@@ -1,0 +1,9 @@
+# MAP
+data/Map_01.itd
+# MONEY
+8405
+# WAVE
+2
+# TOWERS & BUILDINGS
+1 1 335 91
+1 1 335 213
