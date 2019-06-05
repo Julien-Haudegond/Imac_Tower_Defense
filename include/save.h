@@ -3,8 +3,8 @@
 
 #define MAX_TOWERS_BUILDINGS 100
 
-#include "../include/tower_list.h"
-#include "../include/building_list.h"
+#include "constructions/tower_list.h"
+#include "constructions/building_list.h"
 
 int saveGame(const char* itdPath, int money, int wave, TowerList* tl, BuildingList* bl, int status);
 int pathSavedGame(char* itdPath);

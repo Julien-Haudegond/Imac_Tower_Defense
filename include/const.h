@@ -12,7 +12,7 @@ static const float GL_SPRITE_SIZE = 61.;
 /* Dimensions initiales et titre de la fenetre */
 static const unsigned int WINDOW_WIDTH = 1220; //GL_VIEW_WIDTH * GL_SPRITE
 static const unsigned int WINDOW_HEIGHT = 793; //GL_VIEW_HEIGHT * GL_SPRITE
-static const char WINDOW_TITLE[] = "Test_Draw";
+static const char WINDOW_TITLE[] = "JEDIMAC TOWER DEFENSE";
 
 /* Nombre de bits par pixel de la fenetre */
 static const unsigned int BIT_PER_PIXEL = 32;

@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../include/game.h"
-#include "../include/menu.h"
-#include "../include/intro.h"
+#include "animations/intro.h"
+
+#include "app/game.h"
+#include "app/menu.h"
 
 int main(int argc, char const *argv[])
 {

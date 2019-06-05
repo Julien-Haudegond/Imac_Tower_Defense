@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/save.h"
+#include "save.h"
 
 
 int saveGame(const char* itdPath, int money, int wave, TowerList* tl, BuildingList* bl, int status) {
