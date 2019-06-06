@@ -1,0 +1,7 @@
+# MAP
+data/Map_01.itd
+# MONEY
+10000
+# WAVE
+0
+# TOWERS & BUILDINGS
