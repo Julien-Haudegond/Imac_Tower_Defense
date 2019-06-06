@@ -8,7 +8,7 @@
 
 #define BASE_DMG 10
 #define BASE_FIRESPEED 25 //Amount of shots in a unity of time : 1/10 s
-#define BASE_TOWER_RANGE 250 //Range in pixels
+#define BASE_TOWER_RANGE 150 //Range in pixels
 
 
 int checkTowerMoney(TowerType type, int money_cost);

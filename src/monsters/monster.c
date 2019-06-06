@@ -8,10 +8,10 @@ Monster* createMonster(MonsterType type, int resist, int* path, int nbPath){
 	m->path = malloc(nbPath*sizeof(int));
 	switch(type){
 		case GIANT:
-			setMonsterStats(m, 0, 40, 40,  resist, 3, 30, path, nbPath);
+			setMonsterStats(m, 0, 70, 70,  resist, 3, 10, path, nbPath);
 			break;
 		case SWARMLING:
-			setMonsterStats(m, 1, 10, 10, resist, 4, 5, path, nbPath);
+			setMonsterStats(m, 1, 30, 30, resist, 4, 5, path, nbPath);
 			break;
 		default : 
 			exit(EXIT_FAILURE);

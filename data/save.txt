@@ -1,0 +1,11 @@
+# MAP
+data/Map_02.itd
+# MONEY
+0
+# WAVE
+2
+# TOWERS & BUILDINGS
+1 1 335 396
+2 2 396 396
+2 2 396 457
+2 2 335 457

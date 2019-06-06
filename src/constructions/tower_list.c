@@ -351,7 +351,10 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 		    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
 		    					break;
 		    				case AMMO: //Increase firespeed by 25%
-		    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
+		    					tmp->tower->firespeed = (int)tmp->tower->firespeed * 0.75;
+		    					if(tmp->tower->firespeed < 3) {
+		    						tmp->tower->firespeed = 3;
+		    					}
 		    					break;
 		    			}
 		    		}
@@ -386,7 +389,10 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 			    					tmp->tower->dmg = (int) tmp->tower->dmg * 1.25;
 			    					break;
 			    				case AMMO: //Increase firespeed by 25%
-			    					tmp->tower->firespeed = tmp->tower->firespeed * 1.25;
+			    					tmp->tower->firespeed = (int)tmp->tower->firespeed * 0.75;
+			    					if(tmp->tower->firespeed < 3) {
+			    						tmp->tower->firespeed = 3;
+			    					}
 			    					break;
 			    			}
 			    		}

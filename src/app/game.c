@@ -36,7 +36,7 @@
 
 
 int playGame(SDL_Surface* surface, const char* itdPath) {
-    int global_money = 10000;
+    int global_money = 2000;
     int waveNumber = 1;
     unsigned long global_frame = 0;
 
