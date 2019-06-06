@@ -22,7 +22,7 @@ static const Uint32 FRAMERATE_MILLISECONDS = 40; //25 FPS
 
 static const unsigned int MAX_FILENAME =  70;
 static const unsigned int WAVESIZE =  10;
-static const unsigned int AMOUNT_WAVES = 3;
+static const unsigned int AMOUNT_WAVES = 50;
 
 
 #endif

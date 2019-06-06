@@ -52,6 +52,11 @@ void fillTextsArrays(TextStyle textCSS[], Text texts[]) {
 
     //Text 4 
     loadText("Game paused", &(textCSS[5].font), textCSS[3].color, &(texts[4].area), &(texts[4].texture));
+
+    //Text 5
+    loadText("Wave ", &(textCSS[1].font), textCSS[1].color, &(texts[5].area), &(texts[5].texture));
+
+    //Text 6 : wave index (need to be reload each time, so in another function)
 }
 
 

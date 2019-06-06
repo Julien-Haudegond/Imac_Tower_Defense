@@ -50,7 +50,7 @@
 int playGame(SDL_Surface* surface, const char* itdPath)
 {
     int global_money = 10000;
-    int waveNumber = 0;
+    int waveNumber = 1;
     unsigned long global_frame = 0;
 
     //Loading ITD File
@@ -542,6 +542,12 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 glScalef(0.7, 0.7, 1.);
                 drawSprite(&(sprites[14].texture));
             glPopMatrix();
+
+            //WAVE INDICATOR
+            renderLeftText(&generalTexts[5], 50, 30);
+
+            loadIntegerText(waveNumber, &textCSS[0], &generalTexts[6]);
+            renderLeftText(&generalTexts[6], 150, 30);
 
             //HELP
             renderCenterText(&generalTexts[0], 610, 700); //Press 'h' to get some help
