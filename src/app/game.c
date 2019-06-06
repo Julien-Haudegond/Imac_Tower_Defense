@@ -34,21 +34,8 @@
 #include "nodes/node.h"
 #include "nodes/link.h"
 
-/*Test*/
 
-/***************
-*   define : 
-*   READTHIS 1 for PPM check & map debug + sprites
-*   READTHIS 2 for tests on monsters path
-*   READTHIS 3 for tests on monsters / towers / and lists
-****************/
-#define READTHIS1
-
-#ifdef READTHIS1
-
-
-int playGame(SDL_Surface* surface, const char* itdPath)
-{
+int playGame(SDL_Surface* surface, const char* itdPath) {
     int global_money = 10000;
     int waveNumber = 1;
     unsigned long global_frame = 0;
@@ -87,17 +74,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     for (int j = 0; j < nbOfNodes; j++){
         printNodeInfo(nodesArray[j]);
     }
-    
+   
     printf("\n \n ********** NODES CHEMIN LE + COURT ********** \n \n");
     int nbShortest = countNodesShortestPath(nodesArray);
     printf("Nombre de nodes : %d \n", nbShortest);
     int *nodesPath = malloc(nbShortest*sizeof(int));
     //filling nodesPath array
+
     fillShortestPath(nodesPath, nbShortest, nodesArray);
+
     for(int k = 0; k < nbShortest; k++){
-        printf("Noeud %d : %d \n", k, nodesPath[k]);
+        //printf("Noeud %d : %d \n", k, nodesPath[k]);
     }
 
+   
     //Test on monsters - waves
     Wave* wave = createEmptyWave();
     Node* nodesearch = malloc(sizeof(Node));
@@ -108,9 +98,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     ExplosionList* explosionList = createEmptyExplosionList();
 
-   
-
-   
 
     /* Initializing FMOD */
     FMOD_SYSTEM* system;
@@ -135,6 +122,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         //Play the music
         FMOD_System_PlaySound(system, music, NULL, 0, NULL);
 
+
     /* SPRITES: Loading surfaces and initializing textures */
     Sprite sprites[MAX_SPRITES];
 
@@ -158,7 +146,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         //WRITING General texts
         fillTextsArrays(textCSS, generalTexts); // GO TO TEXT.C TO MODIFY
   
-
     /* Global variables */
     int mouse_x = 0, mouse_y = 0, button_x = 0, button_y = 0;
     int help = -1; //To print the 'help' popup
@@ -171,7 +158,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     int pathIndex = 0;
     int getMonsterDirection = 0;
     int monsterRotation = 0;
-    
+
+   
     //variables for waves
     
     int monsterCounter = 0;
@@ -181,7 +169,6 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
     /* Global variables for GL Lists / Drawing */
     GLuint map = createMapIDList(&imgPPM, itdInstructions, sprites);
-    GLuint properties_window = createPropertiesWindowList(towerList, mouse_x, mouse_y, textCSS, propTowerTexts);
 
     EndScreen endScreen = createEndScreen();
 
@@ -530,8 +517,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 
             //Draw the tower properties
             if(towerPropStatus != -1) {
-                properties_window = createPropertiesWindowList(towerList, button_x, button_y, textCSS, propTowerTexts);
-                glCallList(properties_window);
+                drawPropertiesWindowList(towerList, button_x, button_y, textCSS, propTowerTexts);
             }
 
             //MONEY
@@ -582,13 +568,20 @@ int playGame(SDL_Surface* surface, const char* itdPath)
         }
     }
 
-    //endScreen.status = 1;
-    saveGame(itdPath, global_money, waveNumber, towerList, buildingList, endScreen.status);
+    //If the game is at the beginning
+    if(waveNumber == 1 && towerList->tower == NULL && buildingList->build == NULL) {
+        deleteSavedData();         
+    }
+    else {
+        saveGame(itdPath, global_money, waveNumber, towerList, buildingList, endScreen.status);
+    }
+
 
     printWave(wave);
     printTowerList(towerList);
     printBuildingList(buildingList);
     printExplosionList(explosionList);
+
 
     /* Free Tower List and Free buildings */
     freeTowerList(towerList);
@@ -598,7 +591,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     free(nodesPath);
 
     /* Free wave */
-    free(wave);
+    freeWave(wave);
 
     freeExplosionList(explosionList);
 
@@ -625,18 +618,3 @@ int playGame(SDL_Surface* surface, const char* itdPath)
     
     return EXIT_SUCCESS;
 }
-
-void displayMoney(){
-
-}
-
-#endif
-
-#ifdef READTHIS2
-
-//Main pour tests
-int main(int argc, char** argv){
-  return 0;
-}
-
-#endif

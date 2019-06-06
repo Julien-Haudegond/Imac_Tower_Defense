@@ -46,15 +46,14 @@ void drawFullScreenImg(GLuint* texture) {
     glPopMatrix();
 }
 
-GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS[], Text propTowerTexts[]) {
+
+void drawPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS[], Text propTowerTexts[]) {
     if(!tl) {
         fprintf(stderr, "Error : no tower list (createPropertiesWindowList)\n");
         exit(EXIT_FAILURE);
     }
 
     ///// VARIABLES
-    GLuint id = glGenLists(1);
-
     Tower* t = malloc(sizeof(Tower));
 
     if(!t) {
@@ -71,13 +70,13 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
             snprintf(int2string, sizeof(int2string), "%d", t->x);
         strcat(text1, int2string);
         strcat(text1, ",");
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 20; i++) {
                 int2string[i] = 0;
             }
             snprintf(int2string, sizeof(int2string), "%d", t->y);
         strcat(text1, int2string);
         strcat(text1, ")");
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 20; i++) {
                 int2string[i] = 0;
             }                    
 
@@ -86,7 +85,7 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
         strcat(text2, "Range: ");
             snprintf(int2string, sizeof(int2string), "%d", t->range);
         strcat(text2, int2string);
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 20; i++) {
                 int2string[i] = 0;
             }
         
@@ -95,7 +94,7 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
         strcat(text3, "Damage: ");
             snprintf(int2string, sizeof(int2string), "%d", t->dmg);
         strcat(text3, int2string);
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 20; i++) {
                 int2string[i] = 0;
             }
 
@@ -104,10 +103,9 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
         strcat(text4, "Firespeed: ");
             snprintf(int2string, sizeof(int2string), "%d", t->firespeed); //Actually a float and not a int but... you know
         strcat(text4, int2string);
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 20; i++) {
                 int2string[i] = 0;
             }               
-
 
         //TEXTS
         loadText(text1, &(textCSS[2].font), textCSS[2].color, &(propTowerTexts[0].area), &(propTowerTexts[0].texture)); // Position
@@ -117,7 +115,7 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
 
     ///// CODE
 
-    glNewList(id, GL_COMPILE);
+    glPushMatrix();
 
         drawPropertiesScreen(0, 0, 0, 200);
 
@@ -126,11 +124,9 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
         renderLeftText(&propTowerTexts[2], 10 , 740);
         renderLeftText(&propTowerTexts[3], 10 , 760);
 
-    glEndList();
+    glPopMatrix();
 
     free(t);
-
-    return id;
 }
 
 

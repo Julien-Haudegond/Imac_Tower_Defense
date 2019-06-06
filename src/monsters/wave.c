@@ -12,6 +12,18 @@ Wave* createEmptyWave() {
 	return wave;
 }
 
+void freeWave(Wave* wave) {
+	if(wave) {
+		if(wave->monster) {
+			free(wave->monster);
+		}
+		if(wave->nextMonster) {
+			freeWave(wave->nextMonster);
+		}
+		free(wave);
+	}
+}
+
 /*************
 *	Adds monster to the wave specified in arguments
 * 	This function must be used after initializing the list containing the new monter

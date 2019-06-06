@@ -2,7 +2,7 @@
 #define TEXT_H__
 
 #define MAX_TEXTS 50 //Max number of texts
-#define MAX_CSS 6 //Max number of text styles
+#define MAX_CSS 8 //Max number of text styles
 
 #define FONT_1 "Starjedi"
 

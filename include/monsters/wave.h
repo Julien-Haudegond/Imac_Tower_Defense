@@ -5,10 +5,12 @@
 
 #include "../monsters/monster.h"
 
+Wave* createEmptyWave();
+void freeWave(Wave* wave);
+
 void addMonster(Wave* wave, MonsterType type, int resist, int* path, int nbPath);
 Wave* deleteMonster(Wave* wave);
 void printWave(Wave* wave);
-Wave* createEmptyWave();
 Wave* getLastMonster(Wave* wave);
 
 #endif
