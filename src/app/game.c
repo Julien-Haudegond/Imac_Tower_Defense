@@ -327,6 +327,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                                     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
                                     for(int i = 0; i < nbOfNodes; i++) {
                                         initializeDijkstra(&nodesArray[i]);
+                                        printNodeInfo(nodesArray[i]);
                                     }
                                     shortestPath(nodesArray, nbOfNodes);
                                     nbShortest = countNodesShortestPath(nodesArray);
@@ -346,6 +347,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                                     updateAllValarcLinks(nodesArray, nbOfNodes, towerList);
                                     for(int i = 0; i < nbOfNodes; i++) {
                                         initializeDijkstra(&nodesArray[i]);
+                                        printNodeInfo(nodesArray[i]);
                                     }
                                     shortestPath(nodesArray, nbOfNodes);
                                     nbShortest = countNodesShortestPath(nodesArray);
@@ -513,7 +515,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
                 while(ptrWave && wave->monster!=NULL && ptrWave->monster != NULL){
                     fire(ptrTower->tower, ptrWave->monster);
                     ptrWave = ptrWave->nextMonster;
-                    printf("ok !\n");
+                    //printf("ok !\n");
                 }
                 ptrTower = ptrTower->nextTower;
             }

@@ -425,7 +425,7 @@ int areAllNodesVisited(Node *nodesArray, int nbNodes){
 
 //On recherche le sommet du graphe avec le + petit minValarc qui n'a pas été parcouru
 Node* getNextNodeValueWithMinValarc(Node *nodesArray, int nbNodes){
-	long minValue = 90000;
+	long minValue = 900000000;
 	Node* tmp = NULL;
 	for(int i = 0; i < nbNodes; i++){
 		if(nodesArray[i].marqued == 0 && nodesArray[i].minValarc < minValue && nodesArray[i].minValarc != -1){
@@ -456,19 +456,15 @@ void shortestPath(Node *nodesArray, int nbNodes){
 	for(int i =0; i < nbNodes; i++){
 		initializeDijkstra(&nodesArray[i]);
 	}
-	
+
 	Node* currentNode = &nodesArray[0];
 	int allVisited = 1; //will be set to 0 when all nodes will be visited
-	
-	while(allVisited == 1){ // while there are still nodes to visit
+	while(allVisited == 1){ // while there are still nodes to visit	
 		markNode(currentNode); //node gets visited : mark set to 1
-
 		updateNodesMinValarc(currentNode); //Updating minValarc values for neighbour nodes if needed
 		//printf("printf Prochain noeud à traiter :  %d \n", currentNode->value);
 		currentNode = getNextNodeValueWithMinValarc(nodesArray,nbNodes);
-
-		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes are visited
-		
+		allVisited = areAllNodesVisited(nodesArray, nbNodes); //checking if all nodes are visited	
 	}
 	return;
 }
