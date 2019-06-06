@@ -51,6 +51,7 @@ int playGame(SDL_Surface* surface, const char* itdPath)
 {
     int global_money = 10000;
     int waveNumber = 0;
+    unsigned long global_frame = 0;
 
     //Loading ITD File
     Image imgPPM;
@@ -506,14 +507,16 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             if(towerList != NULL){
                 ptrTower = towerList;
             }
-            int twr = 0;
+    
             //each tower checks if it can fire on each monster
             while(ptrTower && towerList->tower && ptrTower->tower){
                 if(wave != NULL){
                     ptrWave = wave;
                 }
                 while(ptrWave && wave->monster!=NULL && ptrWave->monster != NULL){
-                    fire(ptrTower->tower, ptrWave->monster);
+                    if(global_frame % ptrTower->tower->firespeed == 0){
+                        fire(ptrTower->tower, ptrWave->monster);
+                    }
                     ptrWave = ptrWave->nextMonster;
                     //printf("ok !\n");
                 }
@@ -561,6 +564,8 @@ int playGame(SDL_Surface* surface, const char* itdPath)
             }
         }
          
+
+        global_frame ++; 
         SDL_GL_SwapBuffers();       
 
         /* Passed time */

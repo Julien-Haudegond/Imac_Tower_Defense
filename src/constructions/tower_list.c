@@ -256,16 +256,16 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 		    		//Reset all the parameters of the towers
 		    		switch(tmp->tower->type){
 						case LASER :
-							tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+							tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), (int)(BASE_FIRESPEED*4), BASE_TOWER_RANGE);
 							break;
 						case ROCKET : 
-							tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+							tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, (int)(BASE_FIRESPEED), (int)(BASE_TOWER_RANGE*0.5));
 							break;
 						case ELECTRIC : 
-							tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+							tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), (int)(BASE_FIRESPEED*3), (int)(BASE_TOWER_RANGE*0.7));
 							break;
 						case WATER : 
-							tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+							tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), (int)(BASE_FIRESPEED*1.5), (int)(BASE_TOWER_RANGE*2));
 							break;
 					}
 
@@ -275,16 +275,16 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 			    		//Reset all the parameters of the towers
 			    		switch(tmp->tower->type){
 							case LASER :
-								tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+								tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), (int)(BASE_FIRESPEED*4), BASE_TOWER_RANGE);
 								break;
 							case ROCKET : 
-								tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+								tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, (int)(BASE_FIRESPEED), (int)(BASE_TOWER_RANGE*0.5));
 								break;
 							case ELECTRIC : 
-								tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+								tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), (int)(BASE_FIRESPEED*3), (int)(BASE_TOWER_RANGE*0.7));
 								break;
 							case WATER : 
-								tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+								tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), (int)(BASE_FIRESPEED*1.5), (int)(BASE_TOWER_RANGE*2));
 								break;
 						}    			
 		    		}
@@ -327,16 +327,16 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 	    		//Reset all the parameters of the towers
 	    		switch(tmp->tower->type){
 					case LASER :
-						tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+						tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), (int)(BASE_FIRESPEED*4), BASE_TOWER_RANGE);
 						break;
 					case ROCKET : 
-						tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+						tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG,(int)(BASE_FIRESPEED), (int)(BASE_TOWER_RANGE*0.5));
 						break;
 					case ELECTRIC : 
-						tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+						tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), (int)(BASE_FIRESPEED*3), (int)(BASE_TOWER_RANGE*0.7));
 						break;
 					case WATER : 
-						tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+						tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), (int)(BASE_FIRESPEED*1.5), (int)(BASE_TOWER_RANGE*2));
 						break;
 				}
 
@@ -363,16 +363,16 @@ void updateTowersBuildings(TowerList* tl, BuildingList* bl) {
 		    		//Reset all the parameters of the towers
 		    		switch(tmp->tower->type){
 						case LASER :
-							tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+							tmp->tower = setTowerStats(tmp->tower, 0, (int)(BASE_DMG*1.5), (int)(BASE_FIRESPEED*4), BASE_TOWER_RANGE);
 							break;
 						case ROCKET : 
-							tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+							tmp->tower = setTowerStats(tmp->tower, 1, BASE_DMG, (int)(BASE_FIRESPEED), (int)(BASE_TOWER_RANGE*0.5));
 							break;
 						case ELECTRIC : 
-							tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+							tmp->tower = setTowerStats(tmp->tower, 2, (int)(BASE_DMG*0.7), (int)(BASE_FIRESPEED*3), (int)(BASE_TOWER_RANGE*0.7));
 							break;
 						case WATER : 
-							tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+							tmp->tower = setTowerStats(tmp->tower, 3, (int)(BASE_DMG*0.6), (int)(BASE_FIRESPEED*1.5), (int)(BASE_TOWER_RANGE*2));
 							break;
 					}
 			    	//Check each building effect

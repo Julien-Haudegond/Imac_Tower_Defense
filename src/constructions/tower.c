@@ -49,22 +49,22 @@ Tower* createTower(TowerType type, int x, int y) {
 	switch(type){
 		//Lasers : lots of dmg, fires slowly, average range
 		case LASER :
-			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), BASE_FIRESPEED*0.7, BASE_TOWER_RANGE);
+			tower = setTowerStats(tower, 0, (int)(BASE_DMG*1.5), (int)(BASE_FIRESPEED*4), BASE_TOWER_RANGE);
 			tower->money_cost = LASER_COST;
 			break;
 		//Rockets : average dmg, fires fast, low range
 		case ROCKET : 
-			tower = setTowerStats(tower, 1, BASE_DMG, BASE_FIRESPEED*1.8, (int)(BASE_TOWER_RANGE*0.5));
+			tower = setTowerStats(tower, 1, BASE_DMG, (int)(BASE_FIRESPEED), (int)(BASE_TOWER_RANGE*0.5));
 			tower->money_cost = ROCKET_COST;
 			break;
 		//Electric: low dmg, fires slowly, low range
 		case ELECTRIC : 
-			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), BASE_FIRESPEED*0.7, (int)(BASE_TOWER_RANGE*0.7));
+			tower = setTowerStats(tower, 2, (int)(BASE_DMG*0.7), (int)(BASE_FIRESPEED*3), (int)(BASE_TOWER_RANGE*0.7));
 			tower->money_cost = ELECTRIC_COST;
 			break;
 		//Water : low dmg, fires fast, high range
 		case WATER : 
-			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), BASE_FIRESPEED*1.7, (int)(BASE_TOWER_RANGE*2));
+			tower = setTowerStats(tower, 3, (int)(BASE_DMG*0.6), (int)(BASE_FIRESPEED*1.5), (int)(BASE_TOWER_RANGE*2));
 			tower->money_cost = WATER_COST;
 			break;
 		default : 
@@ -75,7 +75,7 @@ Tower* createTower(TowerType type, int x, int y) {
 	return tower;
 };
 
-Tower* setTowerStats(Tower* tower, int type, int dmg, float firespeed, int range){
+Tower* setTowerStats(Tower* tower, int type, int dmg, int firespeed, int range){
 	tower->type = type;
 	tower->dmg = dmg;
 	tower->firespeed = firespeed;
@@ -87,7 +87,7 @@ void printTower(Tower *t){
 	printf("Grid (%d,%d) / Window (%d,%d)\n", t->x, t->y, t->win_x, t->win_y);
 	printf("Type: %d \n", t->type);
 	printf("Damage : %d \n", t->dmg);
-	printf("Firespeed : %f \n", t->firespeed);
+	printf("Firespeed : %d \n", t->firespeed);
 	printf("Range : %d \n", t->range);
 	printf("Cost: %d $ \n\n", t->money_cost);
 }

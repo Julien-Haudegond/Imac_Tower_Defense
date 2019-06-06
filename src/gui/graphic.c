@@ -102,7 +102,7 @@ GLuint createPropertiesWindowList(TowerList* tl, int x, int y, TextStyle textCSS
         //GET FIRESPEED DATA
         char text4[20] = {0};
         strcat(text4, "Firespeed: ");
-            snprintf(int2string, sizeof(int2string), "%.2f", t->firespeed); //Actually a float and not a int but... you know
+            snprintf(int2string, sizeof(int2string), "%d", t->firespeed); //Actually a float and not a int but... you know
         strcat(text4, int2string);
             for(int i = 0; i < 10; i++) {
                 int2string[i] = 0;
