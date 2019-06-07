@@ -220,15 +220,28 @@ void drawBuildingSprite(Building* build, Sprite sprites[]) {
 }
 
 
+void drawFireTower(Tower* t) {
+    if(t->animation >= 1 && t->animation <= 4) {
+        drawDisk(t->range, t->win_x, t->win_y);
+    }
+    else {
+        t->animation = -1; //-1 + 1 = 0
+    }
+    t->animation++;
+}
+
+
 
 void globalDrawTowers(TowerList* tl, Sprite sprites[]) {
     if(tl->tower) {
         TowerList* tmp = tl;
+        drawFireTower(tmp->tower);
         drawTowerSprite(tmp->tower, sprites);
 
         while(tmp->nextTower) {
             tmp = tmp->nextTower;
             if(tmp->tower) {
+            	drawFireTower(tmp->tower);
                 drawTowerSprite(tmp->tower, sprites);
             }
         }

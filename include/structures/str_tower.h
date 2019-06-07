@@ -27,6 +27,7 @@ typedef struct Tower {
 	int firespeed;
 	int range;
 	int money_cost;
+	int animation;
 } Tower;
 
 

@@ -11,6 +11,7 @@
 #include "../nodes/node.h"
 
 
+void drawDisk(int r, int x, int y);
 void drawGridSquare(int filled);
 void drawWindowSquare(int filled);
 void drawFullScreen(uint r, uint g, uint b, uint a);

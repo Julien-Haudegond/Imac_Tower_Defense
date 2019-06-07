@@ -23,6 +23,7 @@ void drawBuildingSprite(Building* build, Sprite sprites[]);
 void rotateMonsterSprite(Monster *m, int angle, Sprite sprites[]);
 void drawHealthBar(Monster* m, Sprite sprites[]);
 
+void drawFireTower(Tower* t);
 
 void globalDrawTowers(TowerList* tl, Sprite sprites[]);
 void globalDrawBuildings(BuildingList* bl, Sprite sprites[]);

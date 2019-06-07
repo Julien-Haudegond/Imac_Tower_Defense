@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <math.h>
 
 #include "const.h"
 
@@ -10,6 +11,37 @@
 #include "gui/sprite.h"
 #include "gui/window.h"
 #include "gui/image.h"
+
+void drawDisk(int r, int x, int y) {
+    int i = 0;
+
+    glPushMatrix();
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glTranslatef(x, y, 0);
+        glScalef(r, r, r);
+        
+        glBegin(GL_TRIANGLE_FAN);
+
+            glColor4ub(255, 255, 255, 75);
+            
+            glVertex2f(0.0, 0.0);
+
+            for(i = 0; i < 64; i++) {
+                glVertex2f( cos(i * (2 * M_PI / (float) 64)), 
+                            sin(i * (2 * M_PI / (float) 64)));
+            }
+            glVertex2f( cos(i * (2 * M_PI / (float) 64)), 
+                        sin(i * (2 * M_PI / (float) 64)));
+
+        glEnd();
+
+        glDisable(GL_BLEND);
+    glPopAttrib();
+    glPopMatrix();
+}
 
 
 void drawGridSquare(int filled) {
@@ -366,6 +398,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[])
         case LASER:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawDisk(BASE_TOWER_RANGE, 0, 0);
                 drawSprite(&(sprites[4].texture));
             glPopMatrix();
 
@@ -374,6 +407,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[])
         case ROCKET:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawDisk((int)(BASE_TOWER_RANGE*0.5), 0, 0);
                 drawSprite(&(sprites[5].texture));
             glPopMatrix();
 
@@ -382,6 +416,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[])
         case ELECTRIC:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawDisk((int)(BASE_TOWER_RANGE*0.7), 0, 0);
                 drawSprite(&(sprites[6].texture));
             glPopMatrix();
 
@@ -390,6 +425,7 @@ void drawTowerGuides(int mouse_x, int mouse_y, TowerType type, Sprite sprites[])
         case WATER:
             glPushMatrix();
                 glTranslatef(center_x + 0.5, center_y + 0.5 , 0.);
+                drawDisk((int)(BASE_TOWER_RANGE*2), 0, 0);
                 drawSprite(&(sprites[7].texture));
             glPopMatrix();
 

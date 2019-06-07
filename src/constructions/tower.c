@@ -80,6 +80,7 @@ Tower* setTowerStats(Tower* tower, int type, int dmg, int firespeed, int range){
 	tower->dmg = dmg;
 	tower->firespeed = firespeed;
 	tower->range = range;
+	tower->animation = 0;
 	return tower;
 }
 

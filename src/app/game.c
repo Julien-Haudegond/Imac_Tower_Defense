@@ -503,6 +503,7 @@ int playGame(SDL_Surface* surface, const char* itdPath) {
                 while(ptrWave && wave->monster!=NULL && ptrWave->monster != NULL){
                     if(global_frame % ptrTower->tower->firespeed == 0){
                         fire(ptrTower->tower, ptrWave->monster);
+                        ptrTower->tower->animation = 1; //Launch the drawDisk animation
                     }
                     ptrWave = ptrWave->nextMonster;
                     //printf("ok !\n");
