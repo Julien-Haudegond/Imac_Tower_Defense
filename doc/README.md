@@ -22,6 +22,8 @@ A 2D Tower Defense game : C, SDL 1.2, OpenGL (old version).
 ## How to
 
 ### Install libraries
+This part is optionnal because everything is already present in the repository. You can directly skip to: [**Run the program**](#run-the-program).
+
 If **SDL_ttf** and **TrueType** are not installed on your computer, you can install them with the following commands (not necessary):
 
 ```bash
